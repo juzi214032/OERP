@@ -25,5 +25,5 @@ public interface AuthenticationService {
      *
      * @param userRegistionDTO 注册信息
      */
-    void registion(UserRegistionDTO userRegistionDTO);
+    UserLoginVO registion(UserRegistionDTO userRegistionDTO);
 }

@@ -54,7 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public void registion(UserRegistionDTO userRegistionDTO) {
+    public UserLoginVO registion(UserRegistionDTO userRegistionDTO) {
         UserPO oldUserPO =
                 userDAO.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getUsername, userRegistionDTO.getUsername()));
 
@@ -77,5 +77,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setNickname(userRegistionDTO.getNickname());
         userInfoDAO.insert(newUserInfoPO);
 
+        // 进行登录操作
+        UserLoginDTO userLoginDTO = new UserLoginDTO();
+        userLoginDTO
+                .setUsername(userRegistionDTO.getUsername())
+                .setPassword(userRegistionDTO.getPassword());
+        return this.login(userLoginDTO);
     }
 }

@@ -35,7 +35,8 @@ public class AuthenticationController {
      * 注册
      */
     @PostMapping("/registion")
-    public void registion(UserRegistionDTO userRegistionDTO){
-
+    public ResponseVO<UserLoginVO> registion(UserRegistionDTO userRegistionDTO){
+        UserLoginVO result = authenticationService.registion(userRegistionDTO);
+        return new ResponseVO<>(result);
     }
 }
