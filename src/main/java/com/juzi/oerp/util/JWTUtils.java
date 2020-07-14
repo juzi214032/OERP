@@ -1,6 +1,7 @@
 package com.juzi.oerp.util;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.juzi.oerp.common.constant.JWTConstants;
@@ -14,6 +15,8 @@ import java.util.Date;
  * @date 2020/7/14 15:45
  */
 public class JWTUtils {
+
+    private static final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(JWTConstants.JWT_SECRET)).build();
 
     /**
      * 创建 token
@@ -34,12 +37,13 @@ public class JWTUtils {
 
     /**
      * 解析 token
+     *
      * @param token accessToken
      * @return 用户id
      */
     public static Integer parseToken(String token) {
-        return JWT
-                .decode(token)
+        return JWTUtils.jwtVerifier
+                .verify(token)
                 .getClaim("userId")
                 .asInt();
     }
@@ -52,7 +56,7 @@ public class JWTUtils {
      */
     public static boolean checkToken(String token) {
         try {
-            JWT.decode(token);
+            JWTUtils.jwtVerifier.verify(token);
             return true;
         } catch (JWTDecodeException e) {
             return false;
