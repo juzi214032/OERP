@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 14/07/2020 14:42:38
+ Date: 14/07/2020 17:13:29
 */
 
 SET NAMES utf8mb4;
@@ -50,12 +50,14 @@ CREATE TABLE `user_info`  (
   `identity_no` char(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证号码',
   `birthday` timestamp(0) NULL DEFAULT NULL COMMENT '生日',
   `phone_no` char(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号',
+  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info` VALUES (1, '桔子', 'https://656e-env-9eb476-1258886794.tcb.qcloud.la/images/index-list/avatar/1.jpg?sign=cd2c2287be1fd4328f0510627253742a&t=1594641803', '鞠青松', 00, '511199811009898', '1994-10-13 20:19:49', '15687899843');
+INSERT INTO `user_info` VALUES (1, '桔子', 'https://656e-env-9eb476-1258886794.tcb.qcloud.la/images/index-list/avatar/1.jpg?sign=cd2c2287be1fd4328f0510627253742a&t=1594641803', '鞠青松', 00, '511199811009898', '1994-10-13 20:19:49', '15687899843', '2020-07-14 15:27:39', '2020-07-14 15:27:39');
 
 SET FOREIGN_KEY_CHECKS = 1;
