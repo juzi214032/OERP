@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020/7/13 20:50
  */
 @Configuration
-public class MybatisPlusConfig {
+public class MybatisPlusConfiguration {
+    /**
+     * @return 分页插件
+     */
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
