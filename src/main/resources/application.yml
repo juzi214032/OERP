@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: oerp
+  datasource:
+    url: jdbc:mysql://localhost:3307/oerp?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF8&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mybatis/xml/*.xml
+server:
+  port: 8080
+management:
+  server:
+    port: 8001
+  endpoint:
+    health:
+      show-details: always
