@@ -37,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setUsername(userLoginDTO.getUsername())
                 .setPassword(SecureUtil.md5(userLoginDTO.getPassword()));
 
-        UserPO user = userDAO.selectOne(new QueryWrapper<UserPO>(userPO));
+        UserPO user = userDAO.selectOne(new QueryWrapper<>(userPO));
 
         if (user == null || user.getStatus() == 1) {
             throw new AuthenticationException();

@@ -1,6 +1,8 @@
 package com.juzi.oerp.model.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 统一响应数据格式
@@ -19,10 +21,16 @@ public class ResponseVO<T> {
     /**
      * 消息信息
      */
-    private String msg;
+    private String message;
 
     /**
      * 响应数据
      */
     private T data;
+
+    public ResponseVO(T data) {
+        this.code=200;
+        this.message="ok";
+        this.data = data;
+    }
 }

@@ -2,9 +2,12 @@ package com.juzi.oerp.controller;
 
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.vo.ResponseVO;
+import com.juzi.oerp.model.vo.UserLoginVO;
 import com.juzi.oerp.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,8 +26,9 @@ public class AuthenticationController {
      * 登录
      */
     @PostMapping("/login")
-    public void login(UserLoginDTO userLoginDTO){
-
+    public ResponseVO<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
+        UserLoginVO result = authenticationService.login(userLoginDTO);
+        return new ResponseVO<>(result);
     }
 
     /**

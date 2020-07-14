@@ -11,8 +11,12 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mybatis/xml/*.xml
+  global-config:
+    banner: false
 server:
   port: 8080
+  servlet:
+    context-path: /api/v1
 management:
   server:
     port: 8001
