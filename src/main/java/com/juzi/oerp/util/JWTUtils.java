@@ -16,7 +16,10 @@ import java.util.Date;
  */
 public class JWTUtils {
 
-    private static final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(JWTConstants.JWT_SECRET)).build();
+    /**
+     * JWT 校验器
+     */
+    private static final JWTVerifier JWT_VERIFIER = JWT.require(Algorithm.HMAC256(JWTConstants.JWT_SECRET)).build();
 
     /**
      * 创建 token
@@ -42,7 +45,7 @@ public class JWTUtils {
      * @return 用户id
      */
     public static Integer parseToken(String token) {
-        return JWTUtils.jwtVerifier
+        return JWTUtils.JWT_VERIFIER
                 .verify(token)
                 .getClaim("userId")
                 .asInt();
@@ -56,7 +59,7 @@ public class JWTUtils {
      */
     public static boolean checkToken(String token) {
         try {
-            JWTUtils.jwtVerifier.verify(token);
+            JWTUtils.JWT_VERIFIER.verify(token);
             return true;
         } catch (JWTDecodeException e) {
             return false;
