@@ -18,7 +18,7 @@
 
 ## 介绍
 
-OERP 是 Online Examination Registration System 的缩写，中文名称为：在线考试报名系统。
+OERP 是 Online Examination Registration Platform 的缩写，中文名称为：**在线考试报名平台**。
 
 该仓库是 OERP 服务端代码仓库，使用 SpringBoot + Mybatis Plus + MySQL 实现。
 
