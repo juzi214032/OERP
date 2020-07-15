@@ -22,6 +22,13 @@ OERP 是 Online Examination Registration System 的缩写，中文名称为：�
 
 该仓库是 OERP 服务端代码仓库，使用 SpringBoot + Mybatis Plus + MySQL 实现。
 
+## 快速开始
+
+- 在你的数据库中新建一个名为`oerp`的数据库
+- 导入仓库目录`/src/main/resources/oerp.sql`的 SQL 文件
+- 修改`/src/main/resources/application.yml`中的`spring.datasource`配置为你自己的数据库信息
+- 在 **IDEA** 或 Eclipse 中启动项目
+
 
 
 ## 目录结构
@@ -56,4 +63,3 @@ OERP 是 Online Examination Registration System 的缩写，中文名称为：�
                     |-- dao                -> 自定义 Mybatis Xml
                     |-- mapper             -> MyBatis Plus Generator 生成的 Xml
 ```
-
