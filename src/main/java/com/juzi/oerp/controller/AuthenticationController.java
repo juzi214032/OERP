@@ -2,7 +2,7 @@ package com.juzi.oerp.controller;
 
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
-import com.juzi.oerp.model.vo.ResponseVO;
+import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
 import com.juzi.oerp.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;

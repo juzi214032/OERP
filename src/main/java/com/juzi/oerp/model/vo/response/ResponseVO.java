@@ -1,4 +1,4 @@
-package com.juzi.oerp.model.vo;
+package com.juzi.oerp.model.vo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +27,11 @@ public class ResponseVO<T> {
      * 响应数据
      */
     private T data;
+
+    public ResponseVO(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     public ResponseVO(T data) {
         this.code=200;

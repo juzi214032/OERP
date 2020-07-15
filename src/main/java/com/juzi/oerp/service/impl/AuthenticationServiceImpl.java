@@ -4,8 +4,8 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.juzi.oerp.common.exception.AuthenticationException;
-import com.juzi.oerp.dao.UserDAO;
-import com.juzi.oerp.dao.UserInfoDAO;
+import com.juzi.oerp.mapper.UserInfoMapper;
+import com.juzi.oerp.mapper.UserMapper;
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
@@ -25,10 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserMapper userMapper;
 
     @Autowired
-    private UserInfoDAO userInfoDAO;
+    private UserInfoMapper userInfoMapper;
 
     @Override
     public UserLoginVO login(UserLoginDTO userLoginDTO) {
@@ -37,14 +37,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setUsername(userLoginDTO.getUsername())
                 .setPassword(SecureUtil.md5(userLoginDTO.getPassword()));
 
-        UserPO user = userDAO.selectOne(new QueryWrapper<>(userPO));
+        UserPO user = userMapper.selectOne(new QueryWrapper<>(userPO));
 
         if (user == null || user.getStatus() == 1) {
             throw new AuthenticationException();
         }
 
         String token = JWTUtils.createToken(user.getId());
-        UserInfoPO userInfo = userInfoDAO.selectOne(new LambdaQueryWrapper<UserInfoPO>().eq(UserInfoPO::getUserId, user.getId()));
+        UserInfoPO userInfo = userInfoMapper.selectOne(new LambdaQueryWrapper<UserInfoPO>().eq(UserInfoPO::getUserId, user.getId()));
         UserLoginVO userLoginVO = new UserLoginVO();
         userLoginVO
                 .setToken(token)
@@ -56,7 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional(rollbackFor = RuntimeException.class)
     public UserLoginVO registion(UserRegistionDTO userRegistionDTO) {
         UserPO oldUserPO =
-                userDAO.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getUsername, userRegistionDTO.getUsername()));
+                userMapper.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getUsername, userRegistionDTO.getUsername()));
 
         // 用户名重复
         if (oldUserPO != null) {
@@ -68,14 +68,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         newUserPO
                 .setUsername(userRegistionDTO.getUsername())
                 .setPassword(SecureUtil.md5(userRegistionDTO.getPassword()));
-        userDAO.insert(newUserPO);
+        userMapper.insert(newUserPO);
 
         // 插入用户信息
         UserInfoPO newUserInfoPO = new UserInfoPO();
         newUserInfoPO
                 .setUserId(newUserPO.getId())
                 .setNickname(userRegistionDTO.getNickname());
-        userInfoDAO.insert(newUserInfoPO);
+        userInfoMapper.insert(newUserInfoPO);
 
         // 进行登录操作
         UserLoginDTO userLoginDTO = new UserLoginDTO();

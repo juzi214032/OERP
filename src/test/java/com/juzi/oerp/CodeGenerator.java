@@ -32,7 +32,7 @@ public class CodeGenerator {
                 .setIdType(IdType.AUTO)
                 .setBaseResultMap(true)
                 .setEntityName("%sPO")
-                .setMapperName("%sDAO")
+                .setMapperName("%sMapper")
                 .setServiceName("%sService");
         mpg.setGlobalConfig(globalConfig);
 
@@ -51,7 +51,7 @@ public class CodeGenerator {
                 .setParent("com.juzi.oerp")
                 .setPathInfo(getPathInfo())
                 .setEntity("model.po")
-                .setMapper("dao")
+                .setMapper("mapper")
                 .setXml("xml");
         mpg.setPackageInfo(packageConfig);
 
@@ -95,10 +95,10 @@ public class CodeGenerator {
     private static Map<String, String> getPathInfo() {
         Map<String, String> pathInfo = new HashMap<>();
         pathInfo.put(ConstVal.ENTITY_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/model/po");
-        pathInfo.put(ConstVal.MAPPER_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/dao");
+        pathInfo.put(ConstVal.MAPPER_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/mapper");
         pathInfo.put(ConstVal.SERVICE_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/service");
         pathInfo.put(ConstVal.SERVICE_IMPL_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/service/impl");
-        pathInfo.put(ConstVal.XML_PATH, System.getProperty("user.dir") + "/src/main/resources/mybatis/xml");
+        pathInfo.put(ConstVal.XML_PATH, System.getProperty("user.dir") + "/src/main/resources/mybatis/xml/mapper");
         return pathInfo;
     }
 }

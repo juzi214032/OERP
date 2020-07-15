@@ -7,10 +7,12 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
-  mapper-locations: classpath:mybatis/xml/*.xml
+  mapper-locations: classpath:/mybatis/xml/**/*.xml
   global-config:
     banner: false
 server:

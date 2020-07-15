@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan("com.juzi.oerp.dao")
+@MapperScan({"com.juzi.oerp.dao","com.juzi.oerp.mapper"})
 public class OerpApplication {
 
     public static void main(String[] args) {
