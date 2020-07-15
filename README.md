@@ -64,5 +64,5 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
             |-- mybatis
                 |-- xml
                     |-- dao                -> 自定义 Mybatis Xml
-                    |-- mapper             -> MyBatis Plus Generator 生成的 Xml
+                    |-- mapper             -> MyBatis Plus Generator 生成的 MyBatis Xml
 ```
