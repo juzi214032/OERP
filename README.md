@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" target="_blank">
-    <img width="180" src="https://img.juzibiji.top/20200715164201.png" alt="logo">
+    <img width="200" src="https://img.juzibiji.top/20200715191757.png" alt="logo">
   </a>
 </p>
 
