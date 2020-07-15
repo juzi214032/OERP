@@ -11,7 +11,7 @@
   <a href="https://mp.baomidou.com/">
     <img src="https://img.shields.io/badge/MyBatis%20Plus-3.3.2-blue" alt="MyBatis Plus">
   </a>
-  <a href="https://mybatis.plus/" rel="nofollow">
+  <a href="https://en.wikipedia.org/wiki/MIT_License">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey.svg" alt="LISENCE" >
   </a>
 </p>
