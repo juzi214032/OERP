@@ -5,6 +5,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/juzi214032/oerp/actions">
+    <img src="https://github.com/juzi214032/oerp/workflows/Java%20CI%20with%20Maven/badge.svg" alt="Github Action">
+  </a>
   <a href="https://spring.io/">
     <img src="https://img.shields.io/badge/Spring%20Boot-2.3.0.RELEASE-brightgreen" alt="Spring Boot">
   </a>
