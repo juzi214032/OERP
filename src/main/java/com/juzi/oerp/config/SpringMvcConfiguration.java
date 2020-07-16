@@ -25,9 +25,10 @@ public class SpringMvcConfiguration extends WebMvcConfigurationSupport {
      */
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        registry
-                .addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/*");
+        // todo 开启拦截器
+        // registry
+        //         .addInterceptor(authenticationInterceptor)
+        //         .addPathPatterns("/*");
         super.addInterceptors(registry);
     }
 }
