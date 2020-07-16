@@ -24,10 +24,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String bearerToken = request.getHeader("Authorization");
-        String jwtToken = BearerTokenUtils.parseToken(bearerToken);
-        Integer userId = JWTUtils.parseToken(jwtToken);
-
+        // String bearerToken = request.getHeader("Authorization");
+        // String jwtToken = BearerTokenUtils.parseToken(bearerToken);
+        // Integer userId = JWTUtils.parseToken(jwtToken);
         return true;
     }
 

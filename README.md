@@ -25,14 +25,24 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
 
 该仓库是 OERP 服务端代码仓库，使用 SpringBoot + Mybatis Plus + MySQL 实现。
 
+## 开发环境
+
+- IDEA 2020.1
+- **IDEA 需要安装插件 [Lombok](https://plugins.jetbrains.com/plugin/index?xmlId=Lombook%20Plugin)**
+
 ## 快速开始
 
 - 在你的数据库中新建一个名为`oerp`的数据库
+
 - 导入仓库目录`/src/main/resources/oerp.sql`的 SQL 文件
+
 - 修改`/src/main/resources/application.yml`中的`spring.datasource`配置为你自己的数据库信息
+
 - 在 **IDEA** 或 Eclipse 中启动项目
 
+- 访问网址 [http://localhost:8080/api/v1](http://localhost:8080/api/v1)，看到如下文字代表系统启动成功：
 
+  ![启动成功截图](https://img.juzibiji.top/20200716111640.png)
 
 ## 目录结构
 
