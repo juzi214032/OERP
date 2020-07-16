@@ -8,7 +8,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   cache:
     type: caffeine
-    cache-names: CAPTCHA_CACHE
+    cache-names:
+      - IMAGE_CAPTCHA_CACHE
+      - SMS_CAPTCHA_CACHE
+    couchbase:
+      expiration: 300
 
 
 mybatis-plus:

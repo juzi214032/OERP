@@ -1,5 +1,7 @@
 package com.juzi.oerp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.juzi.oerp.model.dto.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
@@ -56,7 +58,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/captcha/sms")
-    public ResponseVO<Object> getSMSCaptcha(@RequestParam String phoneNumber){
+    public ResponseVO<Object> getSMSCaptcha(@RequestBody SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
+        authenticationService.getSMSCaptcha(smsCaptchaParamDTO);
         return new CreateResponseVO();
     }
 

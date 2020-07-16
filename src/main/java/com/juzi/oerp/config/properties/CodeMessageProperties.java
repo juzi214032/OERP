@@ -1,6 +1,7 @@
-package com.juzi.oerp.config;
+package com.juzi.oerp.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 @ConfigurationProperties
 @PropertySource(value = "classpath:code-message.properties", encoding = "UTF-8")
-public class CodeMessageConfiguration {
+public class CodeMessageProperties {
     /**
      * 消息码
      */

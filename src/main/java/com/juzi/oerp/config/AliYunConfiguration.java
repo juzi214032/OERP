@@ -3,6 +3,8 @@ package com.juzi.oerp.config;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.profile.DefaultProfile;
+import com.juzi.oerp.config.properties.AliYunProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,9 +15,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AliYunConfiguration {
 
+    @Autowired
+    private AliYunProperties aliYunProperties;
+
     @Bean
     public IAcsClient iAcsClient(){
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "<accessKeyId>", "<accessSecret>");
+        DefaultProfile profile = DefaultProfile.getProfile(aliYunProperties.getRegionId(), aliYunProperties.getAccessKeyId(), aliYunProperties.getSecret());
         return new DefaultAcsClient(profile);
     }
 
