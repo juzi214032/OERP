@@ -1,5 +1,7 @@
 package com.juzi.oerp.util;
 
+import com.juzi.oerp.common.exception.AuthenticationException;
+
 /**
  * Bearer Token 工具类
  * @author Juzi
@@ -12,6 +14,11 @@ public class BearerTokenUtils {
      * @return JWT Token
      */
     public static String parseToken(String bearerToken){
+        boolean bearerTokenIsValid = BearerTokenUtils.checkToken(bearerToken);
+        // bearerToken 无效
+        if(!bearerTokenIsValid){
+            throw new AuthenticationException();
+        }
         return bearerToken.substring(7);
     }
 

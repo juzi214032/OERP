@@ -1,83 +1,88 @@
 package com.juzi.oerp.model.po;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ * 考试信息
  * </p>
  *
  * @author Juzi
- * @since 2020-07-15
+ * @since 2020-07-16
  */
 @Data
 @TableName("exam")
 public class ExamPO {
 
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
-      @TableId(value = "id", type = IdType.AUTO)
-      private Integer id;
-
-      /**
+    /**
      * 考试名称
      */
-      private String title;
+    private String title;
 
-      /**
+    /**
      * 描述
      */
-      private String description;
+    private String description;
 
-      /**
+    /**
+     * 考试页面信息：富文本
+     */
+    private String detail;
+
+    /**
+     * 图片 url
+     */
+    private String imageUrl;
+
+    /**
      * 报名开始时间
      */
-      @JsonSerialize(using = LocalDateTimeSerializer.class)
-      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-      private LocalDateTime beginTime;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime beginTime;
 
-      /**
+    /**
      * 报名截止时间
      */
-      @JsonSerialize(using = LocalDateTimeSerializer.class)
-      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-      private LocalDateTime endTime;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime endTime;
 
-      /**
-     * 考试时间
-     */
-      @JsonSerialize(using = LocalDateTimeSerializer.class)
-      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-      private LocalDateTime examTime;
-
-      /**
+    /**
      * 最多可报名多少人：-1 无限制
      */
-      private Integer peopleNumber;
+    private Integer peopleNumber;
 
-      /**
+    /**
+     * 报名费用
+     */
+    private BigDecimal price;
+
+    /**
      * 创建时间
      */
-      @JsonSerialize(using = LocalDateTimeSerializer.class)
-      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-      private LocalDateTime createTime;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime createTime;
 
-      /**
+    /**
      * 更新时间
      */
-      @JsonSerialize(using = LocalDateTimeSerializer.class)
-      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-      private LocalDateTime updateTime;
-
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime updateTime;
 
 }

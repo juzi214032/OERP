@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -18,10 +17,9 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author Juzi
- * @since 2020-07-15
+ * @since 2020-07-16
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @TableName("user_exam")
 public class UserExamPO {
 
@@ -54,5 +52,14 @@ public class UserExamPO {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updateTime;
+
+    /**
+     * 报名状态：
+     * 0 - 已申请
+     * 1 - 已支付
+     * 2 - 审核通过
+     * 3 - 审核未通过
+     */
+    private Integer status;
 
 }
