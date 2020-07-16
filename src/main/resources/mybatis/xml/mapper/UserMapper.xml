@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.juzi.oerp.model.po.UserPO">
         <id column="id" property="id" />
+        <result column="phone_number" property="phoneNumber" />
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="role" property="role" />

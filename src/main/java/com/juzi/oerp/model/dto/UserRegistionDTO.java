@@ -12,7 +12,12 @@ import lombok.Data;
 public class UserRegistionDTO {
 
     /**
-     * 用户名
+     * 手机号
+     */
+    private String phoneNumber;
+
+    /**
+     * 账号
      */
     private String username;
 
@@ -22,8 +27,8 @@ public class UserRegistionDTO {
     private String password;
 
     /**
-     * 昵称
+     * 短信验证码
      */
-    private String nickname;
+    private String smsCaptcha;
 
 }

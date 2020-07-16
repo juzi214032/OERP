@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties("aliyun.sms")
+@ConfigurationProperties("oerp.aliyun.sms")
 @EnableConfigurationProperties(AliYunProperties.class)
 public class AliYunProperties {
 

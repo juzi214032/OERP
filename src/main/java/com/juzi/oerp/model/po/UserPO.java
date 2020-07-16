@@ -29,6 +29,11 @@ public class UserPO {
     private Integer id;
 
     /**
+     * 手机号
+     */
+    private String phoneNumber;
+
+    /**
      * 账号
      */
     private String username;

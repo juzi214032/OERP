@@ -29,7 +29,7 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     /**
-     * 登录
+     * 用户登录
      */
     @PostMapping("/login")
     public ResponseVO<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
@@ -38,7 +38,7 @@ public class AuthenticationController {
     }
 
     /**
-     * 注册
+     * 用户注册
      */
     @PostMapping("/registion")
     public ResponseVO<UserLoginVO> registion(UserRegistionDTO userRegistionDTO) {
@@ -57,6 +57,12 @@ public class AuthenticationController {
         return new ResponseVO<>(captcha);
     }
 
+    /**
+     * 获取短信验证码
+     * @param smsCaptchaParamDTO 短信验证码参数
+     * @return 发送成功信息
+     * @throws JsonProcessingException 发送短信验证码时转换 JSON 异常
+     */
     @GetMapping("/captcha/sms")
     public ResponseVO<Object> getSMSCaptcha(@RequestBody SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
         authenticationService.getSMSCaptcha(smsCaptchaParamDTO);

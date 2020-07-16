@@ -70,7 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserPO user = userMapper.selectOne(new QueryWrapper<>(userPO));
 
         if (user == null || user.getStatus() == 1) {
-            throw new AuthenticationException();
+            throw new AuthenticationException(40002);
         }
 
         String token = JWTUtils.createToken(user.getId());
@@ -85,17 +85,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public UserLoginVO registion(UserRegistionDTO userRegistionDTO) {
-        UserPO oldUserPO =
-                userMapper.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getUsername, userRegistionDTO.getUsername()));
-
-        // 用户名重复
-        if (oldUserPO != null) {
-            throw new AuthenticationException();
-        }
+        // 检查手机号是否可用
+        this.checkPhoneNumber(userRegistionDTO.getPhoneNumber());
 
         // 插入用户账号
         UserPO newUserPO = new UserPO();
         newUserPO
+                .setPhoneNumber(userRegistionDTO.getPhoneNumber())
                 .setUsername(userRegistionDTO.getUsername())
                 .setPassword(SecureUtil.md5(userRegistionDTO.getPassword()));
         userMapper.insert(newUserPO);
@@ -103,8 +99,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // 插入用户信息
         UserInfoPO newUserInfoPO = new UserInfoPO();
         newUserInfoPO
-                .setUserId(newUserPO.getId())
-                .setNickname(userRegistionDTO.getNickname());
+                .setUserId(newUserPO.getId());
         userInfoMapper.insert(newUserInfoPO);
 
         // 进行登录操作
@@ -134,6 +129,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void getSMSCaptcha(SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
+        // 检查手机号是否可用
+        this.checkPhoneNumber(smsCaptchaParamDTO.getPhoneNumber());
         // 生成短信验证码
         String smsCaptcha = RandomUtil.randomNumbers(6);
 
@@ -161,6 +158,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.info(response.toString());
         } catch (ClientException e) {
             log.error("阿里云验证码服务异常", e);
+        }
+    }
+
+    /**
+     * 检测手机号是否已经注册
+     *
+     * @param phoneNumber 手机号
+     * @return 手机号是否可用
+     */
+    private void checkPhoneNumber(String phoneNumber) {
+        UserPO user = userMapper.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getPhoneNumber, phoneNumber));
+        // 手机号已被注册
+        if (user != null) {
+            throw new AuthenticationException(40001);
         }
     }
 }

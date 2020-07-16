@@ -11,7 +11,6 @@
         <result column="gender" property="gender" />
         <result column="identity_no" property="identityNo" />
         <result column="birthday" property="birthday" />
-        <result column="phone_no" property="phoneNo" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>

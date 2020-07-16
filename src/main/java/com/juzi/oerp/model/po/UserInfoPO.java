@@ -64,11 +64,6 @@ public class UserInfoPO {
     private LocalDateTime birthday;
 
     /**
-     * 手机号
-     */
-    private String phoneNo;
-
-    /**
      * 创建时间
      */
     @JsonSerialize(using = LocalDateTimeSerializer.class)
