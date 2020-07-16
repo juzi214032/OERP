@@ -1,5 +1,9 @@
 package com.juzi.oerp.controller.user;
 
+import com.juzi.oerp.model.dto.ApplyExamParamDTO;
+import com.juzi.oerp.model.vo.response.ResponseVO;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,5 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user/apply")
 public class ApplyController {
+    /**
+     * 用户报名考试
+     * @param applyExamParamDTO 报名参数
+     * @return 报名成功信息
+     */
+    @PostMapping
+    public ResponseVO<Object> applyExam(@RequestBody ApplyExamParamDTO applyExamParamDTO){
+        return null;
+    }
 
 }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
  * @since 2020-07-16
  */
 @Data
+@Accessors(chain = true)
 @TableName("user_exam")
 public class UserExamPO {
 
@@ -38,6 +40,16 @@ public class UserExamPO {
      * 考试id
      */
     private Integer examId;
+
+    /**
+     * 考试时间id
+     */
+    private Integer examTimeId;
+
+    /**
+     * 考试地点id
+     */
+    private Integer examPlaceId;
 
     /**
      * 创建时间

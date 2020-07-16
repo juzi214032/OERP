@@ -1,30 +1,29 @@
-package com.juzi.oerp.model.po;
+package com.juzi.oerp.model.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
+import com.juzi.oerp.model.po.ExamPlacePO;
+import com.juzi.oerp.model.po.ExamTimePO;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
- * <p>
- * 考试信息
- * </p>
+ * 完整考试信息
  *
  * @author Juzi
- * @since 2020-07-16
+ * @date 2020/7/16 18:56
  */
 @Data
-@TableName("exam")
-public class ExamPO {
+public class ExamInfoAllPO {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -62,6 +61,11 @@ public class ExamPO {
     private LocalDateTime endTime;
 
     /**
+     * 最多可报名多少人：-1 无限制
+     */
+    private Integer peopleNumber;
+
+    /**
      * 报名费用
      */
     private BigDecimal price;
@@ -80,4 +84,8 @@ public class ExamPO {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updateTime;
 
+    /**
+     * 考试 时间-地点 信息
+     */
+    private Map<ExamTimePO, List<ExamPlacePO>> examTimePlace;
 }

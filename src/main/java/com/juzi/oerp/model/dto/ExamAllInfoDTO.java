@@ -1,8 +1,7 @@
-package com.juzi.oerp.model.po;
+package com.juzi.oerp.model.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
@@ -13,17 +12,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * <p>
  * 考试信息
- * </p>
  *
  * @author Juzi
- * @since 2020-07-16
+ * @date 2020/7/16 19:48
  */
 @Data
-@TableName("exam")
-public class ExamPO {
-
+public class ExamAllInfoDTO {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -79,5 +74,30 @@ public class ExamPO {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updateTime;
+
+    /**
+     * 考试时间id
+     */
+    private Integer examTimeDd;
+
+    /**
+     * 考试时间
+     */
+    private LocalDateTime examTime;
+
+    /**
+     * 考试地点
+     */
+    private Integer examPlaceId;
+
+    /**
+     * 考试 地点
+     */
+    private String examPlace;
+
+    /**
+     * 最多报名人数。-1无限制
+     */
+    private Integer peopleNumber;
 
 }

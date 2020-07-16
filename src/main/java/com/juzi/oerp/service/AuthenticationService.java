@@ -2,6 +2,7 @@ package com.juzi.oerp.service;
 
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
 
 /**
@@ -26,4 +27,16 @@ public interface AuthenticationService {
      * @param userRegistionDTO 注册信息
      */
     UserLoginVO registion(UserRegistionDTO userRegistionDTO);
+
+    /**
+     * 获取验证码
+     * @return 验证码和验证码 id
+     */
+    CaptchaVO getImageCaptcha();
+
+    /**
+     * 获取短信验证码
+     * @param phoneNumber 手机号
+     */
+    void getSMSCaptcha(String phoneNumber);
 }

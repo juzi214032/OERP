@@ -1,5 +1,8 @@
 package com.juzi.oerp.service.impl;
 
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.LineCaptcha;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,12 +13,16 @@ import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
+import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
 import com.juzi.oerp.service.AuthenticationService;
 import com.juzi.oerp.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * @author Juzi
@@ -29,6 +36,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @Override
     public UserLoginVO login(UserLoginDTO userLoginDTO) {
@@ -84,4 +94,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setPassword(userRegistionDTO.getPassword());
         return this.login(userLoginDTO);
     }
+
+    @Override
+    public CaptchaVO getImageCaptcha() {
+        // 验证码对应 id
+        String captchaId = IdUtil.objectId();
+        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 70);
+        Cache captchaCache = cacheManager.getCache("CAPTCHA_CACHE");
+
+        // 将验证码存入缓存
+        Assert.notNull(captchaCache,"缓存加载异常，请检查缓存配置");
+        captchaCache.put(captchaId, lineCaptcha.getCode());
+
+        CaptchaVO captchaVO = new CaptchaVO();
+        captchaVO
+                .setCaptchaId(captchaId)
+                .setCaptchaImageBase64(lineCaptcha.getImageBase64());
+        return captchaVO;
+    }
+
+    @Override
+    public void getSMSCaptcha(String phoneNumber) {
+        // todo 发送短信逻辑
+    }
+
 }

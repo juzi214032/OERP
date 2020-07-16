@@ -94,11 +94,11 @@ public class CodeGenerator {
 
     private static Map<String, String> getPathInfo() {
         Map<String, String> pathInfo = new HashMap<>();
-        pathInfo.put(ConstVal.ENTITY_PATH, System.getProperty("user.dir") + "/ge/main/java/com/juzi/oerp/model/po");
-        pathInfo.put(ConstVal.MAPPER_PATH, System.getProperty("user.dir") + "/ge/main/java/com/juzi/oerp/mapper");
-        pathInfo.put(ConstVal.SERVICE_PATH, System.getProperty("user.dir") + "/ge/main/java/com/juzi/oerp/service");
-        pathInfo.put(ConstVal.SERVICE_IMPL_PATH, System.getProperty("user.dir") + "/ge/main/java/com/juzi/oerp/service/impl");
-        pathInfo.put(ConstVal.XML_PATH, System.getProperty("user.dir") + "/ge/main/resources/mybatis/xml/mapper");
+        pathInfo.put(ConstVal.ENTITY_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/model/po");
+        pathInfo.put(ConstVal.MAPPER_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/mapper");
+        pathInfo.put(ConstVal.SERVICE_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/service");
+        pathInfo.put(ConstVal.SERVICE_IMPL_PATH, System.getProperty("user.dir") + "/src/main/java/com/juzi/oerp/service/impl");
+        pathInfo.put(ConstVal.XML_PATH, System.getProperty("user.dir") + "/src/main/resources/mybatis/xml/mapper");
         return pathInfo;
     }
 }
