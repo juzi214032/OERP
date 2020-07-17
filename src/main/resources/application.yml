@@ -13,6 +13,8 @@ spring:
       - SMS_CAPTCHA_CACHE
     couchbase:
       expiration: 300
+  profiles:
+    active: dev
 
 
 mybatis-plus:

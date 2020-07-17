@@ -1,6 +1,8 @@
 package com.juzi.oerp.config.properties;
 
+import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
@@ -13,7 +15,10 @@ import java.util.Map;
  * @author Juzi
  * @date 2020/7/16 15:45
  */
-@ConfigurationProperties
+@Getter
+@Configuration
+@ConfigurationProperties(prefix = "code-message")
+@EnableConfigurationProperties(CodeMessageProperties.class)
 @PropertySource(value = "classpath:code-message.properties", encoding = "UTF-8")
 public class CodeMessageProperties {
     /**
