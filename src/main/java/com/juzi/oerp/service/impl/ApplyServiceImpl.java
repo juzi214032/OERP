@@ -29,7 +29,7 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public void applyExam(ApplyExamParamDTO applyExamParamDTO) {
+    public UserExamPO applyExam(ApplyExamParamDTO applyExamParamDTO) {
         ExamAllInfoDTO exam = examDAO.getExamByIds(applyExamParamDTO.getExamId(), applyExamParamDTO.getExamTimeId(), applyExamParamDTO.getExamPlaceId());
         Assert.notNull(exam, "考试不存在");
 
@@ -54,5 +54,16 @@ public class ApplyServiceImpl implements ApplyService {
                 .setExamTimeId(applyExamParamDTO.getExamTimeId())
                 .setExamPlaceId(applyExamParamDTO.getExamPlaceId());
         userExamMapper.insert(userExam);
+
+        return userExam;
+    }
+
+    @Override
+    public void pay(Integer applyId) {
+        UserExamPO userExamPO = new UserExamPO();
+        userExamPO
+                .setId(applyId)
+                .setStatus(1);
+        userExamMapper.updateById(userExamPO);
     }
 }
