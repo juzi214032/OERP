@@ -5,8 +5,8 @@ import com.juzi.oerp.common.exception.ApplyException;
 import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.dao.ExamDAO;
 import com.juzi.oerp.mapper.UserExamMapper;
-import com.juzi.oerp.model.dto.param.ApplyExamParamDTO;
 import com.juzi.oerp.model.dto.ExamAllInfoDTO;
+import com.juzi.oerp.model.dto.param.ApplyExamParamDTO;
 import com.juzi.oerp.model.po.UserExamPO;
 import com.juzi.oerp.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class ApplyServiceImpl implements ApplyService {
         Integer applyNumber = userExamMapper.selectCount(queryWrapper);
 
         // 人数已满，不能报名
-        if (applyNumber >= exam.getPeopleNumber() && exam.getPeopleNumber() != -1) {
+        if (exam.getPeopleNumber() != -1 && applyNumber >= exam.getPeopleNumber()) {
             throw new ApplyException();
         }
 
