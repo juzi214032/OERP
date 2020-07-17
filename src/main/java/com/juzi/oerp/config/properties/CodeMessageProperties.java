@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Getter
 @Configuration
-@ConfigurationProperties(prefix = "code-message")
+@ConfigurationProperties
 @EnableConfigurationProperties(CodeMessageProperties.class)
 @PropertySource(value = "classpath:code-message.properties", encoding = "UTF-8")
 public class CodeMessageProperties {

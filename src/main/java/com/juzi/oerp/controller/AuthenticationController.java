@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -59,6 +58,7 @@ public class AuthenticationController {
 
     /**
      * 获取短信验证码
+     *
      * @param smsCaptchaParamDTO 短信验证码参数
      * @return 发送成功信息
      * @throws JsonProcessingException 发送短信验证码时转换 JSON 异常

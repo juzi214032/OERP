@@ -17,7 +17,7 @@ public class BearerTokenUtils {
         boolean bearerTokenIsValid = BearerTokenUtils.checkToken(bearerToken);
         // bearerToken 无效
         if(!bearerTokenIsValid){
-            throw new AuthenticationException();
+            throw new AuthenticationException(40003);
         }
         return bearerToken.substring(7);
     }

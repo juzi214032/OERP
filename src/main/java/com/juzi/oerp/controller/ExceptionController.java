@@ -3,6 +3,7 @@ package com.juzi.oerp.controller;
 import com.juzi.oerp.common.exception.OERPException;
 import com.juzi.oerp.config.properties.CodeMessageProperties;
 import com.juzi.oerp.model.vo.response.ExceptionResponseVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author Juzi
  * @date 2020/7/17 08:58
  */
+@Slf4j
 @RestControllerAdvice
 public class ExceptionController {
 
@@ -34,6 +36,8 @@ public class ExceptionController {
             codeMessage = "未知错误";
         }
 
+
+        log.error(codeMessage, oerpException);
         return new ExceptionResponseVO(code, codeMessage);
     }
 }

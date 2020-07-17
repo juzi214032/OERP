@@ -1,0 +1,5 @@
+oerp:
+  aliyun:
+    sms:
+      access-key-id: "****"
+      secret: "****"
