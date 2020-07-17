@@ -1,8 +1,9 @@
-package com.juzi.oerp.service;
+package com.juzi.oerp.service.impl;
 
 import com.juzi.oerp.mapper.UserExamMapper;
 import com.juzi.oerp.model.dto.param.AuditApplicationParamDTO;
 import com.juzi.oerp.model.po.UserExamPO;
+import com.juzi.oerp.service.AuditApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.juzi.oerp.controller;
 
 import com.juzi.oerp.common.exception.OERPException;
-import com.juzi.oerp.config.properties.CodeMessageProperties;
+import com.juzi.oerp.configuration.properties.CodeMessageProperties;
 import com.juzi.oerp.model.vo.response.ExceptionResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

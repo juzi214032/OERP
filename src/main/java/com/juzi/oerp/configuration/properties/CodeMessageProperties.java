@@ -1,4 +1,4 @@
-package com.juzi.oerp.config.properties;
+package com.juzi.oerp.configuration.properties;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,4 +1,4 @@
-package com.juzi.oerp.config;
+package com.juzi.oerp.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

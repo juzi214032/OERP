@@ -59,7 +59,7 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
         |       |   |-- interceptor        -> 拦截器（身份认证、权限拦截）
         |       |   |-- jackson            -> Jackson 相关
         |       |   |-- store              -> 存储型对象（存储当前登录用户的信息）
-        |       |-- config                 -> 系统配置
+        |       |-- configuration          -> 系统配置
         |       |-- controller             -> 系统 API 接口
         |       |-- dao                    -> 自定义 DAO 层接口（主要做多表查询）
         |       |-- mapper                 -> MyBatis Plus Generator 生成的 DAO 接口（主要做单表 CRUD）

@@ -1,9 +1,9 @@
-package com.juzi.oerp.config;
+package com.juzi.oerp.configuration;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.profile.DefaultProfile;
-import com.juzi.oerp.config.properties.AliYunProperties;
+import com.juzi.oerp.configuration.properties.AliYunProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.juzi.oerp.config;
+package com.juzi.oerp.configuration;
 
 import com.juzi.oerp.util.CacheUtils;
 import org.springframework.beans.factory.annotation.Autowired;
