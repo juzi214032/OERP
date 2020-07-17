@@ -57,9 +57,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserInfoMapper userInfoMapper;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private IAcsClient iAcsClient;
 
     @Autowired
@@ -116,6 +113,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setUserId(newUserPO.getId());
         userInfoMapper.insert(newUserInfoPO);
 
+        // 删除短信验证码缓存
+        smsCaptchaCache.evict(userRegistionDTO.getPhoneNumber());
+
         // 进行登录操作
         UserLoginDTO userLoginDTO = new UserLoginDTO();
         userLoginDTO
@@ -171,8 +171,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new CaptchaException(40005);
         }
 
-        // 将验证码放入缓存
+        // 将短信验证码放入缓存
         smsCaptchaCache.put(smsCaptchaParamDTO.getPhoneNumber(), smsCaptcha);
+        // 将图片验证码从缓存中清除
+        imageCaptchaCache.evict(smsCaptchaParamDTO.getCaptchaId());
 
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
