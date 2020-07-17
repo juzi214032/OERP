@@ -27,6 +27,7 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
 
 ## 开发环境
 
+- Java 8 及以上
 - IDEA 2020.1
 - **IDEA 需要安装插件 [Lombok](https://plugins.jetbrains.com/plugin/index?xmlId=Lombook%20Plugin)**
 
