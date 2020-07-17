@@ -27,7 +27,6 @@ public class ResponseVO<T> {
     /**
      * 响应数据
      */
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
     public ResponseVO(Integer code, String message) {

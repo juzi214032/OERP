@@ -63,8 +63,6 @@ public class UpdateUserDTO {
     /**
      * 生日
      */
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime birthday;
 
     /**

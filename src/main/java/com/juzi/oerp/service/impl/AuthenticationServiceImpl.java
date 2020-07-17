@@ -125,8 +125,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // 将验证码存入缓存
         Cache imageCaptchaCache = CacheUtils.getCache(cacheManager, "IMAGE_CAPTCHA_CACHE");
-        imageCaptchaCache.put(captchaId, lineCaptcha.getCode());
-
+        String imageCaptcha = lineCaptcha.getCode();
+        imageCaptchaCache.put(captchaId, imageCaptcha);
+        log.debug("本次获取的验证码为：{}", imageCaptcha);
         CaptchaVO captchaVO = new CaptchaVO();
         captchaVO
                 .setCaptchaId(captchaId)
@@ -142,7 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException(40000);
         }
 
-        if (!reallyImageCaptcha.equals(checkImageCaptchaParamDTO.getCaptchaId())) {
+        if (!reallyImageCaptcha.equals(checkImageCaptchaParamDTO.getCaptcha())) {
             throw new AuthenticationException(40004);
         }
 

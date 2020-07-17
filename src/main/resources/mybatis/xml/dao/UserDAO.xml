@@ -14,8 +14,7 @@
             user_info.`name`,
             user_info.gender,
             user_info.identity_no,
-            user_info.birthday,
-            user_info.phone_no
+            user_info.birthday
         FROM
             `user`
                 LEFT JOIN
