@@ -5,8 +5,10 @@ import com.juzi.oerp.config.properties.CodeMessageProperties;
 import com.juzi.oerp.model.vo.response.ExceptionResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -29,15 +31,15 @@ public class ExceptionController {
      * @return 异常信息
      */
     @ExceptionHandler(OERPException.class)
-    public ExceptionResponseVO authenticationException(OERPException oerpException) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponseVO exceptionResponseVO(OERPException oerpException) {
         Integer code = oerpException.getCode();
         String codeMessage = codeMessageProperties.getCodeMessage().get(code);
         if (StringUtils.isEmpty(codeMessage)) {
             codeMessage = "未知错误";
         }
 
-
-        log.error(codeMessage, oerpException);
+        log.error(codeMessage);
         return new ExceptionResponseVO(code, codeMessage);
     }
 }

@@ -1,7 +1,9 @@
 package com.juzi.oerp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.juzi.oerp.model.dto.SMSCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
@@ -38,9 +40,22 @@ public interface AuthenticationService {
     CaptchaVO getImageCaptcha();
 
     /**
+     * 校验图片验证码
+     * @param checkImageCaptchaParamDTO 校验图片验证码参数
+     */
+    void checkImageCaptcha(CheckImageCaptchaParamDTO checkImageCaptchaParamDTO);
+
+    /**
      * 获取短信验证码
      *
      * @param smsCaptchaParamDTO 短信验证码id和手机号
+     * @throws JsonProcessingException Json 序列化异常
      */
     void getSMSCaptcha(SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException;
+
+    /**
+     * 校验短信验证码
+     * @param checkSMSCaptchaParamDTO 校验短信验证码参数
+     */
+    void checkSMSCaptcha(CheckSMSCaptchaParamDTO checkSMSCaptchaParamDTO);
 }

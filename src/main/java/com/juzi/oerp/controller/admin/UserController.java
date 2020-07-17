@@ -2,7 +2,7 @@ package com.juzi.oerp.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.juzi.oerp.model.dto.CreateUserDTO;
-import com.juzi.oerp.model.dto.PageParamDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateUserDTO;
 import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;

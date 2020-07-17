@@ -6,7 +6,7 @@ import com.juzi.oerp.dao.UserDAO;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
 import com.juzi.oerp.model.dto.CreateUserDTO;
-import com.juzi.oerp.model.dto.PageParamDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateUserDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;

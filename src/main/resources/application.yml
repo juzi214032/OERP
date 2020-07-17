@@ -9,7 +9,9 @@ spring:
   cache:
     type: caffeine
     cache-names:
+      # 图片验证码缓存
       - IMAGE_CAPTCHA_CACHE
+      # 短信验证码缓存
       - SMS_CAPTCHA_CACHE
     couchbase:
       expiration: 300

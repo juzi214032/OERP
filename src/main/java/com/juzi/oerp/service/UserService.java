@@ -3,7 +3,7 @@ package com.juzi.oerp.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzi.oerp.model.dto.CreateUserDTO;
-import com.juzi.oerp.model.dto.PageParamDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateUserDTO;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.UserInfoVO;

@@ -1,6 +1,6 @@
 package com.juzi.oerp.controller.admin;
 
-import com.juzi.oerp.model.dto.PageParamDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateExamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;

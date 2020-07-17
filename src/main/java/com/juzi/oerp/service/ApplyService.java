@@ -1,6 +1,6 @@
 package com.juzi.oerp.service;
 
-import com.juzi.oerp.model.dto.ApplyExamParamDTO;
+import com.juzi.oerp.model.dto.param.ApplyExamParamDTO;
 
 /**
  * @author Juzi

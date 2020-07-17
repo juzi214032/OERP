@@ -1,6 +1,6 @@
 package com.juzi.oerp.controller.user;
 
-import com.juzi.oerp.model.dto.ApplyExamParamDTO;
+import com.juzi.oerp.model.dto.param.ApplyExamParamDTO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.ApplyService;

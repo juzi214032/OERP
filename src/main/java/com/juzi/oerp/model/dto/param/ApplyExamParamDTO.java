@@ -1,4 +1,4 @@
-package com.juzi.oerp.model.dto;
+package com.juzi.oerp.model.dto.param;
 
 import lombok.Data;
 

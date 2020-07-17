@@ -1,7 +1,8 @@
 package com.juzi.oerp.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.juzi.oerp.model.dto.SMSCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
@@ -54,6 +55,17 @@ public class AuthenticationController {
     public ResponseVO<CaptchaVO> getImageCaptcha() {
         CaptchaVO captcha = authenticationService.getImageCaptcha();
         return new ResponseVO<>(captcha);
+    }
+
+    /**
+     * 校验图片验证码
+     * @param checkImageCaptchaParamDTO 校验验证码参数
+     * @return 校验成功
+     */
+    @PostMapping("/captcha/image")
+    public ResponseVO<Object> checkImageCaptcha(@RequestBody CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
+        authenticationService.checkImageCaptcha(checkImageCaptchaParamDTO);
+        return new CreateResponseVO();
     }
 
     /**

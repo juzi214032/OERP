@@ -15,13 +15,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.juzi.oerp.common.constant.CacheConstants;
 import com.juzi.oerp.common.exception.AuthenticationException;
 import com.juzi.oerp.common.exception.CaptchaException;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.UserLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.CaptchaVO;
@@ -85,8 +88,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public UserLoginVO registion(UserRegistionDTO userRegistionDTO) {
-        // 检查手机号是否可用
-        this.checkPhoneNumber(userRegistionDTO.getPhoneNumber());
+
+        Cache smsCaptchaCache = CacheUtils.getCache(cacheManager, "SMS_CAPTCHA_CACHE");
+        String reallySMSCaptcha = smsCaptchaCache.get(userRegistionDTO.getPhoneNumber(), String.class);
+        if (StringUtils.isEmpty(reallySMSCaptcha) || CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
+            throw new AuthenticationException(40006);
+        }
 
         // 插入用户账号
         UserPO newUserPO = new UserPO();
@@ -128,6 +135,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    public void checkImageCaptcha(CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
+        Cache imageCaptchaCache = CacheUtils.getCache(cacheManager, "IMAGE_CAPTCHA_CACHE");
+        String reallyImageCaptcha = imageCaptchaCache.get(checkImageCaptchaParamDTO.getCaptchaId(), String.class);
+        if (StringUtils.isEmpty(reallyImageCaptcha)) {
+            throw new AuthenticationException(40000);
+        }
+
+        if (!reallyImageCaptcha.equals(checkImageCaptchaParamDTO.getCaptchaId())) {
+            throw new AuthenticationException(40004);
+        }
+
+        imageCaptchaCache.put(checkImageCaptchaParamDTO.getCaptchaId(), CacheConstants.CAPTCHA_CHECKED);
+    }
+
+    @Override
     public void getSMSCaptcha(SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
         // 检查手机号是否可用
         this.checkPhoneNumber(smsCaptchaParamDTO.getPhoneNumber());
@@ -140,8 +162,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new CaptchaException(40000);
         }
 
+        if (!CacheConstants.CAPTCHA_CHECKED.equals(imageCaptcha)) {
+            throw new CaptchaException(40005);
+        }
+
+        // 将验证码放入缓存
         Cache smsCaptchaCache = CacheUtils.getCache(cacheManager, "SMS_CAPTCHA_CACHE");
-        smsCaptchaCache.put(smsCaptchaParamDTO.getCaptchaId(), smsCaptcha);
+        smsCaptchaCache.put(smsCaptchaParamDTO.getPhoneNumber(), smsCaptcha);
 
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
@@ -161,11 +188,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    @Override
+    public void checkSMSCaptcha(CheckSMSCaptchaParamDTO checkSMSCaptchaParamDTO) {
+        Cache smsCaptchaCache = CacheUtils.getCache(cacheManager, "SMS_CAPTCHA_CACHE");
+        String reallySMSCpatcha = smsCaptchaCache.get(checkSMSCaptchaParamDTO.getPhoneNumber(), String.class);
+        if (StringUtils.isEmpty(reallySMSCpatcha)) {
+            throw new AuthenticationException(40000);
+        }
+
+        if (!reallySMSCpatcha.equals(checkSMSCaptchaParamDTO.getCaptcha())) {
+            throw new AuthenticationException(40004);
+        }
+
+        smsCaptchaCache.put(checkSMSCaptchaParamDTO.getPhoneNumber(), CacheConstants.CAPTCHA_CHECKED);
+    }
+
     /**
      * 检测手机号是否已经注册
      *
      * @param phoneNumber 手机号
-     * @return 手机号是否可用
      */
     private void checkPhoneNumber(String phoneNumber) {
         UserPO user = userMapper.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getPhoneNumber, phoneNumber));
