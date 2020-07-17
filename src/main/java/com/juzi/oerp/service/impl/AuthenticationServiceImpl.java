@@ -40,6 +40,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
+
 /**
  * @author Juzi
  * @date 2020/7/14 15:17
@@ -62,6 +64,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Resource
+    private Cache smsCaptchaCache;
+
+    @Resource
+    private Cache imageCaptchaCache;
 
     @Override
     public UserLoginVO login(UserLoginDTO userLoginDTO) {
@@ -89,7 +97,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional(rollbackFor = RuntimeException.class)
     public UserLoginVO registion(UserRegistionDTO userRegistionDTO) {
 
-        Cache smsCaptchaCache = CacheUtils.getCache(cacheManager, "SMS_CAPTCHA_CACHE");
         String reallySMSCaptcha = smsCaptchaCache.get(userRegistionDTO.getPhoneNumber(), String.class);
         if (StringUtils.isEmpty(reallySMSCaptcha) || CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
             throw new AuthenticationException(40006);
@@ -124,7 +131,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 70);
 
         // 将验证码存入缓存
-        Cache imageCaptchaCache = CacheUtils.getCache(cacheManager, "IMAGE_CAPTCHA_CACHE");
         String imageCaptcha = lineCaptcha.getCode();
         imageCaptchaCache.put(captchaId, imageCaptcha);
         log.debug("本次获取的验证码为：{}", imageCaptcha);
@@ -137,7 +143,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void checkImageCaptcha(CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
-        Cache imageCaptchaCache = CacheUtils.getCache(cacheManager, "IMAGE_CAPTCHA_CACHE");
         String reallyImageCaptcha = imageCaptchaCache.get(checkImageCaptchaParamDTO.getCaptchaId(), String.class);
         if (StringUtils.isEmpty(reallyImageCaptcha)) {
             throw new AuthenticationException(40000);
@@ -157,7 +162,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // 生成短信验证码
         String smsCaptcha = RandomUtil.randomNumbers(6);
 
-        Cache imageCaptchaCache = CacheUtils.getCache(cacheManager, "IMAGE_CAPTCHA_CACHE");
         String imageCaptcha = imageCaptchaCache.get(smsCaptchaParamDTO.getCaptchaId(), String.class);
         if (StringUtils.isEmpty(imageCaptcha)) {
             throw new CaptchaException(40000);
@@ -168,7 +172,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         // 将验证码放入缓存
-        Cache smsCaptchaCache = CacheUtils.getCache(cacheManager, "SMS_CAPTCHA_CACHE");
         smsCaptchaCache.put(smsCaptchaParamDTO.getPhoneNumber(), smsCaptcha);
 
         CommonRequest request = new CommonRequest();
@@ -191,7 +194,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void checkSMSCaptcha(CheckSMSCaptchaParamDTO checkSMSCaptchaParamDTO) {
-        Cache smsCaptchaCache = CacheUtils.getCache(cacheManager, "SMS_CAPTCHA_CACHE");
         String reallySMSCpatcha = smsCaptchaCache.get(checkSMSCaptchaParamDTO.getPhoneNumber(), String.class);
         if (StringUtils.isEmpty(reallySMSCpatcha)) {
             throw new AuthenticationException(40000);
