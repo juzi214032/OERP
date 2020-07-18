@@ -3,7 +3,6 @@ package com.juzi.oerp.controller.user;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
-import com.juzi.oerp.model.vo.ExamDetailInfoVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,12 @@ public class ExamController {
     @Autowired
     private ExamService examService;
 
+    /**
+     * 获取考试简要信息
+     *
+     * @param pageParamDTO 分页参数
+     * @return 首页考试信息
+     */
     @GetMapping
     public ResponseVO<IPage<ExamPO>> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
         IPage<ExamPO> result = examService.getExamPlainInfoByPage(pageParamDTO);
@@ -33,11 +38,12 @@ public class ExamController {
 
     /**
      * 获取考试详细信息
+     *
      * @param examId 考试 id
      * @return 考试详情页信息
      */
     @GetMapping("/{examId}")
-    public ResponseVO<ExamPO> getExamDetailInfoById(@PathVariable Integer examId){
+    public ResponseVO<ExamPO> getExamDetailInfoById(@PathVariable Integer examId) {
         ExamPO result = examService.getExamDetailInfoById(examId);
         return new ResponseVO<>(result);
     }
