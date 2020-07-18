@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020/7/16 20:58
  */
 @Data
-@Configuration
 @ConfigurationProperties("oerp.aliyun.sms")
-@EnableConfigurationProperties(AliYunProperties.class)
 public class AliYunProperties {
 
     /**
