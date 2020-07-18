@@ -25,7 +25,7 @@ public class ExamController {
     private ExamService examService;
 
     @GetMapping
-    public ResponseVO<IPage<ExamPO>> getExamByPage(PageParamDTO pageParamDTO) {
+    public ResponseVO<IPage<ExamPO>> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
         IPage<ExamPO> result = examService.getExamPlainInfoByPage(pageParamDTO);
         return new ResponseVO<>(result);
     }
