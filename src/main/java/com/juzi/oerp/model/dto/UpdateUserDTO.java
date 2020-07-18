@@ -1,9 +1,5 @@
 package com.juzi.oerp.model.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
-import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import lombok.Data;
 
 import java.time.LocalDateTime;

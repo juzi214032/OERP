@@ -81,7 +81,7 @@ public class UserController {
     /**
      * 更新用户信息
      *
-     * @param updateUserDTO
+     * @param updateUserDTO 更新用户参数
      * @return 更新成功信息
      */
     @PutMapping
