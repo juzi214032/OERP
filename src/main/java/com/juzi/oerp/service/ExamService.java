@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
+import com.juzi.oerp.model.vo.ExamApplyInfoVO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -30,4 +31,11 @@ public interface ExamService extends IService<ExamPO> {
      * @return 考试详情页信息
      */
     ExamPO getExamDetailInfoById(Integer examId);
+
+    /**
+     * 获取考试报名信息
+     * @param examId 考试id
+     * @return 考试报名信息
+     */
+    ExamApplyInfoVO getExamApplyInfoById(Integer examId);
 }

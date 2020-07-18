@@ -7,4 +7,7 @@ package com.juzi.oerp.common.exception;
  * @date 2020/7/15 23:01
  */
 public class ApplyException extends OERPException {
+    public ApplyException(Integer code) {
+        super(code);
+    }
 }

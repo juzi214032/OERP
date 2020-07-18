@@ -1,8 +1,10 @@
 package com.juzi.oerp.controller.user;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
+import com.juzi.oerp.model.vo.ExamApplyInfoVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * 获取考试简要信息
@@ -45,6 +50,17 @@ public class ExamController {
     @GetMapping("/{examId}")
     public ResponseVO<ExamPO> getExamDetailInfoById(@PathVariable Integer examId) {
         ExamPO result = examService.getExamDetailInfoById(examId);
+        return new ResponseVO<>(result);
+    }
+
+    /**
+     * 获取考试报名信息
+     * @param examId 考试id
+     * @return 考试报名信息
+     */
+    @GetMapping("/apply/{examId}")
+    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@PathVariable Integer examId){
+        ExamApplyInfoVO result = examService.getExamApplyInfoById(examId);
         return new ResponseVO<>(result);
     }
 }

@@ -1,6 +1,7 @@
 package com.juzi.oerp.dao;
 
 import com.juzi.oerp.model.dto.ExamAllInfoDTO;
+import com.juzi.oerp.model.dto.ExamApplyInfoDTO;
 import com.juzi.oerp.model.po.ExamPlacePO;
 import com.juzi.oerp.model.po.ExamTimePO;
 import org.apache.ibatis.annotations.Param;
@@ -37,4 +38,11 @@ public interface ExamDAO {
      * @return 考试信息
      */
     ExamAllInfoDTO getExamByIds(@Param("examId") Integer examId, @Param("examTimeId") Integer examTimeId, @Param("examPlaceId") Integer examPlaceId);
+
+    /**
+     * 获取考试报名信息
+     * @param examId 考试id
+     * @return 考试报名信息
+     */
+    List<ExamApplyInfoDTO> getExamApplyInfoById(@Param("examId") Integer examId);
 }

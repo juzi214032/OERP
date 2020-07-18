@@ -2,8 +2,10 @@ package com.juzi.oerp.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.juzi.oerp.common.interceptor.AuthenticationInterceptor;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
+import com.juzi.oerp.common.jackson.LocalDateTimeKeySerializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,6 +36,9 @@ public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
     private LocalDateTimeSerializer localDateTimeSerializer;
 
     @Autowired
+    private LocalDateTimeKeySerializer localDateTimeKeySerializer;
+
+    @Autowired
     private LocalDateTimeDeserializer localDateTimeDeserializer;
 
     @Override
@@ -42,7 +48,7 @@ public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
                 .maxAge(3000)
                 .allowedOrigins("*")
                 .allowCredentials(true)
-                .allowedMethods("GET","POST","PUT","DELETE");
+                .allowedMethods("GET", "POST", "PUT", "DELETE");
         super.addCorsMappings(registry);
     }
 
@@ -67,10 +73,14 @@ public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
      */
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addKeySerializer(LocalDateTime.class, localDateTimeKeySerializer);
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder
                 .json()
                 // 属性为 null 时不进行序列化
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
+
+                .modules(simpleModule)
                 // 指定 LocalDateTime 序列化器
                 .serializers(localDateTimeSerializer)
                 // 指定 LocalDateTime 反序列化器
@@ -80,4 +90,5 @@ public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
         super.configureMessageConverters(converters);
     }
+
 }

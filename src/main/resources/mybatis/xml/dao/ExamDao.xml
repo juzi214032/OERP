@@ -65,4 +65,26 @@
             exam_time.id = #{examTimeId,jdbcType=INTEGER} AND
             exam_place.id = #{examPlaceId,jdbcType=INTEGER}
     </select>
+    <select id="getExamApplyInfoById" resultType="com.juzi.oerp.model.dto.ExamApplyInfoDTO">
+        SELECT
+            exam.id,
+            exam.title,
+            exam_time.exam_time,
+            exam_place.exam_place,
+            exam_place.people_number
+        FROM
+            exam
+                INNER JOIN
+            exam_time
+            ON
+                exam.id = exam_time.exam_id
+                INNER JOIN
+            exam_place
+            ON
+                exam_time.id = exam_place.exam_time_id
+        WHERE
+            exam.id = #{examId,jdbcType=INTEGER}
+        ORDER BY
+            exam_time.exam_time DESC
+    </select>
 </mapper>

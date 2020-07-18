@@ -43,7 +43,7 @@ public class ApplyServiceImpl implements ApplyService {
 
         // 人数已满，不能报名
         if (exam.getPeopleNumber() != -1 && applyNumber >= exam.getPeopleNumber()) {
-            throw new ApplyException();
+            throw new ApplyException(40008);
         }
 
         // 插入数据
