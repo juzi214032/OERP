@@ -12,6 +12,11 @@ import lombok.Data;
 public class ExamPlainInfoPO {
 
     /**
+     * 考试 id
+     */
+    private Integer id;
+
+    /**
      * 开始名称
      */
     private String title;
