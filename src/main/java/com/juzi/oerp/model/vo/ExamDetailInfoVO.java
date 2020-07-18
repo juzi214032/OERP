@@ -14,7 +14,7 @@ public class ExamDetailInfoVO {
     private Integer id;
 
     /**
-     * 开始名称
+     * 考试名称
      */
     private String title;
 
