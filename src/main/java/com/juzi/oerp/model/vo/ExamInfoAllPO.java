@@ -1,11 +1,5 @@
 package com.juzi.oerp.model.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
-import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import com.juzi.oerp.model.po.ExamPlacePO;
 import com.juzi.oerp.model.po.ExamTimePO;
 import lombok.Data;

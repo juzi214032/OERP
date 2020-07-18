@@ -31,4 +31,11 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
                 .orderByDesc(ExamPO::getCreateTime);
         return examMapper.selectPage(page, queryWrapper);
     }
+
+    @Override
+    public ExamPO getExamDetailInfoById(Integer examId) {
+        LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
+                .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId, ExamPO::getDetail);
+        return examMapper.selectOne(queryWrapper);
+    }
 }
