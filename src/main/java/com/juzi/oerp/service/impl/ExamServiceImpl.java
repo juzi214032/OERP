@@ -27,7 +27,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
     public IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
         IPage<ExamPO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
         LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
-                .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId)
+                .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId,ExamPO::getPrice)
                 .orderByDesc(ExamPO::getCreateTime);
         return examMapper.selectPage(page, queryWrapper);
     }

@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2020/7/16 18:56
  */
 @Data
-public class ExamInfoAllPO {
+public class ExamAllInfoPO {
 
     private Integer id;
 
