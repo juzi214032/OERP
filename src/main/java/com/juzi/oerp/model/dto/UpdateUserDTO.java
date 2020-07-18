@@ -68,5 +68,5 @@ public class UpdateUserDTO {
     /**
      * 手机号
      */
-    private String phoneNo;
+    private String phoneNumber;
 }
