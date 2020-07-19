@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.ExamApplyInfoVO;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -20,9 +19,10 @@ public interface ExamService extends IService<ExamPO> {
      * 获取考试简要信息_分页
      *
      * @param pageParamDTO 分页参数
+     * @param keyword      搜索关键字
      * @return 考试简要信息
      */
-    IPage<ExamPO> getExamPlainInfoByPage(@Param("pageParamDTO") PageParamDTO pageParamDTO);
+    IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO, String keyword);
 
     /**
      * 获取考试详细信息
@@ -34,6 +34,7 @@ public interface ExamService extends IService<ExamPO> {
 
     /**
      * 获取考试报名信息
+     *
      * @param examId 考试id
      * @return 考试报名信息
      */

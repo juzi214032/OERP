@@ -16,6 +16,7 @@ import com.juzi.oerp.model.vo.ExamApplyInfoVO;
 import com.juzi.oerp.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,10 +42,11 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
     private ExamDAO examDAO;
 
     @Override
-    public IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
+    public IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO, String keyword) {
         IPage<ExamPO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
         LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
                 .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId)
+                .like(!StringUtils.isEmpty(keyword), ExamPO::getTitle, keyword)
                 .orderByDesc(ExamPO::getCreateTime);
         return examMapper.selectPage(page, queryWrapper);
     }
