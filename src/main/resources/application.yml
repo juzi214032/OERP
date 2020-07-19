@@ -28,9 +28,4 @@ server:
   port: 8080
   servlet:
     context-path: /api/v1
-management:
-  server:
-    port: 8001
-  endpoint:
-    health:
-      show-details: always
+
