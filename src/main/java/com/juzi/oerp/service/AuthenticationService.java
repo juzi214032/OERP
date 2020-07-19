@@ -1,11 +1,12 @@
 package com.juzi.oerp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
+import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
-import com.juzi.oerp.model.dto.UserLoginDTO;
-import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
 
@@ -18,12 +19,20 @@ import com.juzi.oerp.model.vo.UserLoginVO;
 public interface AuthenticationService {
 
     /**
-     * 用户登录
+     * 密码登录
      *
-     * @param userLoginDTO 登录参数
+     * @param userPasswordLoginDTO 密码登录参数
      * @return token 和用户信息
      */
-    UserLoginVO login(UserLoginDTO userLoginDTO);
+    UserLoginVO loginByPassword(UserPasswordLoginDTO userPasswordLoginDTO);
+
+    /**
+     * 短信登录
+     *
+     * @param userSMSLoginDTO 短信登录参数
+     * @return token 和用户信息
+     */
+    UserLoginVO loginBySMS(UserSMSLoginDTO userSMSLoginDTO);
 
     /**
      * 用户注册
@@ -41,6 +50,7 @@ public interface AuthenticationService {
 
     /**
      * 校验图片验证码
+     *
      * @param checkImageCaptchaParamDTO 校验图片验证码参数
      */
     void checkImageCaptcha(CheckImageCaptchaParamDTO checkImageCaptchaParamDTO);
@@ -55,6 +65,7 @@ public interface AuthenticationService {
 
     /**
      * 校验短信验证码
+     *
      * @param checkSMSCaptchaParamDTO 校验短信验证码参数
      */
     void checkSMSCaptcha(CheckSMSCaptchaParamDTO checkSMSCaptchaParamDTO);

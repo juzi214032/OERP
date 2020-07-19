@@ -1,10 +1,11 @@
 package com.juzi.oerp.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
+import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
-import com.juzi.oerp.model.dto.UserLoginDTO;
-import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;
@@ -31,19 +32,20 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    /**
-     * 用户登录
-     */
     @PostMapping("/login")
-    @ApiOperation(value = "登录",notes = "用户和管理员均使用此接口登录")
-    public ResponseVO<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
-        UserLoginVO result = authenticationService.login(userLoginDTO);
+    @ApiOperation(value = "密码登录")
+    public ResponseVO<UserLoginVO> loginByPassword(@RequestBody UserPasswordLoginDTO userPasswordLoginDTO) {
+        UserLoginVO result = authenticationService.loginByPassword(userPasswordLoginDTO);
         return new ResponseVO<>(result);
     }
 
-    /**
-     * 用户注册
-     */
+    @PostMapping("/loginByPassword/sms")
+    @ApiOperation(value = "短信登录")
+    public ResponseVO<UserLoginVO> loginBySMS(@RequestBody UserSMSLoginDTO userSMSLoginDTO) {
+        UserLoginVO result = authenticationService.loginBySMS(userSMSLoginDTO);
+        return new ResponseVO<>(result);
+    }
+
     @PostMapping("/registion")
     @ApiOperation("注册")
     public ResponseVO<UserLoginVO> registion(UserRegistionDTO userRegistionDTO) {
@@ -51,11 +53,6 @@ public class AuthenticationController {
         return new ResponseVO<>(result);
     }
 
-    /**
-     * 获取图片验证码
-     *
-     * @return 图片验证码信息
-     */
     @GetMapping("/captcha/image")
     @ApiOperation("获取图片验证码")
     public ResponseVO<CaptchaVO> getImageCaptcha() {
@@ -63,11 +60,6 @@ public class AuthenticationController {
         return new ResponseVO<>(captcha);
     }
 
-    /**
-     * 校验图片验证码
-     * @param checkImageCaptchaParamDTO 校验验证码参数
-     * @return 校验成功
-     */
     @PostMapping("/captcha/image")
     @ApiOperation("校验图片验证码")
     public ResponseVO<Object> checkImageCaptcha(@RequestBody CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
@@ -75,13 +67,6 @@ public class AuthenticationController {
         return new CreateResponseVO();
     }
 
-    /**
-     * 获取短信验证码
-     *
-     * @param smsCaptchaParamDTO 短信验证码参数
-     * @return 发送成功信息
-     * @throws JsonProcessingException 发送短信验证码时转换 JSON 异常
-     */
     @GetMapping("/captcha/sms")
     @ApiOperation("获取短信验证码")
     public ResponseVO<Object> getSMSCaptcha(@RequestBody SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {

@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @ApiModel(description = "登录参数")
-public class UserLoginDTO {
+public class UserPasswordLoginDTO {
 
     @ApiModelProperty("账号")
     private String username;
