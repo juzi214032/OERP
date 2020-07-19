@@ -1,5 +1,7 @@
 package com.juzi.oerp.model.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -9,15 +11,12 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
+@ApiModel(description = "登录参数")
 public class UserLoginDTO {
 
-    /**
-     * 用户名
-     */
+    @ApiModelProperty("账号")
     private String username;
 
-    /**
-     * 密码
-     */
+    @ApiModelProperty("密码")
     private String password;
 }

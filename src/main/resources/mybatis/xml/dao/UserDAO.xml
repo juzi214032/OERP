@@ -30,13 +30,13 @@
             `user`.`status`,
             `user`.create_time,
             `user`.update_time,
+            `user`.phone_number,
             user_info.nickname,
             user_info.avatar_url,
             user_info.`name`,
             user_info.gender,
             user_info.identity_no,
-            user_info.birthday,
-            user_info.phone_no
+            user_info.birthday
         FROM
             `user`
                 LEFT JOIN

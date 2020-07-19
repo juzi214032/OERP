@@ -6,4 +6,5 @@ oerp:
 
 logging:
   level:
-    com.juzi.oerp.service: debug
+    com.juzi.oerp: debug
+

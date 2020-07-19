@@ -1,9 +1,7 @@
 package com.juzi.oerp.model.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
-import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,65 +13,42 @@ import java.time.LocalDateTime;
  * @date 2020/7/15 12:11
  */
 @Data
+@ApiModel(description = "用户信息")
 public class UserInfoVO {
 
-    /**
-     * 用户id
-     */
+    @ApiModelProperty("用户id")
     private Integer userId;
 
-    /**
-     * 账号
-     */
+    @ApiModelProperty("账号")
     private String username;
 
-    /**
-     * 昵称
-     */
+    @ApiModelProperty("昵称")
     private String nickname;
 
-    /**
-     * 头像
-     */
+    @ApiModelProperty("头像")
     private String avatarUrl;
 
-    /**
-     * 姓名
-     */
+    @ApiModelProperty("姓名")
     private String name;
 
-    /**
-     * 性别：0未知/1男/2女
-     */
+    @ApiModelProperty("性别")
     private Integer gender;
 
-    /**
-     * 角色：0普通用户/1管理员
-     */
+    @ApiModelProperty("角色：0普通；1管理员")
     private Integer role;
 
-    /**
-     * 身份证号码
-     */
+    @ApiModelProperty("身份证号码")
     private String identityNo;
 
-    /**
-     * 生日
-     */
+    @ApiModelProperty("生日")
     private LocalDateTime birthday;
 
-    /**
-     * 手机号
-     */
-    private String phoneNo;
+    @ApiModelProperty("手机号")
+    private String phoneNumber;
 
-    /**
-     * 创建时间
-     */
+    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
-    /**
-     * 更新时间
-     */
+    @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;
 }

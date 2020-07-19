@@ -1,6 +1,8 @@
 package com.juzi.oerp.model.vo;
 
 import com.juzi.oerp.model.po.UserInfoPO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -11,17 +13,14 @@ import lombok.experimental.Accessors;
  * @date 2020/7/14 15:35
  */
 @Data
+@ApiModel(description = "登录响应")
 @Accessors(chain = true)
 public class UserLoginVO {
 
-    /**
-     * access token
-     */
+    @ApiModelProperty("身份令牌")
     private String token;
 
-    /**
-     * 用户信息
-     */
+    @ApiModelProperty("用户信息")
     private UserInfoPO userInfo;
 
 }

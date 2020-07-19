@@ -1,5 +1,7 @@
 package com.juzi.oerp.model.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -9,26 +11,19 @@ import lombok.Data;
  * @date 2020/7/14 15:08
  */
 @Data
+@ApiModel(description = "注册参数")
 public class UserRegistionDTO {
 
-    /**
-     * 手机号
-     */
+    @ApiModelProperty("手机号")
     private String phoneNumber;
 
-    /**
-     * 账号
-     */
+    @ApiModelProperty("账号")
     private String username;
 
-    /**
-     * 密码
-     */
+    @ApiModelProperty("密码")
     private String password;
 
-    /**
-     * 短信验证码
-     */
+    @ApiModelProperty("短信验证码")
     private String smsCaptcha;
 
 }

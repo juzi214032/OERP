@@ -13,8 +13,9 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
  * @date 2020/7/14 14:56
  */
 @Configuration
-public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
+public class SpringMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 认证拦截器
@@ -42,7 +43,7 @@ public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
     private LocalDateTimeDeserializer localDateTimeDeserializer;
 
     @Override
-    protected void addCorsMappings(CorsRegistry registry) {
+    public void addCorsMappings(CorsRegistry registry) {
         registry
                 .addMapping("/**")
                 .maxAge(3000)
@@ -52,18 +53,24 @@ public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
         super.addCorsMappings(registry);
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
     /**
      * 配置拦截器
      *
      * @param registry
      */
     @Override
-    protected void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         // todo 开启拦截器
         // registry
         //         .addInterceptor(authenticationInterceptor)
         //         .addPathPatterns("/*");
-        super.addInterceptors(registry);
+        // super.addInterceptors(registry);
     }
 
     /**
@@ -72,7 +79,7 @@ public class SpringMvcConfiguration extends DelegatingWebMvcConfiguration {
      * @param converters 消息转换器
      */
     @Override
-    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addKeySerializer(LocalDateTime.class, localDateTimeKeySerializer);
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder

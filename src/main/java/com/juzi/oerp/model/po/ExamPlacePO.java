@@ -3,6 +3,8 @@ package com.juzi.oerp.model.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -19,37 +21,26 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("exam_place")
+@ApiModel(description = "考试时间地点信息")
 public class ExamPlacePO {
 
-    /**
-     * 主键
-     */
+
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    /**
-     * 考试时间 id
-     */
+    @ApiModelProperty("考试时间id")
     private Integer examTimeId;
 
-    /**
-     * 考试 地点
-     */
+    @ApiModelProperty("考试地点")
     private String examPlace;
 
-    /**
-     * 最多报名人数。-1无限制
-     */
+    @ApiModelProperty("最大报名人数；-1无限制")
     private Integer peopleNumber;
 
-    /**
-     * 创建时间
-     */
+    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
-    /**
-     * 更新时间
-     */
+    @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;
 
 }

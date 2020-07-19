@@ -1,6 +1,8 @@
 package com.juzi.oerp.model.vo;
 
 import com.juzi.oerp.model.po.ExamPlacePO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -15,21 +17,16 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
+@ApiModel(description = "考试报名信息")
 public class ExamApplyInfoVO {
 
-    /**
-     * 考试 id
-     */
+    @ApiModelProperty("考试id")
     private Integer id;
 
-    /**
-     * 考试名称
-     */
+    @ApiModelProperty("考试名称")
     private String title;
 
-    /**
-     * 考试时间、地点
-     */
+    @ApiModelProperty("考试时间-地点")
     private Map<LocalDateTime, List<ExamPlacePO>> timePlace;
 
 }

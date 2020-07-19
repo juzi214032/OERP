@@ -6,6 +6,9 @@ import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;
 import com.juzi.oerp.model.vo.response.DeleteResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/7/15 22:45
  */
 @RestController
+@Api(tags = "考试管理")
 @RequestMapping("/admin/exam")
 public class ExamController {
 
@@ -31,6 +35,7 @@ public class ExamController {
      * @param pageParamDTO 分页参数
      */
     @GetMapping
+    @ApiOperation(value = "获取考试信息列表",notes = "分页获取考试列表")
     public ResponseVO<ExamPO> getExamByPage(PageParamDTO pageParamDTO) {
         return null;
     }
@@ -42,7 +47,8 @@ public class ExamController {
      * @return 考试信息
      */
     @GetMapping("/{examId}")
-    public ExamPO getExamById(@PathVariable Integer examId) {
+    @ApiOperation(value = "获取考试信息")
+    public ExamPO getExamById(@ApiParam("考试id") @PathVariable Integer examId) {
         return null;
     }
 
@@ -54,6 +60,7 @@ public class ExamController {
      * @return 修改成功信息
      */
     @PutMapping("/{examId}")
+    @ApiOperation("修改考试信息")
     public ResponseVO<Object> updateExamById(@RequestBody UpdateExamDTO updateExamDTO, @PathVariable Integer examId) {
         return null;
     }
@@ -65,6 +72,7 @@ public class ExamController {
      * @return 创建成功信息
      */
     @PostMapping
+    @ApiOperation("创建考试")
     public ResponseVO<Object> createExam(@RequestBody UpdateExamDTO updateExamDTO) {
         return new CreateResponseVO();
     }
@@ -76,7 +84,8 @@ public class ExamController {
      * @return 删除成功信息
      */
     @DeleteMapping("/{examId}")
-    public ResponseVO<Object> deleteExamById(@PathVariable Integer examId) {
+    @ApiOperation("删除考试")
+    public ResponseVO<Object> deleteExamById(@ApiParam("考试id") @PathVariable Integer examId) {
         return new DeleteResponseVO();
     }
 }

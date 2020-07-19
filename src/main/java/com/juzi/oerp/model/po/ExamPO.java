@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -22,54 +24,38 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("exam")
+@ApiModel(description = "考试信息")
 public class ExamPO {
 
     @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty("考试id")
     private Integer id;
 
-    /**
-     * 考试名称
-     */
+    @ApiModelProperty("考试名称")
     private String title;
 
-    /**
-     * 描述
-     */
+    @ApiModelProperty("考试描述")
     private String description;
 
-    /**
-     * 考试页面信息：富文本
-     */
+    @ApiModelProperty("考试富文本描述")
     private String detail;
 
-    /**
-     * 图片 url
-     */
+    @ApiModelProperty("图片url")
     private String imageUrl;
 
-    /**
-     * 报名开始时间
-     */
+    @ApiModelProperty("报名开始时间")
     private LocalDateTime beginTime;
 
-    /**
-     * 报名截止时间
-     */
+    @ApiModelProperty("报名截止时间")
     private LocalDateTime endTime;
 
-    /**
-     * 报名费用
-     */
+    @ApiModelProperty("报名费用")
     private BigDecimal price;
 
-    /**
-     * 创建时间
-     */
+    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
-    /**
-     * 更新时间
-     */
+    @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;
 
 }

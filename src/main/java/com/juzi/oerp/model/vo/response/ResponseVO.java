@@ -1,6 +1,8 @@
 package com.juzi.oerp.model.vo.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,21 +14,16 @@ import lombok.NoArgsConstructor;
  * @date 2020/7/14 15:32
  */
 @Data
+@ApiModel(description = "统一响应对象")
 public class ResponseVO<T> {
 
-    /**
-     * 消息代码
-     */
+    @ApiModelProperty("响应码")
     private Integer code;
 
-    /**
-     * 消息信息
-     */
+    @ApiModelProperty("响应消息")
     private String message;
 
-    /**
-     * 响应数据
-     */
+    @ApiModelProperty("响应数据")
     private T data;
 
     public ResponseVO(Integer code, String message) {

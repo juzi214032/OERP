@@ -4,6 +4,8 @@ import com.juzi.oerp.model.dto.param.AuditApplicationParamDTO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.AuditApplicationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/7/17 17:35
  */
 @RestController
+@Api(tags = "审核报名")
 @RequestMapping("/admin/apply")
 public class AduitApplicationController {
 
@@ -29,6 +32,7 @@ public class AduitApplicationController {
      * @return 审核结果
      */
     @PostMapping("/aduit")
+    @ApiOperation("审核报名")
     public ResponseVO<Object> auditApply(@RequestBody AuditApplicationParamDTO auditApplicationParamDTO) {
         auditApplicationService.auditApplication(auditApplicationParamDTO);
         return new CreateResponseVO();

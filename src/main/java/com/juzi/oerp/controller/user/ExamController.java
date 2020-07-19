@@ -7,6 +7,9 @@ import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.ExamApplyInfoVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.ExamService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,15 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Juzi
  * @date 2020/7/17 13:19
  */
-@RestController("userExamController")
+@Api(tags = "考试信息")
 @RequestMapping("/user/exam")
+@RestController("userExamController")
 public class ExamController {
 
     @Autowired
     private ExamService examService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     /**
      * 获取考试简要信息
@@ -36,6 +37,7 @@ public class ExamController {
      * @return 首页考试信息
      */
     @GetMapping
+    @ApiOperation("获取考试简要信息")
     public ResponseVO<IPage<ExamPO>> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
         IPage<ExamPO> result = examService.getExamPlainInfoByPage(pageParamDTO);
         return new ResponseVO<>(result);
@@ -48,7 +50,8 @@ public class ExamController {
      * @return 考试详情页信息
      */
     @GetMapping("/{examId}")
-    public ResponseVO<ExamPO> getExamDetailInfoById(@PathVariable Integer examId) {
+    @ApiOperation("获取考试详细信息")
+    public ResponseVO<ExamPO> getExamDetailInfoById(@ApiParam("考试id") @PathVariable Integer examId) {
         ExamPO result = examService.getExamDetailInfoById(examId);
         return new ResponseVO<>(result);
     }
@@ -59,7 +62,8 @@ public class ExamController {
      * @return 考试报名信息
      */
     @GetMapping("/apply/{examId}")
-    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@PathVariable Integer examId){
+    @ApiOperation("获取考试报名信息")
+    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@ApiParam("考试id") @PathVariable Integer examId){
         ExamApplyInfoVO result = examService.getExamApplyInfoById(examId);
         return new ResponseVO<>(result);
     }
