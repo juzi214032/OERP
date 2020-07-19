@@ -3,7 +3,12 @@ package com.juzi.oerp.model.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
+import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +22,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("user_info")
+@Accessors(chain = true)
 public class UserInfoPO {
 
     /**
@@ -56,8 +62,13 @@ public class UserInfoPO {
     private LocalDateTime birthday;
 
     /**
-     * 手机号
+     * 创建时间
      */
-    private String phoneNo;
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 
 }

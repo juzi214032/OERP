@@ -6,16 +6,26 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  cache:
+    type: caffeine
+    cache-names:
+      # 图片验证码缓存
+      - IMAGE_CAPTCHA_CACHE
+      # 短信验证码缓存
+      - SMS_CAPTCHA_CACHE
+    couchbase:
+      expiration: 300
+  profiles:
+    active: dev
 
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
-  mapper-locations: classpath:mybatis/xml/*.xml
+  mapper-locations: classpath:/mybatis/xml/**/*.xml
+  global-config:
+    banner: false
 server:
   port: 8080
-management:
-  server:
-    port: 8001
-  endpoint:
-    health:
-      show-details: always
+  servlet:
+    context-path: /api/v1
+

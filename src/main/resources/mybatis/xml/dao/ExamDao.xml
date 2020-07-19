@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.juzi.oerp.dao.ExamDAO">
+    
+    
+    <select id="getExamTimeByExamId" resultType="com.juzi.oerp.model.po.ExamTimePO">
+        SELECT
+            exam_time.id,
+            exam_time.exam_id,
+            exam_time.exam_time,
+            exam_time.create_time,
+            exam_time.update_time
+        FROM
+            exam
+                INNER JOIN
+            exam_time
+            ON
+                exam.id = exam_time.exam_id
+        WHERE
+            exam.id = #{examId,jdbcType=INTEGER}
+    </select>
+    <select id="getExamPlaceByExamTimeId" resultType="com.juzi.oerp.model.po.ExamPlacePO">
+        SELECT
+            exam_place.id,
+            exam_place.exam_time_id,
+            exam_place.exam_place,
+            exam_place.create_time,
+            exam_place.update_time
+        FROM
+            exam_time
+                INNER JOIN
+            exam_place
+            ON
+                exam_time.id = exam_place.exam_time_id
+    </select>
+    <select id="getExamByIds" resultType="com.juzi.oerp.model.dto.ExamAllInfoDTO">
+        SELECT
+            exam.id,
+            exam.title,
+            exam.description,
+            exam.detail,
+            exam.image_url,
+            exam.begin_time,
+            exam.end_time,
+            exam.price,
+            exam.create_time,
+            exam.update_time,
+            exam_time.id AS exam_time_id,
+            exam_time.exam_time,
+            exam_place.id AS exam_place_id,
+            exam_place.exam_place,
+            exam_place.people_number
+        FROM
+            exam
+                INNER JOIN
+            exam_time
+            ON
+                exam.id = exam_time.exam_id
+                INNER JOIN
+            exam_place
+            ON
+                exam_time.id = exam_place.exam_time_id
+        WHERE
+            exam.id = #{examId,jdbcType=INTEGER} AND
+            exam_time.id = #{examTimeId,jdbcType=INTEGER} AND
+            exam_place.id = #{examPlaceId,jdbcType=INTEGER}
+    </select>
+    <select id="getExamApplyInfoById" resultType="com.juzi.oerp.model.dto.ExamApplyInfoDTO">
+        SELECT
+            exam.id,
+            exam.title,
+            exam_time.exam_time,
+            exam_place.exam_place,
+            exam_place.people_number
+        FROM
+            exam
+                INNER JOIN
+            exam_time
+            ON
+                exam.id = exam_time.exam_id
+                INNER JOIN
+            exam_place
+            ON
+                exam_time.id = exam_place.exam_time_id
+        WHERE
+            exam.id = #{examId,jdbcType=INTEGER}
+        ORDER BY
+            exam_time.exam_time DESC
+    </select>
+</mapper>
