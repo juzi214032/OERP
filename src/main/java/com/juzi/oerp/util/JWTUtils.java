@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.juzi.oerp.common.constant.JWTConstants;
+import com.juzi.oerp.common.exception.AuthenticationException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,12 +44,14 @@ public class JWTUtils {
     /**
      * 解析 token
      *
-     * @param token accessToken
+     * @param bearerToken token
      * @return 用户id
      */
-    public static Integer parseToken(String token) {
+    public static Integer parseToken(String bearerToken) {
+        String jwtToken = JWTUtils.extractJwtToken(bearerToken);
+
         return JWTUtils.JWT_VERIFIER
-                .verify(token)
+                .verify(jwtToken)
                 .getClaim("userId")
                 .asInt();
     }
@@ -56,15 +59,24 @@ public class JWTUtils {
     /**
      * 校验 token 是否有效
      *
-     * @param token accessToken
+     * @param bearerToken
      * @return 是否有效
      */
-    public static boolean checkToken(String token) {
+    public static boolean checkToken(String bearerToken) {
+        String jwtToken = JWTUtils.extractJwtToken(bearerToken);
+
         try {
-            JWTUtils.JWT_VERIFIER.verify(token);
+            JWTUtils.JWT_VERIFIER.verify(jwtToken);
             return true;
         } catch (JWTDecodeException e) {
             return false;
         }
+    }
+
+    private static String extractJwtToken(String bearerToken) {
+        if (!bearerToken.startsWith(JWTConstants.TOKEN_HEAD)) {
+            throw new AuthenticationException(40003);
+        }
+        return bearerToken.substring(7);
     }
 }
