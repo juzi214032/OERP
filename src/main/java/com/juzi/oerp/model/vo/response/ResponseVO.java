@@ -26,6 +26,10 @@ public class ResponseVO<T> {
     @ApiModelProperty("响应数据")
     private T data;
 
+    public ResponseVO(Integer code) {
+        this.code = code;
+    }
+
     public ResponseVO(Integer code, String message) {
         this.code = code;
         this.message = message;

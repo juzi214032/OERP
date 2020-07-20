@@ -7,6 +7,7 @@ import com.juzi.oerp.model.dto.UpdateUserDTO;
 import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;
 import com.juzi.oerp.model.vo.response.DeleteResponseVO;
+import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.UserService;
 import io.swagger.annotations.Api;
@@ -80,9 +81,9 @@ public class UserController {
      */
     @PostMapping
     @ApiOperation("新增用户")
-    public ResponseVO<Object> createUser(@RequestBody CreateUserDTO createUserDTO) {
+    public MessageResponseVO createUser(@RequestBody CreateUserDTO createUserDTO) {
         userService.createUser(createUserDTO);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20006);
     }
 
     /**
@@ -93,8 +94,8 @@ public class UserController {
      */
     @PutMapping
     @ApiOperation("修改用户")
-    public ResponseVO<Object> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
+    public MessageResponseVO updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
         userService.updateUser(updateUserDTO);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20007);
     }
 }

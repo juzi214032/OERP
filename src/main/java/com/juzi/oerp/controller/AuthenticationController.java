@@ -8,7 +8,7 @@ import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
-import com.juzi.oerp.model.vo.response.CreateResponseVO;
+import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.AuthenticationService;
 import io.swagger.annotations.Api;
@@ -62,16 +62,16 @@ public class AuthenticationController {
 
     @PostMapping("/captcha/image")
     @ApiOperation("校验图片验证码")
-    public ResponseVO<Object> checkImageCaptcha(@RequestBody CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
+    public MessageResponseVO checkImageCaptcha(@RequestBody CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
         authenticationService.checkImageCaptcha(checkImageCaptchaParamDTO);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20001);
     }
 
     @PostMapping("/captcha/sms")
     @ApiOperation("获取短信验证码")
-    public ResponseVO<Object> getSMSCaptcha(@RequestBody SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
+    public MessageResponseVO getSMSCaptcha(@RequestBody SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
         authenticationService.getSMSCaptcha(smsCaptchaParamDTO);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20002);
     }
 
 }

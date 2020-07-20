@@ -3,6 +3,7 @@ package com.juzi.oerp.controller.user;
 import com.juzi.oerp.model.dto.param.ApplyExamParamDTO;
 import com.juzi.oerp.model.po.UserExamPO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;
+import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.ApplyService;
 import io.swagger.annotations.Api;
@@ -50,9 +51,9 @@ public class ApplyController {
      */
     @PostMapping("/pay/{applyId}")
     @ApiOperation("考试支付")
-    public ResponseVO<Object> pay(@ApiParam("报名 id") @PathVariable Integer applyId) {
+    public MessageResponseVO pay(@ApiParam("报名 id") @PathVariable Integer applyId) {
         applyService.pay(applyId);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20005);
     }
 
 }

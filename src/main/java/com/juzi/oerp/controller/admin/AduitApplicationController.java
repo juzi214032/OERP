@@ -2,6 +2,7 @@ package com.juzi.oerp.controller.admin;
 
 import com.juzi.oerp.model.dto.param.AuditApplicationParamDTO;
 import com.juzi.oerp.model.vo.response.CreateResponseVO;
+import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.AuditApplicationService;
 import io.swagger.annotations.Api;
@@ -33,9 +34,9 @@ public class AduitApplicationController {
      */
     @PostMapping("/aduit")
     @ApiOperation("审核报名")
-    public ResponseVO<Object> auditApply(@RequestBody AuditApplicationParamDTO auditApplicationParamDTO) {
+    public MessageResponseVO auditApply(@RequestBody AuditApplicationParamDTO auditApplicationParamDTO) {
         auditApplicationService.auditApplication(auditApplicationParamDTO);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20004);
     }
 
 }

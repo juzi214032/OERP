@@ -1,10 +1,10 @@
 package com.juzi.oerp.controller.admin;
 
-import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateExamDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
-import com.juzi.oerp.model.vo.response.CreateResponseVO;
 import com.juzi.oerp.model.vo.response.DeleteResponseVO;
+import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +35,7 @@ public class ExamController {
      * @param pageParamDTO 分页参数
      */
     @GetMapping
-    @ApiOperation(value = "获取考试信息列表",notes = "分页获取考试列表")
+    @ApiOperation(value = "获取考试信息列表", notes = "分页获取考试列表")
     public ResponseVO<ExamPO> getExamByPage(PageParamDTO pageParamDTO) {
         return null;
     }
@@ -73,8 +73,8 @@ public class ExamController {
      */
     @PostMapping
     @ApiOperation("创建考试")
-    public ResponseVO<Object> createExam(@RequestBody UpdateExamDTO updateExamDTO) {
-        return new CreateResponseVO();
+    public MessageResponseVO createExam(@RequestBody UpdateExamDTO updateExamDTO) {
+        return new MessageResponseVO(20003);
     }
 
     /**
