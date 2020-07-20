@@ -1,9 +1,3 @@
-oerp:
-  aliyun:
-    sms:
-      access-key-id: "****"
-      secret: "****"
-
 logging:
   level:
     com.juzi.oerp: debug

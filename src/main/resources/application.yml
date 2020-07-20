@@ -15,8 +15,6 @@ spring:
       - SMS_CAPTCHA_CACHE
     couchbase:
       expiration: 300
-  profiles:
-    active: dev
 
 mybatis-plus:
   configuration:
@@ -28,4 +26,3 @@ server:
   port: 8080
   servlet:
     context-path: /api/v1
-
