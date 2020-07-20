@@ -67,7 +67,7 @@ public class AuthenticationController {
         return new CreateResponseVO();
     }
 
-    @GetMapping("/captcha/sms")
+    @PostMapping("/captcha/sms")
     @ApiOperation("获取短信验证码")
     public ResponseVO<Object> getSMSCaptcha(@RequestBody SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
         authenticationService.getSMSCaptcha(smsCaptchaParamDTO);
