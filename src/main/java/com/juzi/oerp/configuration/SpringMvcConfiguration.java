@@ -86,6 +86,7 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
                         "/error",
                         "/auth/**",
                         "/user/exam",
+                        "/user/exam/*",
                         "/webjars/**",
                         "/doc.html/**",
                         "/swagger-resources/**"

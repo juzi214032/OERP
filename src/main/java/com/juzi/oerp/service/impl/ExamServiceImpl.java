@@ -54,7 +54,8 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
     @Override
     public ExamPO getExamDetailInfoById(Integer examId) {
         LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
-                .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId, ExamPO::getDetail, ExamPO::getPrice);
+                .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId, ExamPO::getDetail, ExamPO::getPrice)
+                .eq(ExamPO::getId, examId);
         return examMapper.selectOne(queryWrapper);
     }
 

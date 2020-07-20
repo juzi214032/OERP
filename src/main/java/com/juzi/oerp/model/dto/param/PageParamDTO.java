@@ -14,7 +14,7 @@ import lombok.Data;
 @ApiModel(value = "分页参数")
 public class PageParamDTO {
 
-    @ApiModelProperty("当前页码-从 0 开始")
+    @ApiModelProperty("当前页码-从 1 开始")
     private Integer pageOn;
 
     @ApiModelProperty("每页条数")
