@@ -6,6 +6,7 @@
             `user`.id AS userId,
             `user`.username,
             `user`.role,
+            `user`.phone_number,
             `user`.`status`,
             `user`.create_time,
             `user`.update_time,
