@@ -31,11 +31,13 @@ public class JWTUtils {
         LocalDateTime expireDateTime = LocalDateTime.now().plusDays(7);
         Date expireDate = Date.from(expireDateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant());
 
-        return JWT.create()
+        String token = JWT.create()
                 .withIssuer("OERM")
                 .withExpiresAt(expireDate)
                 .withClaim("userId", userId)
                 .sign(Algorithm.HMAC256(JWTConstants.JWT_SECRET));
+
+        return JWTConstants.TOKEN_HEAD + token;
     }
 
     /**
