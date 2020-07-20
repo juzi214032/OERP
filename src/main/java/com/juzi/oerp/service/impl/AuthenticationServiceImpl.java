@@ -153,7 +153,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         CaptchaVO captchaVO = new CaptchaVO();
         captchaVO
                 .setCaptchaId(captchaId)
-                .setCaptchaImageBase64(lineCaptcha.getImageBase64());
+                .setCaptchaImageBase64("data:image/png;base64,"+lineCaptcha.getImageBase64());
         return captchaVO;
     }
 
