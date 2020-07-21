@@ -34,6 +34,9 @@ public class UserInfoVO {
     @ApiModelProperty("性别")
     private Integer gender;
 
+    @ApiModelProperty("学历")
+    private String education;
+
     @ApiModelProperty("角色：0普通；1管理员")
     private Integer role;
 
