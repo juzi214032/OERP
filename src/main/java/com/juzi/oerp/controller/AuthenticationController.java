@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.juzi.oerp.common.exception.AuthenticationException;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.*;
+import com.juzi.oerp.model.dto.ChangePasswordDTO;
+import com.juzi.oerp.model.dto.RetrieveUserDTO;
+import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
+import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
@@ -14,12 +18,16 @@ import com.juzi.oerp.model.vo.UserLoginVO;
 import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.AuthenticationService;
-import com.juzi.oerp.service.UserInfoService;
-import com.juzi.oerp.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Juzi
@@ -35,8 +43,6 @@ public class AuthenticationController {
 
     @Autowired
     private UserMapper userMapper;
-
-
 
     @PostMapping("/login")
     @ApiOperation(value = "密码登录")
@@ -87,35 +93,27 @@ public class AuthenticationController {
         return new MessageResponseVO(20001);
     }
 
-    /**
-     * 普通修改密码
-     *
-     */
     @PutMapping("/change")
-    public MessageResponseVO passwordChange(@RequestBody ChangePasswordDTO changePasswordDTO){
+    @ApiOperation("修改密码")
+    public MessageResponseVO passwordChange(@RequestBody ChangePasswordDTO changePasswordDTO) {
         authenticationService.updatePassword(changePasswordDTO);
-        return  new MessageResponseVO(20010);
+        return new MessageResponseVO(20010);
     }
 
-    /**
-     * 通过手机号验证身份
-     */
     @GetMapping("/retrieve/{phoneNumber}")
-    public MessageResponseVO retrieveUserByPhone(@PathVariable String phoneNumber){
-       UserPO userPO=userMapper.selectOne(new QueryWrapper<UserPO>().eq("phone_number",phoneNumber));
-       if (userPO==null){
-           throw new AuthenticationException(40010);
-       }
-       return new MessageResponseVO(20008);
+    @ApiOperation(value = "校验手机号", notes = "判断该手机号是否已经注册过")
+    public MessageResponseVO retrieveUserByPhone(@PathVariable String phoneNumber) {
+        UserPO userPO = userMapper.selectOne(new QueryWrapper<UserPO>().eq("phone_number", phoneNumber));
+        if (userPO == null) {
+            throw new AuthenticationException(40010);
+        }
+        return new MessageResponseVO(20008);
     }
 
-
-    /**
-     *找回密码的修改密码
-     */
     @PutMapping("/retrieve")
-    public MessageResponseVO retrieveUser(@RequestBody RetrieveUserDTO retrieveUserDTO){
-         authenticationService.resetPassword(retrieveUserDTO);
-         return  new MessageResponseVO(20010);
+    @ApiOperation(value = "找回密码", notes = "通过手机号找回密码")
+    public MessageResponseVO retrieveUser(@RequestBody RetrieveUserDTO retrieveUserDTO) {
+        authenticationService.resetPassword(retrieveUserDTO);
+        return new MessageResponseVO(20010);
     }
 }
