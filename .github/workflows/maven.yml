@@ -36,7 +36,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
           ARGS: "-rltgoDzvO"
-          SOURCE: "target/"
+          SOURCE: "target/oerp-*.jar"
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
