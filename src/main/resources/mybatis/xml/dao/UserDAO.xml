@@ -23,6 +23,10 @@
             user_info
             ON
                 `user`.id = user_info.user_id
+        WHERE
+            user_info.`name` LIKE CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
+        ORDER BY
+            `user`.create_time DESC
     </select>
     <select id="getUserByUserId" resultType="com.juzi.oerp.model.vo.UserInfoVO">
         SELECT

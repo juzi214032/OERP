@@ -2,10 +2,9 @@ package com.juzi.oerp.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.juzi.oerp.model.dto.CreateUserDTO;
-import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateUserDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.vo.UserInfoVO;
-import com.juzi.oerp.model.vo.response.CreateResponseVO;
 import com.juzi.oerp.model.vo.response.DeleteResponseVO;
 import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
@@ -41,7 +40,7 @@ public class UserController {
      * @return 用户信息
      */
     @GetMapping
-    @ApiOperation(value = "获取用户列表",notes = "根据分页参数获取用户列表")
+    @ApiOperation(value = "获取用户列表", notes = "根据分页参数获取用户列表")
     public ResponseVO<Page<UserInfoVO>> getUserByPage(PageParamDTO pageParamDTO) {
         Page<UserInfoVO> result = userService.getUserByPage(pageParamDTO);
         return new ResponseVO<>(result);

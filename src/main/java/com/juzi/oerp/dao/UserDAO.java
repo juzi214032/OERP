@@ -12,13 +12,16 @@ import org.apache.ibatis.annotations.Param;
 public interface UserDAO {
     /**
      * 获取用户_分页
-     * @param page 分页参数
+     *
+     * @param page    分页参数
+     * @param keyword 搜索关键词
      * @return 用户信息
      */
-    IPage<UserInfoVO> getUserByPage(Page<UserInfoVO> page);
+    IPage<UserInfoVO> getUserByPage(@Param("page") Page<UserInfoVO> page, @Param("keyword") String keyword);
 
     /**
      * 获取用户_根据用户 id
+     *
      * @param userId 用户 id
      * @return 用户信息
      */
