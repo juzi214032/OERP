@@ -18,11 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juzi.oerp.common.constant.CacheConstants;
 import com.juzi.oerp.common.exception.AuthenticationException;
 import com.juzi.oerp.common.exception.CaptchaException;
+import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
-import com.juzi.oerp.model.dto.UserRegistionDTO;
-import com.juzi.oerp.model.dto.UserSMSLoginDTO;
+import com.juzi.oerp.model.dto.*;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
@@ -247,5 +246,36 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (StringUtils.isEmpty(reallySMSCaptcha) || CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
             throw new AuthenticationException(40006);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void updatePassword(ChangePasswordDTO changePasswordDTO) {
+        UserPO userPO = null;
+        //如果未登录会出现空指针异常
+        userPO = userMapper.selectById(LocalUserStore.getLocalUser());
+        String oldPassword = userPO.getPassword();
+        //传过来的密码加密
+        String dtoNewPassword= SecureUtil.md5(changePasswordDTO.getNewPassword());
+        String dtoOldPassword=SecureUtil.md5(changePasswordDTO.getOldPassword());
+        if (!oldPassword.equals(dtoOldPassword)) {
+            throw new AuthenticationException(40011);
+        } else {
+            userPO.setPassword(dtoNewPassword);
+            userMapper.updateById(userPO);
+        }
+    }
+
+    @Override
+    public void resetPassword(RetrieveUserDTO retrieveUserDTO){
+        //检测手机号是否经过验证
+        String reallySMSCaptcha = smsCaptchaCache.get(retrieveUserDTO.getPhoneNumber(), String.class);
+        if (StringUtils.isEmpty(reallySMSCaptcha) || CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
+            throw new AuthenticationException(40006);
+        }
+        String newPassword=retrieveUserDTO.getNewPassword();
+        UserPO userPO=new UserPO();
+        userPO.setPassword(SecureUtil.md5(newPassword));
+        userMapper.updateById(userPO);
     }
 }
