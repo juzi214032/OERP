@@ -48,5 +48,5 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /www/wwwroot/oerp.juzibiji.top/springboot
+            cd ${{ secrets.REMOTE_TARGET }}
             sh restart.sh
