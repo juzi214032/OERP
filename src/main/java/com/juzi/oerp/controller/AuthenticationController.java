@@ -5,6 +5,7 @@ import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
@@ -74,4 +75,10 @@ public class AuthenticationController {
         return new MessageResponseVO(20002);
     }
 
+    @PostMapping("/captcha/sms/check")
+    @ApiOperation("校验短信验证码")
+    public MessageResponseVO checkSMSCaptcha(@RequestBody CheckSMSCaptchaParamDTO checkSMSCaptchaParamDTO){
+        authenticationService.checkSMSCaptcha(checkSMSCaptchaParamDTO);
+        return new MessageResponseVO(20001);
+    }
 }
