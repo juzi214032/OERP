@@ -288,10 +288,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void resetPassword(RetrieveUserDTO retrieveUserDTO) {
         //检测手机号是否经过验证
-        String reallySMSCaptcha = smsCaptchaCache.get(retrieveUserDTO.getPhoneNumber(), String.class);
-        if (StringUtils.isEmpty(reallySMSCaptcha) || CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
-            throw new AuthenticationException(40006);
-        }
+        this.checkPhoneNumberValidated(retrieveUserDTO.getPhoneNumber());
+
         String newPassword = retrieveUserDTO.getNewPassword();
         UserPO userPO = new UserPO();
         userPO.setPassword(SecureUtil.md5(newPassword));
