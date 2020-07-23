@@ -1,3 +1,10 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/oerp?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF8&allowPublicKeyRetrieval=true
+
 logging:
   level:
     com.juzi.oerp: debug

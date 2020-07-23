@@ -1,11 +1,8 @@
 spring:
   application:
     name: oerp
-  datasource:
-    url: jdbc:mysql://localhost:3307/oerp?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF8&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    active: dev
   cache:
     type: caffeine
     cache-names:
