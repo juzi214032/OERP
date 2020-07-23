@@ -90,8 +90,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserInfoVO userInfoVO = new UserInfoVO();
         BeanUtils.copyProperties(userInfo,userInfoVO);
         userInfoVO
-                .setUsername(userPO.getUsername())
-                .setPhoneNumber(userPO.getPhoneNumber());
+                .setUsername(user.getUsername())
+                .setPhoneNumber(user.getPhoneNumber());
 
         UserLoginVO userLoginVO = new UserLoginVO();
         userLoginVO
