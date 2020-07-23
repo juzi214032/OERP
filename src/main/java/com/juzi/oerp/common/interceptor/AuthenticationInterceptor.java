@@ -24,12 +24,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String bearerToken = request.getHeader("Authorization");
-        if(StringUtils.isBlank(bearerToken)){
+        if (StringUtils.isBlank(bearerToken)) {
             throw new AuthenticationException(40009);
         }
 
         Integer userId = JWTUtils.parseToken(bearerToken);
-        log.debug("当前登录用户id为{}",userId);
+        log.debug("当前登录用户id为{}", userId);
         LocalUserStore.setLocalUser(userId);
         return true;
     }
