@@ -51,7 +51,7 @@ public class AuthenticationController {
         return new ResponseVO<>(result);
     }
 
-    @PostMapping("/loginByPassword/sms")
+    @PostMapping("/login/sms")
     @ApiOperation(value = "短信登录")
     public ResponseVO<UserLoginVO> loginBySMS(@RequestBody UserSMSLoginDTO userSMSLoginDTO) {
         UserLoginVO result = authenticationService.loginBySMS(userSMSLoginDTO);
