@@ -12,12 +12,6 @@ import lombok.Data;
 @ApiModel(description = "考试报名参数")
 public class ApplyExamParamDTO {
 
-    @ApiModelProperty("考试 id")
-    private Integer examId;
-
-    @ApiModelProperty("考试时间 id")
-    private Integer examTimeId;
-
     @ApiModelProperty("考试地点 id")
     private Integer examPlaceId;
 
