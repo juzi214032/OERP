@@ -23,7 +23,4 @@ public class UserRegistionDTO {
     @ApiModelProperty("密码")
     private String password;
 
-    @ApiModelProperty("短信验证码")
-    private String smsCaptcha;
-
 }
