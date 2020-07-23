@@ -36,12 +36,6 @@ public class UserExamPO {
     @ApiModelProperty("用户id")
     private Integer userId;
 
-    @ApiModelProperty("考试id")
-    private Integer examId;
-
-    @ApiModelProperty("考试时间id")
-    private Integer examTimeId;
-
     @ApiModelProperty("考试地点id")
     private Integer examPlaceId;
 

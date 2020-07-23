@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("exam_place")
+@Accessors(chain = true)
 @ApiModel(description = "考试时间地点信息")
 public class ExamPlacePO {
 
