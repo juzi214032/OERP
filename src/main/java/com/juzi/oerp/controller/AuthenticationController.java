@@ -59,7 +59,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registion")
-    @ApiOperation("注册")
+    @ApiOperation("账号注册")
     public ResponseVO<UserLoginVO> registion(UserRegistionDTO userRegistionDTO) {
         UserLoginVO result = authenticationService.registion(userRegistionDTO);
         return new ResponseVO<>(result);
@@ -101,7 +101,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/retrieve/{phoneNumber}")
-    @ApiOperation(value = "校验手机号", notes = "判断该手机号是否已经注册过")
+    @ApiOperation(value = "检测手机号", notes = "判断该手机号是否已经注册过")
     public MessageResponseVO retrieveUserByPhone(@PathVariable String phoneNumber) {
         UserPO userPO = userMapper.selectOne(new QueryWrapper<UserPO>().eq("phone_number", phoneNumber));
         if (userPO == null) {
@@ -111,7 +111,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/retrieve")
-    @ApiOperation(value = "找回密码", notes = "通过手机号找回密码")
+    @ApiOperation(value = "重置密码", notes = "通过手机验证码重置密码")
     public MessageResponseVO retrieveUser(@RequestBody RetrieveUserDTO retrieveUserDTO) {
         authenticationService.resetPassword(retrieveUserDTO);
         return new MessageResponseVO(20010);
