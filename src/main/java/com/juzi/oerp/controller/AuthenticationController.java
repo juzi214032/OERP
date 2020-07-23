@@ -60,7 +60,7 @@ public class AuthenticationController {
 
     @PostMapping("/registion")
     @ApiOperation("账号注册")
-    public ResponseVO<UserLoginVO> registion(UserRegistionDTO userRegistionDTO) {
+    public ResponseVO<UserLoginVO> registion(@RequestBody UserRegistionDTO userRegistionDTO) {
         UserLoginVO result = authenticationService.registion(userRegistionDTO);
         return new ResponseVO<>(result);
     }
