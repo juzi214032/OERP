@@ -3,10 +3,6 @@ package com.juzi.oerp.model.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
-import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,7 +24,7 @@ import java.time.LocalDateTime;
 @ApiModel(description = "用户信息")
 public class UserInfoPO {
 
-    @TableId(value = "user_id", type = IdType.AUTO)
+    @TableId(value = "user_id", type = IdType.NONE)
     @ApiModelProperty("用户id")
     private Integer userId;
 
@@ -44,8 +40,14 @@ public class UserInfoPO {
     @ApiModelProperty("性别：0未知/1男/2女")
     private Integer gender;
 
+    @ApiModelProperty("证件照")
+    private String photoUrl;
+
     @ApiModelProperty("身份证号码")
     private String identityNo;
+
+    @ApiModelProperty("学历")
+    private String education;
 
     @ApiModelProperty("生日")
     private LocalDateTime birthday;

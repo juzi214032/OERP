@@ -11,5 +11,9 @@ public class AuthenticationException extends OERPException {
         super(code);
     }
 
+    public AuthenticationException(Integer code, Throwable cause) {
+        super(code, cause);
+    }
+
     private static final long serialVersionUID = 475369999619649095L;
 }

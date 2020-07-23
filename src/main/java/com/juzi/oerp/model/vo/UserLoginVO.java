@@ -1,6 +1,5 @@
 package com.juzi.oerp.model.vo;
 
-import com.juzi.oerp.model.po.UserInfoPO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,6 +20,6 @@ public class UserLoginVO {
     private String token;
 
     @ApiModelProperty("用户信息")
-    private UserInfoPO userInfo;
+    private UserInfoVO userInfo;
 
 }
