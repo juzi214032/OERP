@@ -81,10 +81,13 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 .addInterceptor(authenticationInterceptor)
+                .addPathPatterns("/auth/change")
                 .excludePathPatterns(
                         "/",
                         "/error",
-                        "/auth/**",
+                        "/auth/login/**",
+                        "/auth/registion",
+                        "/auth/captcha/**",
                         "/user/exam",
                         "/user/exam/*",
                         "/webjars/**",
