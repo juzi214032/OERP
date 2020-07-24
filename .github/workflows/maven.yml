@@ -38,7 +38,7 @@ jobs:
         env:
           ARGS: "-rltgoDzvO"
           SOURCE: "target/oerp-*.jar"
-          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
           REMOTE_USER: ${{ secrets.USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
