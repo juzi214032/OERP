@@ -26,7 +26,7 @@ public class ExceptionController {
     private CodeMessageProperties codeMessageProperties;
 
     /**
-     * 系统统一异常处理
+     * 系统自定义异常统一处理
      *
      * @param oerpException 系统异常
      * @return 异常信息
@@ -44,10 +44,23 @@ public class ExceptionController {
         return new ExceptionResponseVO(code, codeMessage);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    /**
+     * Bean Validator 参数校验异常处理
+     *
+     * @param methodArgumentNotValidException 参数校验异常
+     * @return 异常信息
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ExceptionResponseVO methodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         String validMessage = methodArgumentNotValidException.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         return new ExceptionResponseVO(40000, validMessage);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponseVO runtimeException(RuntimeException runtimeException) {
+        log.error("系统出现未知错误", runtimeException);
+        return new ExceptionResponseVO(50000, "系统未知错误");
     }
 }
