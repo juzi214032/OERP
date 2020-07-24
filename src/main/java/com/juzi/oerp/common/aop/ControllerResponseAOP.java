@@ -1,9 +1,7 @@
 package com.juzi.oerp.common.aop;
 
-import cn.hutool.core.util.StrUtil;
 import com.juzi.oerp.configuration.properties.CodeMessageProperties;
 import com.juzi.oerp.model.vo.response.MessageResponseVO;
-import com.juzi.oerp.model.vo.response.ResponseVO;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class ControllerResponseAOP {
         String oldMessage = messageResponseVO.getMessage();
         String newMessage = codeMessageProperties.getCodeMessage().get(code);
 
-        if(StringUtils.isEmpty(oldMessage)){
+        if (StringUtils.isEmpty(oldMessage)) {
             messageResponseVO.setMessage(newMessage);
         }
 
