@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 /**
  * 异常统一处理
@@ -57,10 +58,29 @@ public class ExceptionController {
         return new ExceptionResponseVO(40000, validMessage);
     }
 
+    /**
+     * controller 层参数格式转换异常
+     *
+     * @param e 参数转换异常
+     * @return 异常信息
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ExceptionResponseVO methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return new ExceptionResponseVO(40000, "参数转换错误，请检查参数格式");
+    }
+
+    /**
+     * 其他未知异常
+     *
+     * @param runtimeException 运行时异常
+     * @return 异常信息
+     */
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionResponseVO runtimeException(RuntimeException runtimeException) {
         log.error("系统出现未知错误", runtimeException);
         return new ExceptionResponseVO(50000, "系统未知错误");
     }
+
 }

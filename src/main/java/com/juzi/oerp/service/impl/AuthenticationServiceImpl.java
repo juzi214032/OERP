@@ -199,7 +199,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String imageCaptcha = imageCaptchaCache.get(smsCaptchaParamDTO.getCaptchaId(), String.class);
         if (StringUtils.isEmpty(imageCaptcha)) {
-            throw new CaptchaException(40000);
+            throw new CaptchaException(40001);
         }
 
         if (!CacheConstants.CAPTCHA_CHECKED.equals(imageCaptcha)) {
