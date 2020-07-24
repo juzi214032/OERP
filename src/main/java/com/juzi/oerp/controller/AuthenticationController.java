@@ -21,6 +21,7 @@ import com.juzi.oerp.service.AuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     @ApiOperation(value = "密码登录")
-    public ResponseVO<UserLoginVO> loginByPassword(@RequestBody UserPasswordLoginDTO userPasswordLoginDTO) {
+    public ResponseVO<UserLoginVO> loginByPassword(@RequestBody @Validated UserPasswordLoginDTO userPasswordLoginDTO) {
         UserLoginVO result = authenticationService.loginByPassword(userPasswordLoginDTO);
         return new ResponseVO<>(result);
     }
