@@ -20,11 +20,7 @@ import com.juzi.oerp.common.exception.CaptchaException;
 import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.ChangePasswordDTO;
-import com.juzi.oerp.model.dto.RetrieveUserDTO;
-import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
-import com.juzi.oerp.model.dto.UserRegistionDTO;
-import com.juzi.oerp.model.dto.UserSMSLoginDTO;
+import com.juzi.oerp.model.dto.*;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
@@ -255,6 +251,34 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (StringUtils.isEmpty(reallySMSCaptcha) || !CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
             throw new AuthenticationException(40006);
         }
+    }
+
+    @Override
+    public void updatePhoneNum(String phoneNumber) {
+        checkPhoneNumberUsed(phoneNumber);
+        checkPhoneNumberValidated(phoneNumber);
+        //如果未登录会出现空指针异常
+        UserPO userPO=userMapper.selectById(LocalUserStore.getLocalUser());
+        userPO.setPhoneNumber(phoneNumber);
+        userMapper.updateById(userPO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void updatePassword(ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO) {
+        this.checkPhoneNumberValidated(changePasswordByPhoneNumDTO.getPhoneNumber());
+        UserPO userPO = null;
+        //如果未登录会出现空指针异常
+        userPO = userMapper.selectById(LocalUserStore.getLocalUser());
+        //传过来的密码加密
+        String dtoNewPassword= SecureUtil.md5(changePasswordByPhoneNumDTO.getNewPassword());
+        userPO.setPassword(dtoNewPassword);
+        userMapper.updateById(userPO);
+    }
+
+    @Override
+    public void isPhoneNumberValidated(String phoneNumber){
+        this.checkPhoneNumberValidated(phoneNumber);
     }
 
     @Override

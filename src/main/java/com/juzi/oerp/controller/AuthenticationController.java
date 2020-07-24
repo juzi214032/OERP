@@ -4,11 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.juzi.oerp.common.exception.AuthenticationException;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.ChangePasswordDTO;
-import com.juzi.oerp.model.dto.RetrieveUserDTO;
-import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
-import com.juzi.oerp.model.dto.UserRegistionDTO;
-import com.juzi.oerp.model.dto.UserSMSLoginDTO;
+import com.juzi.oerp.model.dto.*;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
@@ -94,12 +90,35 @@ public class AuthenticationController {
         return new MessageResponseVO(20001);
     }
 
-    @PutMapping("/change")
-    @ApiOperation("修改密码")
+    @PutMapping("/change/bypassword")
+    @ApiOperation(value = "原密码修改密码",notes = "通过原密码修改")
     public MessageResponseVO passwordChange(@RequestBody ChangePasswordDTO changePasswordDTO) {
         authenticationService.updatePassword(changePasswordDTO);
         return new MessageResponseVO(20010);
     }
+
+    @PutMapping("/change/byphone")
+    @ApiOperation(value = "手机号修改密码",notes = "通过手机号修改")
+    public MessageResponseVO passwordChange(@RequestBody ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO) {
+        authenticationService.updatePassword(changePasswordByPhoneNumDTO);
+        return new MessageResponseVO(20010);
+    }
+
+
+    @PutMapping("/change/{phoneNumber}")
+    @ApiOperation(value = "修改注册手机号")
+    public MessageResponseVO phoneNumChange(@PathVariable String phoneNumber){
+        authenticationService.updatePhoneNum(phoneNumber);
+        return new MessageResponseVO(20010);
+    }
+
+    @GetMapping("/validated/{phoneNumber}")
+    @ApiOperation(value = "校验手机号验证情况")
+    public MessageResponseVO isPhoneNumberValidated(@PathVariable String phoneNumber){
+        authenticationService.isPhoneNumberValidated(phoneNumber);
+        return new MessageResponseVO(20009);
+    }
+
 
     @GetMapping("/retrieve/{phoneNumber}")
     @ApiOperation(value = "检测手机号", notes = "判断该手机号是否已经注册过")
