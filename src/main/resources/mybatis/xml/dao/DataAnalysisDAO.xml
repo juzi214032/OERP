@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.juzi.oerp.dao.DataAnalysisDAO">
+    
+    <select id="getGenderGistogram" resultType="com.juzi.oerp.model.dto.analysis.DataGroupColumnDTO">
+        SELECT DATE_FORMAT(user_exam.create_time, '%c月')      AS `month`,
+               IF
+                   (
+                       user_info.gender = 1,
+                       '男',
+                       IF
+                           (user_info.gender = 2, '女', '未知')) AS 'gender',
+               count(1)                                       AS `value`
+        FROM user_exam
+                 INNER JOIN user_info ON user_exam.user_id = user_info.user_id
+        WHERE DATE_SUB(NOW(), INTERVAL 6 MONTH) <![CDATA[ <= ]]> user_exam.create_time
+          AND user_exam.create_time <![CDATA[ <= ]]> NOW()
+        GROUP BY DATE_FORMAT(user_exam.create_time, '%Y%m'),
+                 user_info.gender
+    </select>
+    
+    <select id="getEducationRose" resultType="com.juzi.oerp.model.dto.analysis.DataEducationDTO">
+        SELECT education,
+               count(1) AS count
+        FROM user_info
+        GROUP BY user_info.education
+    </select>
+    <select id="getIncreasedUser" resultType="long">
+        SELECT COUNT(*)
+        FROM `user`
+        WHERE DATE_FORMAT(`user`.create_time, '%Y%m') = DATE_FORMAT(#{queryDate,jdbcType=TIMESTAMP}, '%Y%m')
+    </select>
+    <select id="getEducationGenderRadar" resultType="com.juzi.oerp.model.dto.analysis.DataEducationGenderDTO">
+        SELECT
+            IF
+                (
+                    user_info.gender = 1,
+                    '男',
+                    IF
+                        ( user_info.gender = 2, '女', '未知' )) AS 'gender',
+            user_info.education,
+            count( 1 ) AS `value`
+        FROM
+            user_info
+        GROUP BY
+            user_info.education,
+            user_info.gender
+    </select>
+    <select id="getUserEducation" resultType="com.juzi.oerp.model.dto.analysis.DataUserEducationDTO">
+        SELECT
+        DATE_FORMAT( user_exam.create_time, '%c月' ) AS MONTH,
+        user_info.education,
+        count( 1 ) AS count
+        FROM
+        user_exam
+        INNER JOIN user_info ON user_exam.user_id = user_info.user_id
+        WHERE
+        DATE_SUB( NOW(), INTERVAL 6 MONTH ) <![CDATA[ <= ]]> user_exam.create_time
+        AND user_exam.create_time <![CDATA[ <= ]]> NOW()
+        GROUP BY
+        DATE_FORMAT( user_exam.create_time, '%Y%m' ),
+        user_info.education
+    </select>
+</mapper>
