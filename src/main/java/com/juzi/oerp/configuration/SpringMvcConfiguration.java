@@ -50,6 +50,7 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
                 .addMapping("/**")
+                .allowedHeaders("Authorization")
                 .maxAge(3000)
                 .allowedOrigins("*")
                 .allowCredentials(true)
