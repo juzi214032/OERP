@@ -1,6 +1,7 @@
 package com.juzi.oerp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.juzi.oerp.model.dto.ChangePasswordByPhoneNumDTO;
 import com.juzi.oerp.model.dto.ChangePasswordDTO;
 import com.juzi.oerp.model.dto.RetrieveUserDTO;
 import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
@@ -40,6 +41,7 @@ public interface AuthenticationService {
      * 用户注册
      *
      * @param userRegistionDTO 注册信息
+     * @return 用户 token 和个人信息
      */
     UserLoginVO registion(UserRegistionDTO userRegistionDTO);
 
@@ -78,6 +80,20 @@ public interface AuthenticationService {
      * @param changePasswordDTO 用户修改密码
      */
     void updatePassword(ChangePasswordDTO changePasswordDTO);
+
+    /**
+     * 修改用户密码,通过手机号
+     *
+     * @param changePasswordByPhoneNumDTO 用户修改密码
+     */
+    void updatePassword(ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO);
+
+    /**
+     * 修改用户手机号
+     *
+     * @param phoneNumber 手机号
+     */
+    void updatePhoneNumber(String phoneNumber);
 
     /**
      * 重置密码
