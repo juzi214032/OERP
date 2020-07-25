@@ -131,7 +131,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public UserLoginVO registion(UserRegistionDTO userRegistionDTO) {
+        // 检查手机号是否已经过验证
         this.checkPhoneNumberValidated(userRegistionDTO.getPhoneNumber());
+        // 检查手机号是否可用
+        this.checkPhoneNumberUsed(userRegistionDTO.getPhoneNumber());
 
         // 插入用户账号
         UserPO newUserPO = new UserPO();
@@ -191,8 +194,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void getSMSCaptcha(SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
-        // 检查手机号是否可用
-        this.checkPhoneNumberUsed(smsCaptchaParamDTO.getPhoneNumber());
         // 生成短信验证码
         String smsCaptcha = RandomUtil.randomNumbers(6);
         log.debug("本次生成短信验证码为：{}", smsCaptcha);
