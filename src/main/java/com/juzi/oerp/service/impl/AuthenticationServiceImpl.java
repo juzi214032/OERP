@@ -34,9 +34,9 @@ import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
 import com.juzi.oerp.service.AuthenticationService;
+import com.juzi.oerp.service.UserInfoService;
 import com.juzi.oerp.util.JWTUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
@@ -71,6 +71,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Resource
     private Cache imageCaptchaCache;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
     @Override
     public UserLoginVO loginByPassword(UserPasswordLoginDTO userPasswordLoginDTO) {
         UserPO userPO = new UserPO();
@@ -85,14 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         String token = JWTUtils.createToken(user.getId());
-        UserInfoPO userInfo = userInfoMapper.selectOne(new LambdaQueryWrapper<UserInfoPO>().eq(UserInfoPO::getUserId, user.getId()));
-
-        UserInfoVO userInfoVO = new UserInfoVO();
-        BeanUtils.copyProperties(userInfo,userInfoVO);
-        userInfoVO
-                .setUsername(user.getUsername())
-                .setPhoneNumber(user.getPhoneNumber());
-
+        UserInfoVO userInfoVO = userInfoService.getUserInfoAll(user);
         UserLoginVO userLoginVO = new UserLoginVO();
         userLoginVO
                 .setToken(token)
@@ -113,14 +109,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         String token = JWTUtils.createToken(user.getId());
-        UserInfoPO userInfo = userInfoMapper.selectOne(new LambdaQueryWrapper<UserInfoPO>().eq(UserInfoPO::getUserId, user.getId()));
-
-        UserInfoVO userInfoVO = new UserInfoVO();
-        BeanUtils.copyProperties(userInfo,userInfoVO);
-        userInfoVO
-                .setUsername(user.getUsername())
-                .setPhoneNumber(user.getPhoneNumber());
-
+        UserInfoVO userInfoVO = userInfoService.getUserInfoAll(user);
         UserLoginVO userLoginVO = new UserLoginVO();
         userLoginVO
                 .setToken(token)

@@ -1,9 +1,14 @@
 package com.juzi.oerp.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.model.po.UserInfoPO;
+import com.juzi.oerp.model.po.UserPO;
+import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.service.UserInfoService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +22,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoPO> implements UserInfoService {
 
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
+    @Override
+    public UserInfoVO getUserInfoAll(UserPO user) {
+        UserInfoPO userInfo = userInfoMapper.selectById(user.getId());
+
+        UserInfoVO userInfoVO = new UserInfoVO();
+        BeanUtils.copyProperties(userInfo,userInfoVO);
+        userInfoVO
+                .setUsername(user.getUsername())
+                .setPhoneNumber(user.getPhoneNumber());
+        return userInfoVO;
+    }
 }

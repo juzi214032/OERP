@@ -1,12 +1,14 @@
 package com.juzi.oerp.controller.user;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.model.dto.UpdateUserInfoDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
+import com.juzi.oerp.model.po.UserPO;
+import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.model.vo.response.UpdatedResponseVO;
 import com.juzi.oerp.service.UserInfoService;
+import com.juzi.oerp.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -29,12 +31,16 @@ public class UserController {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     @ApiOperation(value = "个人信息", notes = "获取当前已登录用户的个人信息")
-    public ResponseVO<UserInfoPO> getUserInfo() {
+    public ResponseVO<UserInfoVO> getUserInfo() {
         Integer userId = LocalUserStore.getLocalUser();
-        UserInfoPO userInfo = userInfoService.getOne(new LambdaQueryWrapper<UserInfoPO>().eq(UserInfoPO::getUserId, userId));
-        return new ResponseVO<>(userInfo);
+        UserPO userPO = userService.getById(userId);
+        UserInfoVO userInfoVO = userInfoService.getUserInfoAll(userPO);
+        return new ResponseVO<>(userInfoVO);
     }
 
     @PutMapping

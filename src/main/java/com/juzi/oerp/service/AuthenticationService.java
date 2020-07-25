@@ -1,7 +1,11 @@
 package com.juzi.oerp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.juzi.oerp.model.dto.*;
+import com.juzi.oerp.model.dto.ChangePasswordDTO;
+import com.juzi.oerp.model.dto.RetrieveUserDTO;
+import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
+import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
@@ -70,12 +74,14 @@ public interface AuthenticationService {
 
     /**
      * 修改用户密码
+     *
      * @param changePasswordDTO 用户修改密码
      */
     void updatePassword(ChangePasswordDTO changePasswordDTO);
 
     /**
      * 重置密码
+     *
      * @param retrieveUserDTO
      * @return
      */
