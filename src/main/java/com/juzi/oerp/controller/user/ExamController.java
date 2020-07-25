@@ -1,7 +1,6 @@
 package com.juzi.oerp.controller.user;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.ExamApplyInfoVO;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -39,8 +37,8 @@ public class ExamController {
      */
     @GetMapping
     @ApiOperation("获取考试简要信息")
-    public ResponseVO<IPage<ExamPO>> getExamPlainInfoByPage(PageParamDTO pageParamDTO, @ApiParam("搜索关键字") @RequestParam(required = false) String keyword) {
-        IPage<ExamPO> result = examService.getExamPlainInfoByPage(pageParamDTO,keyword);
+    public ResponseVO<IPage<ExamPO>> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
+        IPage<ExamPO> result = examService.getExamPlainInfoByPage(pageParamDTO);
         return new ResponseVO<>(result);
     }
 
@@ -59,12 +57,13 @@ public class ExamController {
 
     /**
      * 获取考试报名信息
+     *
      * @param examId 考试id
      * @return 考试报名信息
      */
     @GetMapping("/apply/{examId}")
     @ApiOperation("获取考试报名信息")
-    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@ApiParam("考试id") @PathVariable Integer examId){
+    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@ApiParam("考试id") @PathVariable Integer examId) {
         ExamApplyInfoVO result = examService.getExamApplyInfoById(examId);
         return new ResponseVO<>(result);
     }

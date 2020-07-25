@@ -19,10 +19,9 @@ public interface ExamService extends IService<ExamPO> {
      * 获取考试简要信息_分页
      *
      * @param pageParamDTO 分页参数
-     * @param keyword      搜索关键字
      * @return 考试简要信息
      */
-    IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO, String keyword);
+    IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO);
 
     /**
      * 获取考试详细信息

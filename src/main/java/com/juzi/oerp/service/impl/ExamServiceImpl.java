@@ -42,11 +42,11 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
     private ExamDAO examDAO;
 
     @Override
-    public IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO, String keyword) {
+    public IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
         IPage<ExamPO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
         LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
                 .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId)
-                .like(!StringUtils.isEmpty(keyword), ExamPO::getTitle, keyword)
+                .like(!StringUtils.isEmpty(pageParamDTO.getKeyword()), ExamPO::getTitle, pageParamDTO.getKeyword())
                 .orderByDesc(ExamPO::getCreateTime);
         return examMapper.selectPage(page, queryWrapper);
     }
