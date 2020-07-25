@@ -84,6 +84,7 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
                         "/auth/login/**",
                         "/auth/registion",
                         "/auth/captcha/**",
+                        "/auth/password/sms",
                         "/user/exam",
                         "/user/exam/*",
                         "/webjars/**",
