@@ -2,7 +2,7 @@ package com.juzi.oerp.controller;
 
 import com.juzi.oerp.common.exception.OERPException;
 import com.juzi.oerp.configuration.properties.CodeMessageProperties;
-import com.juzi.oerp.model.vo.response.ExceptionResponseVO;
+import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 /**
  * 异常统一处理
@@ -34,7 +35,7 @@ public class ExceptionController {
      */
     @ExceptionHandler(OERPException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponseVO exceptionResponseVO(OERPException oerpException) {
+    public MessageResponseVO exceptionResponseVO(OERPException oerpException) {
         Integer code = oerpException.getCode();
         String codeMessage = codeMessageProperties.getCodeMessage().get(code);
         if (StringUtils.isEmpty(codeMessage)) {
@@ -42,7 +43,7 @@ public class ExceptionController {
         }
 
         log.error(codeMessage);
-        return new ExceptionResponseVO(code, codeMessage);
+        return new MessageResponseVO(code, codeMessage);
     }
 
     /**
@@ -53,9 +54,9 @@ public class ExceptionController {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ExceptionResponseVO methodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    public MessageResponseVO methodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         String validMessage = methodArgumentNotValidException.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        return new ExceptionResponseVO(40000, validMessage);
+        return new MessageResponseVO(40000, validMessage);
     }
 
     /**
@@ -66,8 +67,20 @@ public class ExceptionController {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ExceptionResponseVO methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        return new ExceptionResponseVO(40000, "参数转换错误，请检查参数格式");
+    public MessageResponseVO methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return new MessageResponseVO(40000);
+    }
+
+    /**
+     * 上传的文件超时限制的大小
+     *
+     * @param e 文件过大异常
+     * @return 异常信息
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public MessageResponseVO maxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        return new MessageResponseVO(40013);
     }
 
     /**
@@ -78,9 +91,9 @@ public class ExceptionController {
      */
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionResponseVO runtimeException(RuntimeException runtimeException) {
+    public MessageResponseVO runtimeException(RuntimeException runtimeException) {
         log.error("系统出现未知错误", runtimeException);
-        return new ExceptionResponseVO(50000, "系统未知错误");
+        return new MessageResponseVO(50000);
     }
 
 }
