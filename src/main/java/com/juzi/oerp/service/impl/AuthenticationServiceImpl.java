@@ -254,49 +254,37 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void updatePhoneNum(String phoneNumber) {
-        checkPhoneNumberUsed(phoneNumber);
+    public void updatePhoneNumber(String phoneNumber) {
         checkPhoneNumberValidated(phoneNumber);
-        //如果未登录会出现空指针异常
+
         UserPO userPO=userMapper.selectById(LocalUserStore.getLocalUser());
         userPO.setPhoneNumber(phoneNumber);
         userMapper.updateById(userPO);
     }
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
-    public void updatePassword(ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO) {
-        this.checkPhoneNumberValidated(changePasswordByPhoneNumDTO.getPhoneNumber());
-        UserPO userPO = null;
-        //如果未登录会出现空指针异常
-        userPO = userMapper.selectById(LocalUserStore.getLocalUser());
-        //传过来的密码加密
-        String dtoNewPassword= SecureUtil.md5(changePasswordByPhoneNumDTO.getNewPassword());
-        userPO.setPassword(dtoNewPassword);
-        userMapper.updateById(userPO);
-    }
-
-    @Override
-    public void isPhoneNumberValidated(String phoneNumber){
-        this.checkPhoneNumberValidated(phoneNumber);
-    }
-
-    @Override
-    @Transactional(rollbackFor = RuntimeException.class)
     public void updatePassword(ChangePasswordDTO changePasswordDTO) {
-        UserPO userPO = null;
-        //如果未登录会出现空指针异常
-        userPO = userMapper.selectById(LocalUserStore.getLocalUser());
+        UserPO userPO = userMapper.selectById(LocalUserStore.getLocalUser());
         String oldPassword = userPO.getPassword();
         //传过来的密码加密
         String dtoNewPassword = SecureUtil.md5(changePasswordDTO.getNewPassword());
         String dtoOldPassword = SecureUtil.md5(changePasswordDTO.getOldPassword());
         if (!oldPassword.equals(dtoOldPassword)) {
             throw new AuthenticationException(40011);
-        } else {
-            userPO.setPassword(dtoNewPassword);
-            userMapper.updateById(userPO);
         }
+
+        userPO.setPassword(dtoNewPassword);
+        userMapper.updateById(userPO);
+    }
+
+    @Override
+    public void updatePassword(ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO) {
+        this.checkPhoneNumberValidated(changePasswordByPhoneNumDTO.getPhoneNumber());
+        UserPO userPO = userMapper.selectById(LocalUserStore.getLocalUser());
+        //传过来的密码加密
+        String dtoNewPassword= SecureUtil.md5(changePasswordByPhoneNumDTO.getNewPassword());
+        userPO.setPassword(dtoNewPassword);
+        userMapper.updateById(userPO);
     }
 
     @Override

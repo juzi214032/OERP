@@ -41,6 +41,7 @@ public interface AuthenticationService {
      * 用户注册
      *
      * @param userRegistionDTO 注册信息
+     * @return 用户 token 和个人信息
      */
     UserLoginVO registion(UserRegistionDTO userRegistionDTO);
 
@@ -89,8 +90,10 @@ public interface AuthenticationService {
 
     /**
      * 修改用户手机号
+     *
+     * @param phoneNumber 手机号
      */
-    void updatePhoneNum(String phoneNumber);
+    void updatePhoneNumber(String phoneNumber);
 
     /**
      * 重置密码
@@ -99,11 +102,4 @@ public interface AuthenticationService {
      * @return
      */
     void resetPassword(RetrieveUserDTO retrieveUserDTO);
-
-    /**
-     * 校验手机是否经过校验
-     *
-     * @param phoneNumber
-     */
-    void isPhoneNumberValidated(String phoneNumber);
 }

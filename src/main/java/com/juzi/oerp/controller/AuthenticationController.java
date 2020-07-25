@@ -1,10 +1,14 @@
 package com.juzi.oerp.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.juzi.oerp.common.exception.AuthenticationException;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.*;
+import com.juzi.oerp.model.dto.ChangePasswordDTO;
+import com.juzi.oerp.model.dto.RetrieveUserDTO;
+import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
+import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
@@ -90,48 +94,32 @@ public class AuthenticationController {
         return new MessageResponseVO(20001);
     }
 
-    @PutMapping("/change/bypassword")
-    @ApiOperation(value = "原密码修改密码",notes = "通过原密码修改")
-    public MessageResponseVO passwordChange(@RequestBody ChangePasswordDTO changePasswordDTO) {
+    @PutMapping("/password")
+    @ApiOperation(value = "修改密码", notes = "通过原密码修改密码")
+    public MessageResponseVO updatePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
         authenticationService.updatePassword(changePasswordDTO);
         return new MessageResponseVO(20010);
     }
 
-    @PutMapping("/change/byphone")
-    @ApiOperation(value = "手机号修改密码",notes = "通过手机号修改")
-    public MessageResponseVO passwordChange(@RequestBody ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO) {
-        authenticationService.updatePassword(changePasswordByPhoneNumDTO);
+    @PutMapping("/phone/{phoneNumber}")
+    @ApiOperation(value = "修改手机号")
+    public MessageResponseVO updatePhoneNumber(@PathVariable String phoneNumber) {
+        authenticationService.updatePhoneNumber(phoneNumber);
         return new MessageResponseVO(20010);
     }
 
-
-    @PutMapping("/change/{phoneNumber}")
-    @ApiOperation(value = "修改注册手机号")
-    public MessageResponseVO phoneNumChange(@PathVariable String phoneNumber){
-        authenticationService.updatePhoneNum(phoneNumber);
-        return new MessageResponseVO(20010);
-    }
-
-    @GetMapping("/validated/{phoneNumber}")
-    @ApiOperation(value = "校验手机号验证情况")
-    public MessageResponseVO isPhoneNumberValidated(@PathVariable String phoneNumber){
-        authenticationService.isPhoneNumberValidated(phoneNumber);
-        return new MessageResponseVO(20009);
-    }
-
-
-    @GetMapping("/retrieve/{phoneNumber}")
+    @GetMapping("/phone/{phoneNumber}")
     @ApiOperation(value = "检测手机号", notes = "判断该手机号是否已经注册过")
     public MessageResponseVO retrieveUserByPhone(@PathVariable String phoneNumber) {
-        UserPO userPO = userMapper.selectOne(new QueryWrapper<UserPO>().eq("phone_number", phoneNumber));
+        UserPO userPO = userMapper.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getPhoneNumber, phoneNumber));
         if (userPO == null) {
             throw new AuthenticationException(40010);
         }
         return new MessageResponseVO(20008);
     }
 
-    @PutMapping("/retrieve")
-    @ApiOperation(value = "重置密码", notes = "通过手机验证码重置密码")
+    @PutMapping("/password/sms")
+    @ApiOperation(value = "重置密码", notes = "通过短信验证码重置密码")
     public MessageResponseVO retrieveUser(@RequestBody RetrieveUserDTO retrieveUserDTO) {
         authenticationService.resetPassword(retrieveUserDTO);
         return new MessageResponseVO(20010);
