@@ -12,6 +12,9 @@ spring:
       - SMS_CAPTCHA_CACHE
     couchbase:
       expiration: 300
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
 mybatis-plus:
   configuration:
