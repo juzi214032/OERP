@@ -20,6 +20,10 @@ public class ControllerResponseAOP {
 
     @AfterReturning(returning = "messageResponseVO", pointcut = "execution(public * com.juzi.oerp.controller..*.*(..))")
     public void doAfterReturning(MessageResponseVO messageResponseVO) {
+        if(messageResponseVO==null){
+            return;
+        }
+
         int code = messageResponseVO.getCode();
         String oldMessage = messageResponseVO.getMessage();
         String newMessage = codeMessageProperties.getCodeMessage().get(code);
