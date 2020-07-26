@@ -2,8 +2,8 @@ package com.juzi.oerp.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.juzi.oerp.model.dto.param.CreateExamParamDTO;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
+import com.juzi.oerp.model.dto.param.UpdateExamParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.ExamApplyInfoVO;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,9 +46,25 @@ public interface ExamService extends IService<ExamPO> {
     /**
      * 创建考试 - 管理员
      *
-     * @param createExamParamDTO 考试信息
+     * @param updateExamParamDTO 考试信息
      * @param image              图片
      * @param word               文档
+     * @throws IOException IO异常
      */
-    void createExam(CreateExamParamDTO createExamParamDTO, MultipartFile image, MultipartFile word) throws IOException;
+    void createExam(UpdateExamParamDTO updateExamParamDTO, MultipartFile image, MultipartFile word) throws IOException;
+
+    /**
+     * 获取考试列表 - 管理员
+     *
+     * @param pageParamDTO 分页参数
+     * @return 分页结果
+     */
+    IPage<ExamPO> getExamListByPage(PageParamDTO pageParamDTO);
+
+    /**
+     * 删除考试
+     *
+     * @param examId 考试 id
+     */
+    void deleteExam(Integer examId);
 }

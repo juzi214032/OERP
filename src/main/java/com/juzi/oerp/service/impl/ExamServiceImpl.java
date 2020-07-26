@@ -7,11 +7,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzi.oerp.common.exception.ApplyException;
+import com.juzi.oerp.common.exception.OERPException;
 import com.juzi.oerp.dao.ExamDAO;
 import com.juzi.oerp.mapper.ExamMapper;
+import com.juzi.oerp.mapper.ExamPlaceMapper;
+import com.juzi.oerp.mapper.ExamTimeMapper;
 import com.juzi.oerp.model.dto.ExamApplyInfoDTO;
-import com.juzi.oerp.model.dto.param.CreateExamParamDTO;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
+import com.juzi.oerp.model.dto.param.UpdateExamParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.po.ExamPlacePO;
 import com.juzi.oerp.model.po.ExamTimePO;
@@ -53,10 +56,16 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
     private ExamMapper examMapper;
 
     @Autowired
+    private ExamTimeMapper examTimeMapper;
+
+    @Autowired
     private ExamTimeService examTimeService;
 
     @Autowired
     private ExamPlaceService examPlaceService;
+
+    @Autowired
+    private ExamPlaceMapper examPlaceMapper;
 
     @Override
     public IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
@@ -103,7 +112,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public void createExam(CreateExamParamDTO createExamParamDTO, MultipartFile image, MultipartFile word) throws IOException {
+    public void createExam(UpdateExamParamDTO updateExamParamDTO, MultipartFile image, MultipartFile word) throws IOException {
         // 将 word 转换为 html
         String html = WordUtils.docxToHTML(word.getInputStream());
 
@@ -111,14 +120,14 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
         String imagePath = UploadFileUtils.upload(image.getInputStream(), FileUtil.extName(image.getOriginalFilename()));
 
         ExamPO examPO = new ExamPO();
-        BeanUtils.copyProperties(createExamParamDTO, examPO);
+        BeanUtils.copyProperties(updateExamParamDTO, examPO);
         examPO
                 .setImageUrl(imagePath)
                 .setDetail(html);
         examMapper.insert(examPO);
 
         // 批量插入考试时间
-        List<ExamTimePO> examTimePOList = createExamParamDTO.getTimePlace().keySet()
+        List<ExamTimePO> examTimePOList = updateExamParamDTO.getTimePlace().keySet()
                 .stream().map(examTime -> new ExamTimePO()
                         .setExamId(examPO.getId())
                         .setExamTime(examTime)).collect(toList());
@@ -126,7 +135,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
 
         // 批量插入考试地点
         List<ExamPlacePO> examPlacePOList = examTimePOList.stream().flatMap(examTime ->
-                createExamParamDTO.getTimePlace().get(examTime.getExamTime()).stream().map(examPlace -> {
+                updateExamParamDTO.getTimePlace().get(examTime.getExamTime()).stream().map(examPlace -> {
                     ExamPlacePO examPlacePO = new ExamPlacePO();
                     // 将参数信息 copy 到 PO 对象中
                     BeanUtils.copyProperties(examPlace, examPlacePO);
@@ -135,5 +144,42 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
                 }).collect(toList()).stream()
         ).collect(toList());
         examPlaceService.saveBatch(examPlacePOList);
+    }
+
+    @Override
+    public IPage<ExamPO> getExamListByPage(PageParamDTO pageParamDTO) {
+        String keyword = pageParamDTO.getKeyword();
+        IPage<ExamPO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
+        LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
+                .like(!StringUtils.isEmpty(keyword), ExamPO::getTitle, keyword)
+                .orderByDesc(ExamPO::getCreateTime);
+        return examMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public void deleteExam(Integer examId) {
+        ExamPO examPO = examMapper.selectById(examId);
+        // 考试不存在
+        if (examPO == null) {
+            throw new OERPException(40007);
+        }
+        // 删除考试
+        examMapper.deleteById(examId);
+
+        // 删除考试时间
+        List<ExamTimePO> examTimePOList = examTimeMapper.selectList(new LambdaQueryWrapper<ExamTimePO>().eq(ExamTimePO::getExamId, examId));
+        List<Integer> examTimeIdList = examTimePOList
+                .stream()
+                .map(ExamTimePO::getId)
+                .collect(toList());
+        examTimeMapper.deleteBatchIds(examTimeIdList);
+
+        // 删除考试地点
+        List<Integer> examPlaceIdList = examTimeIdList
+                .stream()
+                .flatMap(examTimeId -> examPlaceMapper.selectList(new LambdaQueryWrapper<ExamPlacePO>().eq(ExamPlacePO::getExamTimeId, examTimeId)).stream())
+                .map(ExamPlacePO::getId)
+                .collect(toList());
+        examPlaceMapper.deleteBatchIds(examPlaceIdList);
     }
 }

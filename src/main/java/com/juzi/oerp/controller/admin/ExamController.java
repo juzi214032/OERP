@@ -1,9 +1,8 @@
 package com.juzi.oerp.controller.admin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.juzi.oerp.model.dto.UpdateExamDTO;
-import com.juzi.oerp.model.dto.param.CreateExamParamDTO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
+import com.juzi.oerp.model.dto.param.UpdateExamParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.response.DeleteResponseVO;
 import com.juzi.oerp.model.vo.response.MessageResponseVO;
@@ -40,14 +39,6 @@ public class ExamController {
     @Autowired
     private ExamService examService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @PostMapping("/test/test")
-    public void test(@RequestBody CreateExamParamDTO createExamParamDTO) {
-
-    }
-
     /**
      * 获取考试_分页
      *
@@ -55,8 +46,9 @@ public class ExamController {
      */
     @GetMapping
     @ApiOperation(value = "获取考试信息列表", notes = "分页获取考试列表")
-    public ResponseVO<ExamPO> getExamByPage(PageParamDTO pageParamDTO) {
-        return null;
+    public ResponseVO<IPage<ExamPO>> getExamByPage(@RequestBody PageParamDTO pageParamDTO) {
+        IPage<ExamPO> result = examService.getExamListByPage(pageParamDTO);
+        return new ResponseVO<>(result);
     }
 
     /**
@@ -67,27 +59,30 @@ public class ExamController {
      */
     @GetMapping("/{examId}")
     @ApiOperation(value = "获取考试信息")
-    public ExamPO getExamById(@ApiParam("考试id") @PathVariable Integer examId) {
-        return null;
+    public ResponseVO<ExamPO> getExamById(@ApiParam("考试id") @PathVariable Integer examId) {
+        ExamPO result = examService.getById(examId);
+        return new ResponseVO<>(result);
     }
 
     /**
      * 修改考试
      *
-     * @param updateExamDTO 考试信息
-     * @param examId        考试 id
+     * @param updateExamParamDTO 考试信息
      * @return 修改成功信息
      */
-    @PutMapping("/{examId}")
-    @ApiOperation("修改考试信息")
-    public ResponseVO<Object> updateExamById(@RequestBody UpdateExamDTO updateExamDTO, @PathVariable Integer examId) {
+    @PutMapping
+    // @ApiOperation("修改考试信息")
+    public MessageResponseVO updateExamById(@RequestPart(value = "exam") UpdateExamParamDTO updateExamParamDTO,
+                                            @RequestPart("image") MultipartFile image,
+                                            @RequestPart("word") MultipartFile word) {
+
         return null;
     }
 
     /**
      * 创建考试
      *
-     * @param createExamParamDTO 考试信息
+     * @param updateExamParamDTO 考试信息
      * @param image              图片
      * @param word               word 文档
      * @return 创建成功信息
@@ -95,10 +90,10 @@ public class ExamController {
     @PostMapping
     @ApiOperation("创建考试")
     public MessageResponseVO createExam(
-            @RequestPart(value = "exam") CreateExamParamDTO createExamParamDTO,
+            @RequestPart(value = "exam") UpdateExamParamDTO updateExamParamDTO,
             @RequestPart("image") MultipartFile image,
             @RequestPart("word") MultipartFile word) throws IOException {
-        examService.createExam(createExamParamDTO, image, word);
+        examService.createExam(updateExamParamDTO, image, word);
         return new MessageResponseVO(20011);
     }
 

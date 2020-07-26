@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.juzi.oerp.model.dto.param.CreateExamParamDTO;
 import com.juzi.oerp.model.dto.param.CreateExamPlaceParamDTO;
+import com.juzi.oerp.model.dto.param.UpdateExamParamDTO;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,14 +22,14 @@ import java.util.Map;
  * @date 2020/7/25 21:10
  */
 @Component
-public class CreateExamParamDeserializer extends JsonDeserializer<CreateExamParamDTO> {
+public class CreateExamParamDeserializer extends JsonDeserializer<UpdateExamParamDTO> {
     @Override
     public Class<?> handledType() {
-        return CreateExamParamDTO.class;
+        return UpdateExamParamDTO.class;
     }
 
     @Override
-    public CreateExamParamDTO deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public UpdateExamParamDTO deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         TreeNode treeNode = p.readValueAsTree();
         String title = treeNode.get("title").toString().replaceAll("\"", "");
         String description = treeNode.get("description").toString().replaceAll("\"", "");
@@ -61,14 +61,14 @@ public class CreateExamParamDeserializer extends JsonDeserializer<CreateExamPara
             timePlace.put(examTime, createExamPlaceParamDTOList);
         });
 
-        CreateExamParamDTO createExamParamDTO = new CreateExamParamDTO();
-        createExamParamDTO
+        UpdateExamParamDTO updateExamParamDTO = new UpdateExamParamDTO();
+        updateExamParamDTO
                 .setTitle(title)
                 .setDescription(description)
                 .setPrice(price)
                 .setBeginTime(beginTimeLocalDateTime)
                 .setEndTime(endTimeLocalDateTime)
                 .setTimePlace(timePlace);
-        return createExamParamDTO;
+        return updateExamParamDTO;
     }
 }

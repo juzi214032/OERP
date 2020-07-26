@@ -22,7 +22,7 @@ import java.util.Map;
 @Accessors(chain = true)
 @ApiModel(description = "创建考试参数")
 @JsonDeserialize(using = CreateExamParamDeserializer.class)
-public class CreateExamParamDTO {
+public class UpdateExamParamDTO {
 
     @ApiModelProperty("考试名称")
     private String title;
