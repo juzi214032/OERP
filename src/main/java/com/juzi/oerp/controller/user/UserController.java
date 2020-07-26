@@ -2,12 +2,12 @@ package com.juzi.oerp.controller.user;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.juzi.oerp.common.store.LocalUserStore;
-import com.juzi.oerp.model.dto.UpdateUserInfoDTO;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
+import com.juzi.oerp.model.dto.param.UpdateUserInfoParamDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
-import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.model.vo.UserApplyExamVO;
+import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.model.vo.response.UpdatedResponseVO;
 import com.juzi.oerp.service.UserInfoService;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Juzi
  * @date 2020/7/19 20:48
  */
-@Api(tags = "用户信息")
+@Api(tags = "个人中心")
 @RequestMapping("/user")
 @RestController("userUserController")
 public class UserController {
@@ -38,7 +38,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    @ApiOperation(value = "个人信息", notes = "获取当前已登录用户的个人信息")
+    @ApiOperation(value = "获取个人信息", notes = "获取当前已登录用户的个人信息")
     public ResponseVO<UserInfoVO> getUserInfo() {
         Integer userId = LocalUserStore.getLocalUser();
         UserPO userPO = userService.getById(userId);
@@ -47,18 +47,19 @@ public class UserController {
     }
 
     @PutMapping
-    @ApiOperation(value = "修改个人信息")
-    public UpdatedResponseVO updateUserInfo(@RequestBody UpdateUserInfoDTO updateUserInfoDTO) {
+    @ApiOperation("修改个人信息")
+    public UpdatedResponseVO updateUserInfo(@RequestBody UpdateUserInfoParamDTO updateUserInfoParamDTO) {
         Integer userId = LocalUserStore.getLocalUser();
         UserInfoPO userInfoPO = new UserInfoPO();
         userInfoPO.setUserId(userId);
-        BeanUtils.copyProperties(updateUserInfoDTO, userInfoPO);
+        BeanUtils.copyProperties(updateUserInfoParamDTO, userInfoPO);
 
         userInfoService.updateById(userInfoPO);
         return new UpdatedResponseVO();
     }
 
     @GetMapping("/apply")
+    @ApiOperation("获取报名信息")
     public ResponseVO<Page<UserApplyExamVO>> getUserApplyExam(@RequestBody PageParamDTO pageParamDTO){
         Page<UserApplyExamVO> result = userInfoService.queryUserApplyExam(pageParamDTO);
         return new ResponseVO<>(result);

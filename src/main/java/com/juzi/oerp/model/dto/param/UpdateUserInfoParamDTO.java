@@ -1,4 +1,4 @@
-package com.juzi.oerp.model.dto;
+package com.juzi.oerp.model.dto.param;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(description = "修改用户信息参数")
-public class UpdateUserInfoDTO {
+public class UpdateUserInfoParamDTO {
 
     @ApiModelProperty("姓名")
     private String name;
@@ -22,6 +22,9 @@ public class UpdateUserInfoDTO {
 
     @ApiModelProperty("性别")
     private Integer gender;
+
+    @ApiModelProperty("学校")
+    private String school;
 
     @ApiModelProperty("学历")
     private String education;

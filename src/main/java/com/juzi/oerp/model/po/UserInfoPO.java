@@ -46,6 +46,9 @@ public class UserInfoPO {
     @ApiModelProperty("身份证号码")
     private String identityNo;
 
+    @ApiModelProperty("学校")
+    private String school;
+
     @ApiModelProperty("学历")
     private String education;
 

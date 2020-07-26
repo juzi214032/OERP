@@ -5,7 +5,6 @@ import com.juzi.oerp.model.dto.CreateUserDTO;
 import com.juzi.oerp.model.dto.UpdateUserDTO;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.vo.UserInfoVO;
-import com.juzi.oerp.model.vo.response.DeleteResponseVO;
 import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.UserService;
@@ -67,9 +66,9 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     @ApiOperation("删除用户")
-    public ResponseVO<Object> deleteUserByUserId(@PathVariable Integer userId) {
+    public MessageResponseVO deleteUserByUserId(@PathVariable Integer userId) {
         userService.deleteUserByUserId(userId);
-        return new DeleteResponseVO();
+        return new MessageResponseVO(20012);
     }
 
     /**
