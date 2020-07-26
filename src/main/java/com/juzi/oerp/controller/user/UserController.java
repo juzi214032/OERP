@@ -1,10 +1,13 @@
 package com.juzi.oerp.controller.user;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.model.dto.UpdateUserInfoDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.UserInfoVO;
+import com.juzi.oerp.model.vo.UserApplyExamVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.model.vo.response.UpdatedResponseVO;
 import com.juzi.oerp.service.UserInfoService;
@@ -55,4 +58,9 @@ public class UserController {
         return new UpdatedResponseVO();
     }
 
+    @GetMapping("/apply")
+    public ResponseVO<Page<UserApplyExamVO>> getUserApplyExam(@RequestBody PageParamDTO pageParamDTO){
+        Page<UserApplyExamVO> result = userInfoService.queryUserApplyExam(pageParamDTO);
+        return new ResponseVO<>(result);
+    }
 }
