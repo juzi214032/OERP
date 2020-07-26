@@ -7,6 +7,7 @@ import com.juzi.oerp.common.interceptor.AuthenticationInterceptor;
 import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeKeySerializer;
 import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
+import com.juzi.oerp.util.UploadFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -67,6 +67,10 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
         registry
                 .addResourceHandler("doc.html", "/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/", "classpath:/META-INF/resources/webjars/");
+
+        // classpath: or file:
+        registry.addResourceHandler("/assets/**/")
+                .addResourceLocations("file:" + UploadFileUtils.getAbsoluteWorkDirectory());
     }
 
     /**
@@ -81,14 +85,15 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/",
                         "/error",
+                        "/user/exam",
+                        "/assets/**",
+                        "/webjars/**",
+                        "/user/exam/*",
+                        "/doc.html/**",
                         "/auth/login/**",
                         "/auth/registion",
                         "/auth/captcha/**",
                         "/auth/password/sms",
-                        "/user/exam",
-                        "/user/exam/*",
-                        "/webjars/**",
-                        "/doc.html/**",
                         "/swagger-resources/**"
                 );
 
@@ -101,13 +106,15 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addKeySerializer(LocalDateTime.class, localDateTimeKeySerializer);
+        SimpleModule customModule = new SimpleModule();
+        // Map 的 key 为 LocalDateTime 时，使用此序列化器
+        customModule.addKeySerializer(LocalDateTime.class, localDateTimeKeySerializer);
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder
                 .json()
                 // 属性为 null 时不进行序列化
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
-                .modules(simpleModule)
+                // 添加自定义模块
+                .modules(customModule)
                 // 指定 LocalDateTime 序列化器
                 .serializers(localDateTimeSerializer)
                 // 指定 LocalDateTime 反序列化器

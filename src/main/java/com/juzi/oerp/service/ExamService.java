@@ -2,9 +2,13 @@ package com.juzi.oerp.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.juzi.oerp.model.dto.param.CreateExamParamDTO;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.ExamApplyInfoVO;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * <p>
@@ -38,4 +42,13 @@ public interface ExamService extends IService<ExamPO> {
      * @return 考试报名信息
      */
     ExamApplyInfoVO getExamApplyInfoById(Integer examId);
+
+    /**
+     * 创建考试 - 管理员
+     *
+     * @param createExamParamDTO 考试信息
+     * @param image              图片
+     * @param word               文档
+     */
+    void createExam(CreateExamParamDTO createExamParamDTO, MultipartFile image, MultipartFile word) throws IOException;
 }
