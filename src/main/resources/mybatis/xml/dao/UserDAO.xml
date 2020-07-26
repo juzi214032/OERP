@@ -52,4 +52,34 @@
         WHERE
             `user`.id = #{userId,jdbcType=INTEGER}
     </select>
+    <select id="getUserApplyExam" resultType="com.juzi.oerp.model.vo.UserApplyExamVO">
+        SELECT
+            exam.title,
+            exam_place.exam_place AS examPlace,
+            exam.begin_time AS beginTime,
+            exam.end_time AS endTime,
+            user_exam.status
+        FROM
+            `user`
+                LEFT JOIN
+            user_exam
+            ON
+                `user`.id = user_exam.user_id
+                INNER JOIN
+            exam_place
+            ON
+                user_exam.exam_place_id=exam_place.id
+            INNER JOIN
+            exam_time
+            ON
+                exam_place.exam_time_id=exam_time.id
+                INNER JOIN
+            exam
+            ON
+                exam_time.exam_id=exam.id
+							where `user`.id=#{userId}
+        <if test="title != ''">
+            AND title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
 </mapper>

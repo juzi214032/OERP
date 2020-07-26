@@ -1,9 +1,12 @@
 package com.juzi.oerp.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.UserInfoVO;
+import com.juzi.oerp.model.vo.UserApplyExamVO;
 
 /**
  * <p>
@@ -21,4 +24,5 @@ public interface UserInfoService extends IService<UserInfoPO> {
      * @return 用户完整信息
      */
     UserInfoVO getUserInfoAll(UserPO userPO);
+     Page<UserApplyExamVO> queryUserApplyExam(PageParamDTO pageParamDTO);
 }

@@ -2,8 +2,11 @@ package com.juzi.oerp.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.juzi.oerp.model.vo.UserApplyExamVO;
 import com.juzi.oerp.model.vo.UserInfoVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author Juzi
@@ -26,4 +29,6 @@ public interface UserDAO {
      * @return 用户信息
      */
     UserInfoVO getUserByUserId(@Param("userId") Integer userId);
+
+    IPage<UserApplyExamVO> getUserApplyExam(@Param("page") Page<UserApplyExamVO> page, @Param("userId") Integer userId,@Param("title")String title);
 }
