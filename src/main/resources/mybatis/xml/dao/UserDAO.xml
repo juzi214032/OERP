@@ -81,5 +81,7 @@
         <if test="title != ''">
             AND title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
         </if>
+        ORDER BY
+        user_exam.create_time DESC
     </select>
 </mapper>

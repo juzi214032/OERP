@@ -24,5 +24,6 @@ public interface UserInfoService extends IService<UserInfoPO> {
      * @return 用户完整信息
      */
     UserInfoVO getUserInfoAll(UserPO userPO);
-     Page<UserApplyExamVO> queryUserApplyExam(PageParamDTO pageParamDTO);
+
+    Page<UserApplyExamVO> queryUserApplyExam(PageParamDTO pageParamDTO);
 }
