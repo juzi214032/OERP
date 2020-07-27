@@ -20,7 +20,12 @@ import com.juzi.oerp.common.exception.CaptchaException;
 import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.*;
+import com.juzi.oerp.model.dto.ChangePasswordByPhoneNumDTO;
+import com.juzi.oerp.model.dto.ChangePasswordDTO;
+import com.juzi.oerp.model.dto.RetrieveUserDTO;
+import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
+import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
@@ -292,9 +297,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //检测手机号是否经过验证
         this.checkPhoneNumberValidated(retrieveUserDTO.getPhoneNumber());
 
+        Integer userId = LocalUserStore.getLocalUser();
+
         String newPassword = retrieveUserDTO.getNewPassword();
         UserPO userPO = new UserPO();
-        userPO.setPassword(SecureUtil.md5(newPassword));
+        userPO
+                .setId(userId)
+                .setPassword(SecureUtil.md5(newPassword));
         userMapper.updateById(userPO);
     }
 }
