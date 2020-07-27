@@ -2,7 +2,6 @@ package com.juzi.oerp.controller.user;
 
 import com.juzi.oerp.model.dto.param.ApplyExamParamDTO;
 import com.juzi.oerp.model.po.UserExamPO;
-import com.juzi.oerp.model.vo.response.CreateResponseVO;
 import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.ApplyService;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Juzi
  * @date 2020/7/15 23:03
  */
-@RestController
+@RestController("userApplyController")
 @Api(tags = "考试报名")
 @RequestMapping("/user/apply")
 public class ApplyController {
