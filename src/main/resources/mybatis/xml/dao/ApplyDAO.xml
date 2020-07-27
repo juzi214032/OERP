@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.juzi.oerp.dao.ApplyDAO">
+    <select id="getApplyInfoByPage" resultType="com.juzi.oerp.model.vo.ApplyInfoVO">
+        SELECT exam.title,
+               exam_time.exam_time,
+               user_info.`name`,
+               user_info.identity_no,
+               user_info.school,
+               user_info.education,
+               user_exam.create_time
+        FROM exam
+                 INNER JOIN exam_time ON exam.id = exam_time.exam_id
+                 INNER JOIN exam_place ON exam_time.id = exam_place.exam_time_id
+                 INNER JOIN user_exam ON exam_place.id = user_exam.exam_place_id
+                 INNER JOIN `user` ON user_exam.user_id = `user`.id
+                 INNER JOIN user_info ON `user`.id = user_info.user_id
+        ORDER BY user_exam.create_time
+    </select>
+    <select id="getApplyInfoById" resultType="com.juzi.oerp.model.vo.ApplyInfoVO">
+        SELECT
+        exam.title,
+        exam_time.exam_time,
+        user_info.`name`,
+        user_info.identity_no,
+        user_info.school,
+        user_info.education,
+        user_exam.create_time
+        FROM
+        exam
+        INNER JOIN exam_time ON exam.id = exam_time.exam_id
+        INNER JOIN exam_place ON exam_time.id = exam_place.exam_time_id
+        INNER JOIN user_exam ON exam_place.id = user_exam.exam_place_id
+        INNER JOIN `user` ON user_exam.user_id = `user`.id
+        INNER JOIN user_info ON `user`.id = user_info.user_id
+        WHERE
+        user_exam.id = #{applyId,jdbcType=INTEGER}
+        ORDER BY
+        user_exam.create_time ASC
+    </select>
+</mapper>
