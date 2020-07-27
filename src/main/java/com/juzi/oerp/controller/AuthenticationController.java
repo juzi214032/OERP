@@ -5,12 +5,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.juzi.oerp.common.exception.AuthenticationException;
 import com.juzi.oerp.mapper.UserMapper;
 import com.juzi.oerp.model.dto.ChangePasswordDTO;
-import com.juzi.oerp.model.dto.RetrieveUserDTO;
 import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.ResetPasswordParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.CaptchaVO;
@@ -45,27 +45,6 @@ public class AuthenticationController {
     @Autowired
     private UserMapper userMapper;
 
-    @PostMapping("/login")
-    @ApiOperation(value = "密码登录", tags = "登录注册")
-    public ResponseVO<UserLoginVO> loginByPassword(@RequestBody @Validated UserPasswordLoginDTO userPasswordLoginDTO) {
-        UserLoginVO result = authenticationService.loginByPassword(userPasswordLoginDTO);
-        return new ResponseVO<>(result);
-    }
-
-    @PostMapping("/login/sms")
-    @ApiOperation(value = "短信登录", tags = "登录注册")
-    public ResponseVO<UserLoginVO> loginBySMS(@RequestBody @Validated UserSMSLoginDTO userSMSLoginDTO) {
-        UserLoginVO result = authenticationService.loginBySMS(userSMSLoginDTO);
-        return new ResponseVO<>(result);
-    }
-
-    @PostMapping("/registion")
-    @ApiOperation(value = "账号注册", tags = "登录注册")
-    public ResponseVO<UserLoginVO> registion(@RequestBody @Validated UserRegistionDTO userRegistionDTO) {
-        UserLoginVO result = authenticationService.registion(userRegistionDTO);
-        return new ResponseVO<>(result);
-    }
-
     @GetMapping("/captcha/image")
     @ApiOperation(value = "获取图片验证码", tags = "验证码")
     public ResponseVO<CaptchaVO> getImageCaptcha() {
@@ -73,7 +52,7 @@ public class AuthenticationController {
         return new ResponseVO<>(captcha);
     }
 
-    @PostMapping("/captcha/image")
+    @PostMapping("/captcha/image/check")
     @ApiOperation(value = "校验图片验证码", tags = "验证码")
     public MessageResponseVO checkImageCaptcha(@RequestBody @Validated CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
         authenticationService.checkImageCaptcha(checkImageCaptchaParamDTO);
@@ -94,10 +73,38 @@ public class AuthenticationController {
         return new MessageResponseVO(20001);
     }
 
-    @PutMapping("/password")
+    @PostMapping("/login/password")
+    @ApiOperation(value = "密码登录", tags = "登录注册")
+    public ResponseVO<UserLoginVO> loginByPassword(@RequestBody @Validated UserPasswordLoginDTO userPasswordLoginDTO) {
+        UserLoginVO result = authenticationService.loginByPassword(userPasswordLoginDTO);
+        return new ResponseVO<>(result);
+    }
+
+    @PostMapping("/login/sms")
+    @ApiOperation(value = "短信登录", tags = "登录注册")
+    public ResponseVO<UserLoginVO> loginBySMS(@RequestBody @Validated UserSMSLoginDTO userSMSLoginDTO) {
+        UserLoginVO result = authenticationService.loginBySMS(userSMSLoginDTO);
+        return new ResponseVO<>(result);
+    }
+
+    @PostMapping("/registion")
+    @ApiOperation(value = "账号注册", tags = "登录注册")
+    public ResponseVO<UserLoginVO> registion(@RequestBody @Validated UserRegistionDTO userRegistionDTO) {
+        UserLoginVO result = authenticationService.registion(userRegistionDTO);
+        return new ResponseVO<>(result);
+    }
+
+    @PutMapping("/password/change/old-password")
     @ApiOperation(value = "修改密码", notes = "通过原密码修改密码", tags = "账户信息")
-    public MessageResponseVO updatePassword(@RequestBody @Validated ChangePasswordDTO changePasswordDTO) {
-        authenticationService.updatePassword(changePasswordDTO);
+    public MessageResponseVO updatePasswordByOldPassword(@RequestBody @Validated ChangePasswordDTO changePasswordDTO) {
+        authenticationService.updatePasswordByOldPassword(changePasswordDTO);
+        return new MessageResponseVO(20010);
+    }
+
+    @PutMapping("/password/reset/sms")
+    @ApiOperation(value = "重置密码", notes = "通过短信验证码重置密码", tags = "账户信息")
+    public MessageResponseVO resetPassword(@RequestBody @Validated ResetPasswordParamDTO resetPasswordParamDTO) {
+        authenticationService.resetPassword(resetPasswordParamDTO);
         return new MessageResponseVO(20010);
     }
 
@@ -124,10 +131,4 @@ public class AuthenticationController {
         return new MessageResponseVO(20008);
     }
 
-    @PutMapping("/password/sms")
-    @ApiOperation(value = "重置密码", notes = "通过短信验证码重置密码", tags = "账户信息")
-    public MessageResponseVO retrieveUser(@RequestBody @Validated RetrieveUserDTO retrieveUserDTO) {
-        authenticationService.resetPassword(retrieveUserDTO);
-        return new MessageResponseVO(20010);
-    }
 }

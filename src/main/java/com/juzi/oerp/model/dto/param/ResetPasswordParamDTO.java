@@ -1,4 +1,4 @@
-package com.juzi.oerp.model.dto;
+package com.juzi.oerp.model.dto.param;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class RetrieveUserDTO {
+public class ResetPasswordParamDTO {
 
     /**
      * 新密码
