@@ -96,8 +96,10 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
                 .stream()
                 .collect(groupingBy(ExamApplyInfoDTO::getExamTime, mapping(examApplyInfoDTO -> {
                     ExamPlacePO examPlacePO = new ExamPlacePO();
-                    examPlacePO.setExamPlace(examApplyInfoDTO.getExamPlace());
-                    examPlacePO.setPeopleNumber(examApplyInfoDTO.getPeopleNumber());
+                    examPlacePO
+                            .setId(examApplyInfoDTO.getExamPlaceId())
+                            .setExamPlace(examApplyInfoDTO.getExamPlace())
+                            .setPeopleNumber(examApplyInfoDTO.getPeopleNumber());
                     return examPlacePO;
                 }, toList())));
 
