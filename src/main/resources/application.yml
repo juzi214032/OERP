@@ -1,11 +1,8 @@
 spring:
   application:
     name: oerp
-  datasource:
-    url: jdbc:mysql://localhost:3307/oerp?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF8&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    active: dev
   cache:
     type: caffeine
     cache-names:
@@ -15,8 +12,9 @@ spring:
       - SMS_CAPTCHA_CACHE
     couchbase:
       expiration: 300
-  profiles:
-    active: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
 mybatis-plus:
   configuration:
@@ -28,4 +26,3 @@ server:
   port: 8080
   servlet:
     context-path: /api/v1
-

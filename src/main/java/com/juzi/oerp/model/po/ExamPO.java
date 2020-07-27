@@ -3,13 +3,10 @@ package com.juzi.oerp.model.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
-import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +21,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("exam")
+@Accessors(chain = true)
 @ApiModel(description = "考试信息")
 public class ExamPO {
 

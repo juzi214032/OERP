@@ -3,6 +3,7 @@ package com.juzi.oerp.model.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @date 2020/7/15 12:11
  */
 @Data
+@Accessors(chain = true)
 @ApiModel(description = "用户信息")
 public class UserInfoVO {
 
@@ -33,6 +35,12 @@ public class UserInfoVO {
 
     @ApiModelProperty("性别")
     private Integer gender;
+
+    @ApiModelProperty("学校")
+    private String school;
+
+    @ApiModelProperty("学历")
+    private String education;
 
     @ApiModelProperty("角色：0普通；1管理员")
     private Integer role;

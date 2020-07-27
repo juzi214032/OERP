@@ -19,7 +19,7 @@ public class AliYunConfiguration {
     private AliYunProperties aliYunProperties;
 
     @Bean
-    public IAcsClient iAcsClient(){
+    public IAcsClient iAcsClient() {
         DefaultProfile profile = DefaultProfile.getProfile(aliYunProperties.getRegionId(), aliYunProperties.getAccessKeyId(), aliYunProperties.getSecret());
         return new DefaultAcsClient(profile);
     }

@@ -1,7 +1,6 @@
 package com.juzi.oerp.controller.user;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.ExamApplyInfoVO;
@@ -58,12 +57,13 @@ public class ExamController {
 
     /**
      * 获取考试报名信息
+     *
      * @param examId 考试id
      * @return 考试报名信息
      */
     @GetMapping("/apply/{examId}")
     @ApiOperation("获取考试报名信息")
-    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@ApiParam("考试id") @PathVariable Integer examId){
+    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@ApiParam("考试id") @PathVariable Integer examId) {
         ExamApplyInfoVO result = examService.getExamApplyInfoById(examId);
         return new ResponseVO<>(result);
     }

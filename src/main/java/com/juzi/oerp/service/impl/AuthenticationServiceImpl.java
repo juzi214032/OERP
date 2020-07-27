@@ -7,7 +7,6 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.aliyuncs.CommonRequest;
-import com.aliyuncs.CommonResponse;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
@@ -18,24 +17,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juzi.oerp.common.constant.CacheConstants;
 import com.juzi.oerp.common.exception.AuthenticationException;
 import com.juzi.oerp.common.exception.CaptchaException;
+import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.UserLoginDTO;
-import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.*;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.CaptchaVO;
+import com.juzi.oerp.model.vo.UserInfoVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
 import com.juzi.oerp.service.AuthenticationService;
-import com.juzi.oerp.util.CacheUtils;
+import com.juzi.oerp.service.UserInfoService;
 import com.juzi.oerp.util.JWTUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -68,12 +67,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Resource
     private Cache imageCaptchaCache;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
     @Override
-    public UserLoginVO login(UserLoginDTO userLoginDTO) {
+    public UserLoginVO loginByPassword(UserPasswordLoginDTO userPasswordLoginDTO) {
         UserPO userPO = new UserPO();
         userPO
-                .setUsername(userLoginDTO.getUsername())
-                .setPassword(SecureUtil.md5(userLoginDTO.getPassword()));
+                .setUsername(userPasswordLoginDTO.getUsername())
+                .setPassword(SecureUtil.md5(userPasswordLoginDTO.getPassword()));
 
         UserPO user = userMapper.selectOne(new QueryWrapper<>(userPO));
 
@@ -82,22 +84,42 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         String token = JWTUtils.createToken(user.getId());
-        UserInfoPO userInfo = userInfoMapper.selectOne(new LambdaQueryWrapper<UserInfoPO>().eq(UserInfoPO::getUserId, user.getId()));
+        UserInfoVO userInfoVO = userInfoService.getUserInfoAll(user);
         UserLoginVO userLoginVO = new UserLoginVO();
         userLoginVO
                 .setToken(token)
-                .setUserInfo(userInfo);
+                .setUserInfo(userInfoVO);
+        return userLoginVO;
+    }
+
+    @Override
+    public UserLoginVO loginBySMS(UserSMSLoginDTO userSMSLoginDTO) {
+        String phoneNumber = userSMSLoginDTO.getPhoneNumber();
+        this.checkPhoneNumberValidated(phoneNumber);
+
+        LambdaQueryWrapper<UserPO> query = new LambdaQueryWrapper<UserPO>().eq(UserPO::getPhoneNumber, phoneNumber);
+        UserPO user = userMapper.selectOne(query);
+
+        if (user == null || user.getStatus() == 1) {
+            throw new AuthenticationException(40002);
+        }
+
+        String token = JWTUtils.createToken(user.getId());
+        UserInfoVO userInfoVO = userInfoService.getUserInfoAll(user);
+        UserLoginVO userLoginVO = new UserLoginVO();
+        userLoginVO
+                .setToken(token)
+                .setUserInfo(userInfoVO);
         return userLoginVO;
     }
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public UserLoginVO registion(UserRegistionDTO userRegistionDTO) {
-
-        String reallySMSCaptcha = smsCaptchaCache.get(userRegistionDTO.getPhoneNumber(), String.class);
-        if (StringUtils.isEmpty(reallySMSCaptcha) || CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
-            throw new AuthenticationException(40006);
-        }
+        // 检查手机号是否已经过验证
+        this.checkPhoneNumberValidated(userRegistionDTO.getPhoneNumber());
+        // 检查手机号是否可用
+        this.checkPhoneNumberUsed(userRegistionDTO.getPhoneNumber());
 
         // 插入用户账号
         UserPO newUserPO = new UserPO();
@@ -117,11 +139,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         smsCaptchaCache.evict(userRegistionDTO.getPhoneNumber());
 
         // 进行登录操作
-        UserLoginDTO userLoginDTO = new UserLoginDTO();
-        userLoginDTO
+        UserPasswordLoginDTO userPasswordLoginDTO = new UserPasswordLoginDTO();
+        userPasswordLoginDTO
                 .setUsername(userRegistionDTO.getUsername())
                 .setPassword(userRegistionDTO.getPassword());
-        return this.login(userLoginDTO);
+        return this.loginByPassword(userPasswordLoginDTO);
     }
 
     @Override
@@ -132,12 +154,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // 将验证码存入缓存
         String imageCaptcha = lineCaptcha.getCode();
+        log.debug("本次生成图片验证码为：{}", imageCaptcha);
         imageCaptchaCache.put(captchaId, imageCaptcha);
-        log.debug("本次获取的验证码为：{}", imageCaptcha);
         CaptchaVO captchaVO = new CaptchaVO();
         captchaVO
                 .setCaptchaId(captchaId)
-                .setCaptchaImageBase64(lineCaptcha.getImageBase64());
+                .setCaptchaImageBase64("data:image/png;base64," + lineCaptcha.getImageBase64());
         return captchaVO;
     }
 
@@ -157,14 +179,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void getSMSCaptcha(SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
-        // 检查手机号是否可用
-        this.checkPhoneNumber(smsCaptchaParamDTO.getPhoneNumber());
         // 生成短信验证码
         String smsCaptcha = RandomUtil.randomNumbers(6);
+        log.debug("本次生成短信验证码为：{}", smsCaptcha);
 
         String imageCaptcha = imageCaptchaCache.get(smsCaptchaParamDTO.getCaptchaId(), String.class);
         if (StringUtils.isEmpty(imageCaptcha)) {
-            throw new CaptchaException(40000);
+            throw new CaptchaException(40001);
         }
 
         if (!CacheConstants.CAPTCHA_CHECKED.equals(imageCaptcha)) {
@@ -187,10 +208,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         request.putQueryParameter("TemplateCode", "SMS_196641887");
         request.putQueryParameter("TemplateParam", objectMapper.writeValueAsString(MapUtil.builder("code", smsCaptcha).build()));
         try {
-            CommonResponse response = iAcsClient.getCommonResponse(request);
-            log.info(response.toString());
+            iAcsClient.getCommonResponse(request);
         } catch (ClientException e) {
-            log.error("阿里云验证码服务异常", e);
+            throw new AuthenticationException(50001, e);
         }
     }
 
@@ -209,15 +229,72 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
-     * 检测手机号是否已经注册
+     * 检测手机号是否已经被使用
      *
      * @param phoneNumber 手机号
      */
-    private void checkPhoneNumber(String phoneNumber) {
+    private void checkPhoneNumberUsed(String phoneNumber) {
         UserPO user = userMapper.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getPhoneNumber, phoneNumber));
         // 手机号已被注册
         if (user != null) {
             throw new AuthenticationException(40001);
         }
+    }
+
+    /**
+     * 检测手机号是否经过验证
+     *
+     * @param phoneNumber 手机号
+     */
+    private void checkPhoneNumberValidated(String phoneNumber) {
+        String reallySMSCaptcha = smsCaptchaCache.get(phoneNumber, String.class);
+        if (StringUtils.isEmpty(reallySMSCaptcha) || !CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
+            throw new AuthenticationException(40006);
+        }
+    }
+
+    @Override
+    public void updatePhoneNumber(String phoneNumber) {
+        checkPhoneNumberValidated(phoneNumber);
+
+        UserPO userPO=userMapper.selectById(LocalUserStore.getLocalUser());
+        userPO.setPhoneNumber(phoneNumber);
+        userMapper.updateById(userPO);
+    }
+
+    @Override
+    public void updatePassword(ChangePasswordDTO changePasswordDTO) {
+        UserPO userPO = userMapper.selectById(LocalUserStore.getLocalUser());
+        String oldPassword = userPO.getPassword();
+        //传过来的密码加密
+        String dtoNewPassword = SecureUtil.md5(changePasswordDTO.getNewPassword());
+        String dtoOldPassword = SecureUtil.md5(changePasswordDTO.getOldPassword());
+        if (!oldPassword.equals(dtoOldPassword)) {
+            throw new AuthenticationException(40011);
+        }
+
+        userPO.setPassword(dtoNewPassword);
+        userMapper.updateById(userPO);
+    }
+
+    @Override
+    public void updatePassword(ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO) {
+        this.checkPhoneNumberValidated(changePasswordByPhoneNumDTO.getPhoneNumber());
+        UserPO userPO = userMapper.selectById(LocalUserStore.getLocalUser());
+        //传过来的密码加密
+        String dtoNewPassword= SecureUtil.md5(changePasswordByPhoneNumDTO.getNewPassword());
+        userPO.setPassword(dtoNewPassword);
+        userMapper.updateById(userPO);
+    }
+
+    @Override
+    public void resetPassword(RetrieveUserDTO retrieveUserDTO) {
+        //检测手机号是否经过验证
+        this.checkPhoneNumberValidated(retrieveUserDTO.getPhoneNumber());
+
+        String newPassword = retrieveUserDTO.getNewPassword();
+        UserPO userPO = new UserPO();
+        userPO.setPassword(SecureUtil.md5(newPassword));
+        userMapper.updateById(userPO);
     }
 }

@@ -1,7 +1,5 @@
 package com.juzi.oerp.common.exception;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
@@ -19,6 +17,11 @@ public class OERPException extends RuntimeException {
     private Integer code;
 
     public OERPException() {
+    }
+
+    public OERPException(Integer code, Throwable cause) {
+        super(cause);
+        this.code = code;
     }
 
     public OERPException(Integer code) {

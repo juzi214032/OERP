@@ -6,35 +6,16 @@
             `user`.id AS userId,
             `user`.username,
             `user`.role,
-            `user`.`status`,
-            `user`.create_time,
-            `user`.update_time,
-            user_info.nickname,
-            user_info.avatar_url,
-            user_info.`name`,
-            user_info.gender,
-            user_info.identity_no,
-            user_info.birthday
-        FROM
-            `user`
-                LEFT JOIN
-            user_info
-            ON
-                `user`.id = user_info.user_id
-    </select>
-    <select id="getUserByUserId" resultType="com.juzi.oerp.model.vo.UserInfoVO">
-        SELECT
-            `user`.id AS userId,
-            `user`.username,
-            `user`.role,
-            `user`.`status`,
-            `user`.create_time,
-            `user`.update_time,
             `user`.phone_number,
+            `user`.`status`,
+            `user`.create_time,
+            `user`.update_time,
             user_info.nickname,
             user_info.avatar_url,
             user_info.`name`,
             user_info.gender,
+        user_info.school,
+        user_info.education,
             user_info.identity_no,
             user_info.birthday
         FROM
@@ -44,6 +25,66 @@
             ON
                 `user`.id = user_info.user_id
         WHERE
-            `user`.id = #{userId,jdbcType=INTEGER}
+            user_info.`name` LIKE CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
+        ORDER BY
+            `user`.create_time DESC
+    </select>
+    <select id="getUserByUserId" resultType="com.juzi.oerp.model.vo.UserInfoVO">
+        SELECT
+            `user`.id AS userId,
+        `user`.username,
+        `user`.role,
+        `user`.`status`,
+        `user`.create_time,
+        `user`.update_time,
+        `user`.phone_number,
+        user_info.nickname,
+        user_info.avatar_url,
+        user_info.`name`,
+        user_info.gender,
+        user_info.school,
+        user_info.education,
+        user_info.identity_no,
+        user_info.birthday
+        FROM
+        `user`
+        LEFT JOIN
+        user_info
+        ON
+        `user`.id = user_info.user_id
+        WHERE
+        `user`.id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="getUserApplyExam" resultType="com.juzi.oerp.model.vo.UserApplyExamVO">
+        SELECT
+            exam.title,
+            exam_place.exam_place AS examPlace,
+            exam.begin_time AS beginTime,
+            exam.end_time AS endTime,
+            user_exam.status
+        FROM
+            `user`
+                LEFT JOIN
+            user_exam
+            ON
+                `user`.id = user_exam.user_id
+                INNER JOIN
+            exam_place
+            ON
+                user_exam.exam_place_id=exam_place.id
+            INNER JOIN
+            exam_time
+            ON
+                exam_place.exam_time_id=exam_time.id
+                INNER JOIN
+            exam
+            ON
+                exam_time.exam_id=exam.id
+							where `user`.id=#{userId}
+        <if test="title != ''">
+            AND title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+        ORDER BY
+        user_exam.create_time DESC
     </select>
 </mapper>

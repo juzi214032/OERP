@@ -1,4 +1,5 @@
 target/
+assets/
 #代码生成文件夹
 ge/
 ### IntelliJ IDEA ###
@@ -6,3 +7,4 @@ ge/
 *.iws
 *.iml
 *.ipr
+config/

@@ -2,11 +2,10 @@ package com.juzi.oerp.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.juzi.oerp.model.dto.CreateUserDTO;
-import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateUserDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.vo.UserInfoVO;
-import com.juzi.oerp.model.vo.response.CreateResponseVO;
-import com.juzi.oerp.model.vo.response.DeleteResponseVO;
+import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.UserService;
 import io.swagger.annotations.Api;
@@ -40,7 +39,7 @@ public class UserController {
      * @return 用户信息
      */
     @GetMapping
-    @ApiOperation(value = "获取用户列表",notes = "根据分页参数获取用户列表")
+    @ApiOperation(value = "获取用户列表", notes = "根据分页参数获取用户列表")
     public ResponseVO<Page<UserInfoVO>> getUserByPage(PageParamDTO pageParamDTO) {
         Page<UserInfoVO> result = userService.getUserByPage(pageParamDTO);
         return new ResponseVO<>(result);
@@ -67,9 +66,9 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     @ApiOperation("删除用户")
-    public ResponseVO<Object> deleteUserByUserId(@PathVariable Integer userId) {
+    public MessageResponseVO deleteUserByUserId(@PathVariable Integer userId) {
         userService.deleteUserByUserId(userId);
-        return new DeleteResponseVO();
+        return new MessageResponseVO(20012);
     }
 
     /**
@@ -80,9 +79,9 @@ public class UserController {
      */
     @PostMapping
     @ApiOperation("新增用户")
-    public ResponseVO<Object> createUser(@RequestBody CreateUserDTO createUserDTO) {
+    public MessageResponseVO createUser(@RequestBody CreateUserDTO createUserDTO) {
         userService.createUser(createUserDTO);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20006);
     }
 
     /**
@@ -93,8 +92,8 @@ public class UserController {
      */
     @PutMapping
     @ApiOperation("修改用户")
-    public ResponseVO<Object> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
+    public MessageResponseVO updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
         userService.updateUser(updateUserDTO);
-        return new CreateResponseVO();
+        return new MessageResponseVO(20007);
     }
 }

@@ -14,9 +14,12 @@ import lombok.Data;
 @ApiModel(value = "分页参数")
 public class PageParamDTO {
 
-    @ApiModelProperty("当前页码-从 0 开始")
-    private Integer pageOn;
+    @ApiModelProperty("当前页码-从 1 开始")
+    private Integer pageOn = 1;
 
     @ApiModelProperty("每页条数")
-    private Integer pageSize;
+    private Integer pageSize = 10;
+
+    @ApiModelProperty("搜索关键字")
+    private String keyword = "";
 }

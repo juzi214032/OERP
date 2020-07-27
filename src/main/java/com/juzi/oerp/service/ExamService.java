@@ -3,9 +3,12 @@ package com.juzi.oerp.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
+import com.juzi.oerp.model.dto.param.UpdateExamParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
 import com.juzi.oerp.model.vo.ExamApplyInfoVO;
-import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * <p>
@@ -22,7 +25,7 @@ public interface ExamService extends IService<ExamPO> {
      * @param pageParamDTO 分页参数
      * @return 考试简要信息
      */
-    IPage<ExamPO> getExamPlainInfoByPage(@Param("pageParamDTO") PageParamDTO pageParamDTO);
+    IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO);
 
     /**
      * 获取考试详细信息
@@ -34,8 +37,34 @@ public interface ExamService extends IService<ExamPO> {
 
     /**
      * 获取考试报名信息
+     *
      * @param examId 考试id
      * @return 考试报名信息
      */
     ExamApplyInfoVO getExamApplyInfoById(Integer examId);
+
+    /**
+     * 创建考试 - 管理员
+     *
+     * @param updateExamParamDTO 考试信息
+     * @param image              图片
+     * @param word               文档
+     * @throws IOException IO异常
+     */
+    void createExam(UpdateExamParamDTO updateExamParamDTO, MultipartFile image, MultipartFile word) throws IOException;
+
+    /**
+     * 获取考试列表 - 管理员
+     *
+     * @param pageParamDTO 分页参数
+     * @return 分页结果
+     */
+    IPage<ExamPO> getExamListByPage(PageParamDTO pageParamDTO);
+
+    /**
+     * 删除考试
+     *
+     * @param examId 考试 id
+     */
+    void deleteExam(Integer examId);
 }

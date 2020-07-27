@@ -6,8 +6,8 @@ import com.juzi.oerp.dao.UserDAO;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
 import com.juzi.oerp.model.dto.CreateUserDTO;
-import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.UpdateUserDTO;
+import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.UserInfoVO;
@@ -40,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements 
     @Override
     public Page<UserInfoVO> getUserByPage(PageParamDTO pageParamDTO) {
         Page<UserInfoVO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
-        userDAO.getUserByPage(page);
+        userDAO.getUserByPage(page, pageParamDTO.getKeyword());
         return page;
     }
 
@@ -62,8 +62,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements 
         UserPO userPO = new UserPO();
         UserInfoPO userInfoPO = new UserInfoPO();
 
-        BeanUtils.copyProperties(createUserDTO,userPO);
-        BeanUtils.copyProperties(createUserDTO,userInfoPO);
+        BeanUtils.copyProperties(createUserDTO, userPO);
+        BeanUtils.copyProperties(createUserDTO, userInfoPO);
 
         userMapper.insert(userPO);
 
@@ -77,8 +77,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements 
         UserPO userPO = new UserPO();
         UserInfoPO userInfoPO = new UserInfoPO();
 
-        BeanUtils.copyProperties(updateUserDTO,userPO);
-        BeanUtils.copyProperties(updateUserDTO,userInfoPO);
+        BeanUtils.copyProperties(updateUserDTO, userPO);
+        BeanUtils.copyProperties(updateUserDTO, userInfoPO);
 
         userMapper.updateById(userPO);
 

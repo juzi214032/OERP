@@ -21,7 +21,7 @@ public class CacheUtils {
     public static Cache getCache(CacheManager cacheManager, String cacheName) {
         Cache cache = cacheManager.getCache(cacheName);
         if (cache == null) {
-            throw new CacheException(50000);
+            throw new CacheException(50002);
         }
         return cache;
     }
