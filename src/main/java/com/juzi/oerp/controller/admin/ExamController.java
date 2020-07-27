@@ -12,17 +12,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Positive;
 import java.io.IOException;
 
 /**
@@ -46,7 +47,7 @@ public class ExamController {
      */
     @GetMapping
     @ApiOperation(value = "获取考试信息列表", notes = "分页获取考试列表")
-    public ResponseVO<IPage<ExamPO>> getExamByPage(@RequestBody PageParamDTO pageParamDTO) {
+    public ResponseVO<IPage<ExamPO>> getExamByPage(@Validated PageParamDTO pageParamDTO) {
         IPage<ExamPO> result = examService.getExamListByPage(pageParamDTO);
         return new ResponseVO<>(result);
     }
@@ -59,7 +60,11 @@ public class ExamController {
      */
     @GetMapping("/{examId}")
     @ApiOperation(value = "获取考试信息")
-    public ResponseVO<ExamPO> getExamById(@ApiParam("考试id") @PathVariable Integer examId) {
+    public ResponseVO<ExamPO> getExamById(
+            @PathVariable
+            @ApiParam("考试id")
+            @Positive(message = "考试id格式错误")
+            @Validated Integer examId) {
         ExamPO result = examService.getById(examId);
         return new ResponseVO<>(result);
     }
@@ -90,7 +95,7 @@ public class ExamController {
     @PostMapping
     @ApiOperation("创建考试")
     public MessageResponseVO createExam(
-            @RequestPart(value = "exam") UpdateExamParamDTO updateExamParamDTO,
+            @RequestPart(value = "exam") @Validated UpdateExamParamDTO updateExamParamDTO,
             @RequestPart("image") MultipartFile image,
             @RequestPart("word") MultipartFile word) throws IOException {
         examService.createExam(updateExamParamDTO, image, word);
@@ -105,7 +110,11 @@ public class ExamController {
      */
     @DeleteMapping("/{examId}")
     @ApiOperation("删除考试")
-    public ResponseVO<Object> deleteExamById(@ApiParam("考试id") @PathVariable Integer examId) {
+    public ResponseVO<Object> deleteExamById(
+            @ApiParam("考试id")
+            @Validated
+            @Positive(message = "考试id不能为空")
+            @PathVariable Integer examId) {
         return new DeleteResponseVO();
     }
 }

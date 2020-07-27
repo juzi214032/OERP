@@ -11,6 +11,7 @@ import com.juzi.oerp.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Positive;
 
 /**
  * @author Juzi
@@ -40,7 +43,7 @@ public class UserController {
      */
     @GetMapping
     @ApiOperation(value = "获取用户列表", notes = "根据分页参数获取用户列表")
-    public ResponseVO<Page<UserInfoVO>> getUserByPage(PageParamDTO pageParamDTO) {
+    public ResponseVO<Page<UserInfoVO>> getUserByPage(@Validated PageParamDTO pageParamDTO) {
         Page<UserInfoVO> result = userService.getUserByPage(pageParamDTO);
         return new ResponseVO<>(result);
     }
@@ -53,7 +56,10 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     @ApiOperation("获取用户")
-    public ResponseVO<UserInfoVO> getUserByUserId(@PathVariable Integer userId) {
+    public ResponseVO<UserInfoVO> getUserByUserId(
+            @PathVariable
+            @Positive(message = "用户id格式错误")
+            @Validated Integer userId) {
         UserInfoVO result = userService.getUserByUserId(userId);
         return new ResponseVO<>(result);
     }
@@ -66,7 +72,10 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     @ApiOperation("删除用户")
-    public MessageResponseVO deleteUserByUserId(@PathVariable Integer userId) {
+    public MessageResponseVO deleteUserByUserId(
+            @PathVariable
+            @Positive(message = "用户id格式错误")
+            @Validated Integer userId) {
         userService.deleteUserByUserId(userId);
         return new MessageResponseVO(20012);
     }
@@ -79,7 +88,7 @@ public class UserController {
      */
     @PostMapping
     @ApiOperation("新增用户")
-    public MessageResponseVO createUser(@RequestBody CreateUserDTO createUserDTO) {
+    public MessageResponseVO createUser(@RequestBody @Validated CreateUserDTO createUserDTO) {
         userService.createUser(createUserDTO);
         return new MessageResponseVO(20006);
     }
@@ -92,7 +101,7 @@ public class UserController {
      */
     @PutMapping
     @ApiOperation("修改用户")
-    public MessageResponseVO updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
+    public MessageResponseVO updateUser(@RequestBody @Validated UpdateUserDTO updateUserDTO) {
         userService.updateUser(updateUserDTO);
         return new MessageResponseVO(20007);
     }

@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +49,7 @@ public class UserController {
 
     @PutMapping
     @ApiOperation("修改个人信息")
-    public UpdatedResponseVO updateUserInfo(@RequestBody UpdateUserInfoParamDTO updateUserInfoParamDTO) {
+    public UpdatedResponseVO updateUserInfo(@RequestBody @Validated UpdateUserInfoParamDTO updateUserInfoParamDTO) {
         Integer userId = LocalUserStore.getLocalUser();
         UserInfoPO userInfoPO = new UserInfoPO();
         userInfoPO.setUserId(userId);
@@ -60,7 +61,7 @@ public class UserController {
 
     @GetMapping("/apply")
     @ApiOperation("获取报名信息")
-    public ResponseVO<Page<UserApplyExamVO>> getUserApplyExam(@RequestBody PageParamDTO pageParamDTO){
+    public ResponseVO<Page<UserApplyExamVO>> getUserApplyExam(@Validated PageParamDTO pageParamDTO) {
         Page<UserApplyExamVO> result = userInfoService.queryUserApplyExam(pageParamDTO);
         return new ResponseVO<>(result);
     }
