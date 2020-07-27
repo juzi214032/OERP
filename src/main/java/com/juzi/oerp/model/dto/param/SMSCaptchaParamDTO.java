@@ -18,7 +18,7 @@ import javax.validation.constraints.Pattern;
 public class SMSCaptchaParamDTO {
 
     @ApiModelProperty("验证码 id")
-    @Length(min = 32, max = 32, message = "验证码id格式错误")
+    @Length(min = 24, max = 24, message = "验证码id格式错误")
     private String captchaId;
 
     @ApiModelProperty("手机号")
