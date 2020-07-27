@@ -70,7 +70,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ExceptionResponseVO methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        return new ExceptionResponseVO(40000, "参数格式错误", e.getMessage());
+        return new ExceptionResponseVO(40000, "参数格式错误");
     }
 
     /**
