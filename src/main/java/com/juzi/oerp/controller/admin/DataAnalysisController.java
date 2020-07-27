@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "数据分析")
-@RequestMapping("/admin/histogram")
+@RequestMapping("/admin/data")
 public class DataAnalysisController {
 
     @Autowired
