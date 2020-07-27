@@ -58,7 +58,7 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ExceptionResponseVO methodArgumentNotValidException(MethodArgumentNotValidException e) {
         String validMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        return new ExceptionResponseVO(40000, validMessage, e.getMessage());
+        return new ExceptionResponseVO(40000, validMessage);
     }
 
     /**
