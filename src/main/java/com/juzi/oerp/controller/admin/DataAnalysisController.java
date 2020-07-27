@@ -9,7 +9,9 @@ import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.DataAnalysisService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +41,13 @@ public class DataAnalysisController {
 
     @GetMapping("/user/increased/{year}/{month}")
     @ApiOperation("新增用户统计")
-    public ResponseVO<DataIncreasedDTO> getIncreasedUser(@PathVariable Integer year, @PathVariable Integer month) {
+    public ResponseVO<DataIncreasedDTO> getIncreasedUser(
+            @PathVariable
+            @Range(min = 2019, max = 9999, message = "年份格式错误")
+            @Validated Integer year,
+            @PathVariable
+            @Range(min = 1, max = 12, message = "月份格式错误")
+            @Validated Integer month) {
         return new ResponseVO<>(analysisService.getIncreasedUser(year, month));
     }
 

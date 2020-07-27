@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * @author Juzi
  * @date 2020/7/14 14:40
@@ -52,14 +54,14 @@ public class AuthenticationController {
 
     @PostMapping("/login/sms")
     @ApiOperation(value = "短信登录", tags = "登录注册")
-    public ResponseVO<UserLoginVO> loginBySMS(@RequestBody UserSMSLoginDTO userSMSLoginDTO) {
+    public ResponseVO<UserLoginVO> loginBySMS(@RequestBody @Validated UserSMSLoginDTO userSMSLoginDTO) {
         UserLoginVO result = authenticationService.loginBySMS(userSMSLoginDTO);
         return new ResponseVO<>(result);
     }
 
     @PostMapping("/registion")
     @ApiOperation(value = "账号注册", tags = "登录注册")
-    public ResponseVO<UserLoginVO> registion(@RequestBody UserRegistionDTO userRegistionDTO) {
+    public ResponseVO<UserLoginVO> registion(@RequestBody @Validated UserRegistionDTO userRegistionDTO) {
         UserLoginVO result = authenticationService.registion(userRegistionDTO);
         return new ResponseVO<>(result);
     }
@@ -73,42 +75,48 @@ public class AuthenticationController {
 
     @PostMapping("/captcha/image")
     @ApiOperation(value = "校验图片验证码", tags = "验证码")
-    public MessageResponseVO checkImageCaptcha(@RequestBody CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
+    public MessageResponseVO checkImageCaptcha(@RequestBody @Validated CheckImageCaptchaParamDTO checkImageCaptchaParamDTO) {
         authenticationService.checkImageCaptcha(checkImageCaptchaParamDTO);
         return new MessageResponseVO(20001);
     }
 
     @PostMapping("/captcha/sms")
     @ApiOperation(value = "获取短信验证码", tags = "验证码")
-    public MessageResponseVO getSMSCaptcha(@RequestBody SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
+    public MessageResponseVO getSMSCaptcha(@RequestBody @Validated SMSCaptchaParamDTO smsCaptchaParamDTO) throws JsonProcessingException {
         authenticationService.getSMSCaptcha(smsCaptchaParamDTO);
         return new MessageResponseVO(20002);
     }
 
     @PostMapping("/captcha/sms/check")
     @ApiOperation(value = "校验短信验证码", tags = "验证码")
-    public MessageResponseVO checkSMSCaptcha(@RequestBody CheckSMSCaptchaParamDTO checkSMSCaptchaParamDTO) {
+    public MessageResponseVO checkSMSCaptcha(@RequestBody @Validated CheckSMSCaptchaParamDTO checkSMSCaptchaParamDTO) {
         authenticationService.checkSMSCaptcha(checkSMSCaptchaParamDTO);
         return new MessageResponseVO(20001);
     }
 
     @PutMapping("/password")
     @ApiOperation(value = "修改密码", notes = "通过原密码修改密码", tags = "账户信息")
-    public MessageResponseVO updatePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+    public MessageResponseVO updatePassword(@RequestBody @Validated ChangePasswordDTO changePasswordDTO) {
         authenticationService.updatePassword(changePasswordDTO);
         return new MessageResponseVO(20010);
     }
 
     @PutMapping("/phone/{phoneNumber}")
     @ApiOperation(value = "修改手机号", tags = "账户信息")
-    public MessageResponseVO updatePhoneNumber(@PathVariable String phoneNumber) {
+    public MessageResponseVO updatePhoneNumber(
+            @PathVariable
+            @Pattern(regexp = "(?:(?:\\+|00)86)?1(?:(?:3[\\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\\d])|(?:9[1|8|9]))\\d{8}", message = "手机号格式错误")
+            @Validated String phoneNumber) {
         authenticationService.updatePhoneNumber(phoneNumber);
         return new MessageResponseVO(20010);
     }
 
     @GetMapping("/phone/{phoneNumber}")
     @ApiOperation(value = "检测手机号", notes = "判断该手机号是否已经注册过", tags = "登录注册")
-    public MessageResponseVO retrieveUserByPhone(@PathVariable String phoneNumber) {
+    public MessageResponseVO retrieveUserByPhone(
+            @PathVariable
+            @Pattern(regexp = "(?:(?:\\+|00)86)?1(?:(?:3[\\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\\d])|(?:9[1|8|9]))\\d{8}", message = "手机号格式错误")
+            @Validated String phoneNumber) {
         UserPO userPO = userMapper.selectOne(new LambdaQueryWrapper<UserPO>().eq(UserPO::getPhoneNumber, phoneNumber));
         if (userPO == null) {
             throw new AuthenticationException(40010);
@@ -118,7 +126,7 @@ public class AuthenticationController {
 
     @PutMapping("/password/sms")
     @ApiOperation(value = "重置密码", notes = "通过短信验证码重置密码", tags = "账户信息")
-    public MessageResponseVO retrieveUser(@RequestBody RetrieveUserDTO retrieveUserDTO) {
+    public MessageResponseVO retrieveUser(@RequestBody @Validated RetrieveUserDTO retrieveUserDTO) {
         authenticationService.resetPassword(retrieveUserDTO);
         return new MessageResponseVO(20010);
     }

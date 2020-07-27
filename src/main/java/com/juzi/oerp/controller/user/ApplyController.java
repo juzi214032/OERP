@@ -9,11 +9,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Positive;
 
 /**
  * 报名接口
@@ -37,7 +40,7 @@ public class ApplyController {
      */
     @PostMapping
     @ApiOperation("考试报名")
-    public ResponseVO<UserExamPO> applyExam(@RequestBody ApplyExamParamDTO applyExamParamDTO) {
+    public ResponseVO<UserExamPO> applyExam(@RequestBody @Validated ApplyExamParamDTO applyExamParamDTO) {
         UserExamPO result = applyService.applyExam(applyExamParamDTO);
         return new ResponseVO<>(result);
     }
@@ -50,7 +53,11 @@ public class ApplyController {
      */
     @PostMapping("/pay/{applyId}")
     @ApiOperation("考试支付")
-    public MessageResponseVO pay(@ApiParam("报名 id") @PathVariable Integer applyId) {
+    public MessageResponseVO pay(
+            @ApiParam("报名 id")
+            @PathVariable
+            @Positive(message = "报名id格式错误")
+            @Validated Integer applyId) {
         applyService.pay(applyId);
         return new MessageResponseVO(20005);
     }
