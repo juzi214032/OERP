@@ -83,3 +83,35 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
                     |-- dao                -> 自定义 Mybatis Xml
                     |-- mapper             -> MyBatis Plus Generator 生成的 MyBatis Xml
 ```
+
+## 项目截图
+
+### 用户端
+
+#### 首页
+
+![](https://img.juzibiji.top/20200729112009.png)
+
+![](https://img.juzibiji.top/20200729112454.png)
+
+![](https://img.juzibiji.top/20200729113944.png)
+
+#### 个人中心
+
+![](https://img.juzibiji.top/20200729113345.png)
+
+![](https://img.juzibiji.top/20200729113412.png) 
+
+#### 登录
+
+![](https://img.juzibiji.top/20200729113558.png)
+
+![](https://img.juzibiji.top/20200729113559.png)
+
+#### 考试报名
+
+![](https://img.juzibiji.top/20200729114009.png)
+
+![](https://img.juzibiji.top/20200729114030.png)
+
+![](https://img.juzibiji.top/20200729114041.png)
