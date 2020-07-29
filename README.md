@@ -115,3 +115,11 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
 ![](https://img.juzibiji.top/20200729114030.png)
 
 ![](https://img.juzibiji.top/20200729114041.png)
+
+## 贡献
+
+欢迎提交 Pull Request 进行代码贡献
+
+## 协议
+
+[MIT](LICENSE) © 2020  桔子
