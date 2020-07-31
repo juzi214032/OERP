@@ -67,19 +67,20 @@
     </select>
     <select id="getExamApplyInfoById" resultType="com.juzi.oerp.model.dto.ExamApplyInfoDTO">
         SELECT
-            exam.id,
-            exam.title,
-            exam_time.exam_time,
-            exam_place.exam_place,
-            exam_place.people_number
+        exam.id,
+        exam.title,
+        exam_time.exam_time,
+        exam_place.id AS exam_place_id,
+        exam_place.exam_place,
+        exam_place.people_number
         FROM
-            exam
-                INNER JOIN
-            exam_time
-            ON
-                exam.id = exam_time.exam_id
-                INNER JOIN
-            exam_place
+        exam
+        INNER JOIN
+        exam_time
+        ON
+        exam.id = exam_time.exam_id
+        INNER JOIN
+        exam_place
             ON
                 exam_time.id = exam_place.exam_time_id
         WHERE

@@ -2,6 +2,7 @@ package com.juzi.oerp.model.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 /**
@@ -14,6 +15,7 @@ public class UpdateUserDTO {
     /**
      * 用户 id
      */
+    @Positive(message = "用户id格式错误")
     private Integer userId;
 
     /**

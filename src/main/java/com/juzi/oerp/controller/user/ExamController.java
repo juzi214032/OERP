@@ -10,10 +10,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Positive;
 
 /**
  * 考试接口
@@ -37,7 +40,7 @@ public class ExamController {
      */
     @GetMapping
     @ApiOperation("获取考试简要信息")
-    public ResponseVO<IPage<ExamPO>> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
+    public ResponseVO<IPage<ExamPO>> getExamPlainInfoByPage(@Validated PageParamDTO pageParamDTO) {
         IPage<ExamPO> result = examService.getExamPlainInfoByPage(pageParamDTO);
         return new ResponseVO<>(result);
     }
@@ -50,7 +53,11 @@ public class ExamController {
      */
     @GetMapping("/{examId}")
     @ApiOperation("获取考试详细信息")
-    public ResponseVO<ExamPO> getExamDetailInfoById(@ApiParam("考试id") @PathVariable Integer examId) {
+    public ResponseVO<ExamPO> getExamDetailInfoById(
+            @ApiParam("考试id")
+            @PathVariable
+            @Positive(message = "考试id格式错误")
+            @Validated Integer examId) {
         ExamPO result = examService.getExamDetailInfoById(examId);
         return new ResponseVO<>(result);
     }
@@ -63,7 +70,11 @@ public class ExamController {
      */
     @GetMapping("/apply/{examId}")
     @ApiOperation("获取考试报名信息")
-    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(@ApiParam("考试id") @PathVariable Integer examId) {
+    public ResponseVO<ExamApplyInfoVO> getExamApplyInfoById(
+            @ApiParam("考试id")
+            @Validated
+            @Positive(message = "考试id格式错误")
+            @PathVariable Integer examId) {
         ExamApplyInfoVO result = examService.getExamApplyInfoById(examId);
         return new ResponseVO<>(result);
     }

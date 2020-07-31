@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.juzi.oerp.dao.ApplyDAO">
+    <select id="getApplyInfoByPage" resultType="com.juzi.oerp.model.vo.ApplyInfoVO">
+        SELECT
+            user_info.`name`,
+            user_info.gender,
+            user_info.identity_no,
+            user_info.school,
+            user_info.education,
+            exam.title,
+            exam_time.exam_time,
+            user_exam.id AS apply_id,
+            user_exam.create_time,
+            user_exam.`status`
+        FROM
+            ( SELECT id, title FROM exam WHERE exam.id > 0 ) AS exam
+            INNER JOIN exam_time ON exam.id = exam_time.exam_id
+            INNER JOIN exam_place ON exam_time.id = exam_place.exam_time_id
+            INNER JOIN (
+                SELECT * FROM user_exam WHERE id > 0 ORDER BY create_time DESC
+                <if test="keyword == null or keyword == '' ">
+                    LIMIT #{offset}, #{rows}
+                </if>
+            ) AS user_exam ON exam_place.id = user_exam.exam_place_id
+            INNER JOIN `user` ON user_exam.user_id = `user`.id
+            INNER JOIN (
+                SELECT * FROM user_info
+                <where>
+                    <if test="keyword!=null and keyword!='' ">
+                        user_info.`name` LIKE CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
+                    </if>
+                </where>
+            ) AS user_info ON `user`.id = user_info.user_id
+        <if test="keyword !=null and keyword !=''">
+            LIMIT #{offset}, #{rows}
+        </if>
+    </select>
+    <select id="getApplyInfoById" resultType="com.juzi.oerp.model.vo.ApplyInfoVO">
+        SELECT exam.title,
+               exam_time.exam_time,
+               user_info.`name`,
+               user_info.identity_no,
+               user_info.school,
+               user_info.education,
+               user_exam.create_time
+        FROM exam
+                     INNER JOIN exam_time ON exam.id = exam_time.exam_id
+                     INNER JOIN exam_place ON exam_time.id = exam_place.exam_time_id
+                     INNER JOIN user_exam ON exam_place.id = user_exam.exam_place_id
+                     INNER JOIN `user` ON user_exam.user_id = `user`.id
+                     INNER JOIN user_info ON `user`.id = user_info.user_id
+        WHERE user_exam.id = #{applyId,jdbcType=INTEGER}
+    </select>
+</mapper>

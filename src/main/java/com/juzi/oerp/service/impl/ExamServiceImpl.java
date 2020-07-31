@@ -71,7 +71,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
     public IPage<ExamPO> getExamPlainInfoByPage(PageParamDTO pageParamDTO) {
         IPage<ExamPO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
         LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
-                .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getDescription, ExamPO::getId)
+                .select(ExamPO::getTitle, ExamPO::getImageUrl, ExamPO::getId, ExamPO::getPrice)
                 .like(!StringUtils.isEmpty(pageParamDTO.getKeyword()), ExamPO::getTitle, pageParamDTO.getKeyword())
                 .orderByDesc(ExamPO::getCreateTime);
         return examMapper.selectPage(page, queryWrapper);
@@ -96,8 +96,10 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
                 .stream()
                 .collect(groupingBy(ExamApplyInfoDTO::getExamTime, mapping(examApplyInfoDTO -> {
                     ExamPlacePO examPlacePO = new ExamPlacePO();
-                    examPlacePO.setExamPlace(examApplyInfoDTO.getExamPlace());
-                    examPlacePO.setPeopleNumber(examApplyInfoDTO.getPeopleNumber());
+                    examPlacePO
+                            .setId(examApplyInfoDTO.getExamPlaceId())
+                            .setExamPlace(examApplyInfoDTO.getExamPlace())
+                            .setPeopleNumber(examApplyInfoDTO.getPeopleNumber());
                     return examPlacePO;
                 }, toList())));
 
@@ -151,6 +153,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, ExamPO> implements 
         String keyword = pageParamDTO.getKeyword();
         IPage<ExamPO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
         LambdaQueryWrapper<ExamPO> queryWrapper = new LambdaQueryWrapper<ExamPO>()
+                .gt(ExamPO::getId, 0)
                 .like(!StringUtils.isEmpty(keyword), ExamPO::getTitle, keyword)
                 .orderByDesc(ExamPO::getCreateTime);
         return examMapper.selectPage(page, queryWrapper);

@@ -14,7 +14,7 @@ public class ExamApplyInfoDTO {
     /**
      * 考试 id
      */
-    private String id;
+    private Integer id;
 
     /**
      * 考试名称
@@ -25,6 +25,11 @@ public class ExamApplyInfoDTO {
      * 考试时间
      */
     private LocalDateTime examTime;
+
+    /**
+     * 考试地点id
+     */
+    private Integer examPlaceId;
 
     /**
      * 考试地点

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -57,7 +58,7 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ExceptionResponseVO methodArgumentNotValidException(MethodArgumentNotValidException e) {
         String validMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        return new ExceptionResponseVO(40000, validMessage, e.getMessage());
+        return new ExceptionResponseVO(40000, "参数格式错误", validMessage);
     }
 
     /**
@@ -69,7 +70,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ExceptionResponseVO methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        return new ExceptionResponseVO(40000, "参数格式错误", e.getMessage());
+        return new ExceptionResponseVO(40000, "参数格式错误");
     }
 
     /**
@@ -88,6 +89,12 @@ public class ExceptionController {
     @ExceptionHandler(MissingServletRequestPartException.class)
     public ExceptionResponseVO missingServletRequestPartException(MissingServletRequestPartException e) {
         return new ExceptionResponseVO(40015, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ExceptionResponseVO httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return new ExceptionResponseVO(40000, "请求方法不支持", e.getMessage());
     }
 
     /**

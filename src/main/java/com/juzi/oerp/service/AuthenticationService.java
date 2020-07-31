@@ -1,14 +1,13 @@
 package com.juzi.oerp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.juzi.oerp.model.dto.ChangePasswordByPhoneNumDTO;
 import com.juzi.oerp.model.dto.ChangePasswordDTO;
-import com.juzi.oerp.model.dto.RetrieveUserDTO;
 import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
 import com.juzi.oerp.model.dto.UserRegistionDTO;
 import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.ResetPasswordParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.vo.CaptchaVO;
 import com.juzi.oerp.model.vo.UserLoginVO;
@@ -79,14 +78,7 @@ public interface AuthenticationService {
      *
      * @param changePasswordDTO 用户修改密码
      */
-    void updatePassword(ChangePasswordDTO changePasswordDTO);
-
-    /**
-     * 修改用户密码,通过手机号
-     *
-     * @param changePasswordByPhoneNumDTO 用户修改密码
-     */
-    void updatePassword(ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO);
+    void updatePasswordByOldPassword(ChangePasswordDTO changePasswordDTO);
 
     /**
      * 修改用户手机号
@@ -98,8 +90,8 @@ public interface AuthenticationService {
     /**
      * 重置密码
      *
-     * @param retrieveUserDTO
+     * @param resetPasswordParamDTO
      * @return
      */
-    void resetPassword(RetrieveUserDTO retrieveUserDTO);
+    void resetPassword(ResetPasswordParamDTO resetPasswordParamDTO);
 }

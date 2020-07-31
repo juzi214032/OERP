@@ -9,7 +9,7 @@
     <img src="https://github.com/juzi214032/oerp/workflows/Java%20CI%20with%20Maven/badge.svg" alt="Github Action">
   </a>
   <a href="https://spring.io/">
-    <img src="https://img.shields.io/badge/Spring%20Boot-2.3.1.RELEASE-brightgreen" alt="Spring Boot">
+    <img src="https://img.shields.io/badge/Spring%20Boot-2.3.2.RELEASE-brightgreen" alt="Spring Boot">
   </a>
   <a href="https://mp.baomidou.com/">
     <img src="https://img.shields.io/badge/MyBatis%20Plus-3.3.2-blue" alt="MyBatis Plus">
@@ -54,17 +54,20 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
         |   |-- com.juzi.oerp
         |       |-- OerpApplication.java   -> SpringBoot 启动类
         |       |-- common                 -> 项目通用类
+        |       |   |-- aop                -> 切面拦截类
         |       |   |-- constant           -> 常量
         |       |   |-- exception          -> 自定义异常
         |       |   |-- interceptor        -> 拦截器（身份认证、权限拦截）
         |       |   |-- jackson            -> Jackson 相关
         |       |   |-- store              -> 存储型对象（存储当前登录用户的信息）
         |       |-- configuration          -> 系统配置
+        |       |   |-- properties         -> 自定义配置
         |       |-- controller             -> 系统 API 接口
         |       |-- dao                    -> 自定义 DAO 层接口（主要做多表查询）
         |       |-- mapper                 -> MyBatis Plus Generator 生成的 DAO 接口（主要做单表 CRUD）
         |       |-- model                  -> Java POJO
         |       |   |-- dto                -> 数据传输对象（主要用在 Controller 与 Service 层之间）
+        |       |   |   |-- analysis       -> 数据分析相关 DTO 对象
         |       |   |   |-- param          -> 用于 Controller 层接收参数的对象
         |       |   |-- po                 -> 持久层对象（和数据库表一一对应，用在 DAO 层）
         |       |   |-- vo                 -> 视图层对象（作为 Controller 的返回值）
@@ -74,8 +77,49 @@ OERP 是 Online Examination Registration Platform 的缩写，中文名称为：
             |-- application.yml            -> Spring Boot 配置文件
             |-- banner.txt
             |-- oerp.sql                   -> 数据库 SQL 文件（数据库名为 oerp）
+            |-- code-message.properties    -> 响应信息定义
             |-- mybatis
                 |-- xml
                     |-- dao                -> 自定义 Mybatis Xml
                     |-- mapper             -> MyBatis Plus Generator 生成的 MyBatis Xml
 ```
+
+## 项目截图
+
+### 用户端
+
+#### 首页
+
+![](https://img.juzibiji.top/20200729112009.png)
+
+![](https://img.juzibiji.top/20200729112454.png)
+
+![](https://img.juzibiji.top/20200729113944.png)
+
+#### 个人中心
+
+![](https://img.juzibiji.top/20200729113345.png)
+
+![](https://img.juzibiji.top/20200729113412.png) 
+
+#### 登录
+
+![](https://img.juzibiji.top/20200729113558.png)
+
+![](https://img.juzibiji.top/20200729113559.png)
+
+#### 考试报名
+
+![](https://img.juzibiji.top/20200729114009.png)
+
+![](https://img.juzibiji.top/20200729114030.png)
+
+![](https://img.juzibiji.top/20200729114041.png)
+
+## 贡献
+
+欢迎提交 Pull Request 进行代码贡献
+
+## 协议
+
+[MIT](LICENSE) © 2020  桔子

@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.1.RELEASE</version>
+        <version>2.3.2.RELEASE</version>
         <relativePath/>
     </parent>
     
@@ -21,6 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot-admin.version>2.2.3</spring-boot-admin.version>
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+        <hutool.version>5.3.10</hutool.version>
     </properties>
 
     <dependencies>
@@ -89,7 +90,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-crypto</artifactId>
-            <version>5.3.10</version>
+            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>com.auth0</groupId>
@@ -99,7 +100,7 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>4.5.4</version>
+            <version>4.5.5</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -112,7 +113,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-captcha</artifactId>
-            <version>5.3.10</version>
+            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -123,10 +124,6 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>2.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
     
         <dependency>

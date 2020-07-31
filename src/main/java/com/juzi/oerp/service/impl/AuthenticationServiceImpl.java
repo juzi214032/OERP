@@ -20,9 +20,13 @@ import com.juzi.oerp.common.exception.CaptchaException;
 import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
-import com.juzi.oerp.model.dto.*;
+import com.juzi.oerp.model.dto.ChangePasswordDTO;
+import com.juzi.oerp.model.dto.UserPasswordLoginDTO;
+import com.juzi.oerp.model.dto.UserRegistionDTO;
+import com.juzi.oerp.model.dto.UserSMSLoginDTO;
 import com.juzi.oerp.model.dto.param.CheckImageCaptchaParamDTO;
 import com.juzi.oerp.model.dto.param.CheckSMSCaptchaParamDTO;
+import com.juzi.oerp.model.dto.param.ResetPasswordParamDTO;
 import com.juzi.oerp.model.dto.param.SMSCaptchaParamDTO;
 import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
@@ -251,6 +255,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (StringUtils.isEmpty(reallySMSCaptcha) || !CacheConstants.CAPTCHA_CHECKED.equals(reallySMSCaptcha)) {
             throw new AuthenticationException(40006);
         }
+        smsCaptchaCache.evict(phoneNumber);
     }
 
     @Override
@@ -263,7 +268,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void updatePassword(ChangePasswordDTO changePasswordDTO) {
+    public void updatePasswordByOldPassword(ChangePasswordDTO changePasswordDTO) {
         UserPO userPO = userMapper.selectById(LocalUserStore.getLocalUser());
         String oldPassword = userPO.getPassword();
         //传过来的密码加密
@@ -278,23 +283,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void updatePassword(ChangePasswordByPhoneNumDTO changePasswordByPhoneNumDTO) {
-        this.checkPhoneNumberValidated(changePasswordByPhoneNumDTO.getPhoneNumber());
-        UserPO userPO = userMapper.selectById(LocalUserStore.getLocalUser());
-        //传过来的密码加密
-        String dtoNewPassword= SecureUtil.md5(changePasswordByPhoneNumDTO.getNewPassword());
-        userPO.setPassword(dtoNewPassword);
-        userMapper.updateById(userPO);
-    }
-
-    @Override
-    public void resetPassword(RetrieveUserDTO retrieveUserDTO) {
+    public void resetPassword(ResetPasswordParamDTO resetPasswordParamDTO) {
         //检测手机号是否经过验证
-        this.checkPhoneNumberValidated(retrieveUserDTO.getPhoneNumber());
+        this.checkPhoneNumberValidated(resetPasswordParamDTO.getPhoneNumber());
 
-        String newPassword = retrieveUserDTO.getNewPassword();
+        String newPassword = resetPasswordParamDTO.getNewPassword();
         UserPO userPO = new UserPO();
-        userPO.setPassword(SecureUtil.md5(newPassword));
-        userMapper.updateById(userPO);
+        userPO
+                .setPassword(SecureUtil.md5(newPassword));
+        userMapper.update(userPO, new LambdaQueryWrapper<UserPO>().eq(UserPO::getPhoneNumber, resetPasswordParamDTO.getPhoneNumber()));
     }
 }

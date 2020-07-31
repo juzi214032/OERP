@@ -1,11 +1,10 @@
 package com.juzi.oerp.model.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.juzi.oerp.common.jackson.LocalDateTimeDeserializer;
-import com.juzi.oerp.common.jackson.LocalDateTimeSerializer;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 import java.time.LocalDateTime;
 
 /**
@@ -18,11 +17,13 @@ public class CreateUserDTO {
     /**
      * 账号
      */
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
     /**
      * 密码
      */
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
@@ -43,6 +44,7 @@ public class CreateUserDTO {
     /**
      * 性别：0未知/1男/2女
      */
+    @Range(min = 0, max = 2, message = "性别格式错误")
     private Integer gender;
 
     /**
@@ -58,6 +60,7 @@ public class CreateUserDTO {
     /**
      * 生日
      */
+    @Past(message = "生日时间必须是过去的时间")
     private LocalDateTime birthday;
 
     /**
