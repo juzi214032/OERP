@@ -78,7 +78,7 @@ public class ApplyController {
         return new MessageResponseVO(20012);
     }
 
-    @PostMapping("/aduit")
+    @PostMapping("/audit")
     @ApiOperation("审核报名")
     public MessageResponseVO auditApply(@RequestBody @Validated AuditApplicationParamDTO auditApplicationParamDTO) {
         auditApplicationService.auditApplication(auditApplicationParamDTO);

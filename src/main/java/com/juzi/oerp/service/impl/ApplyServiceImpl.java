@@ -1,5 +1,6 @@
 package com.juzi.oerp.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,12 +10,14 @@ import com.juzi.oerp.common.store.LocalUserStore;
 import com.juzi.oerp.dao.ApplyDAO;
 import com.juzi.oerp.mapper.ExamPlaceMapper;
 import com.juzi.oerp.mapper.UserExamMapper;
+import com.juzi.oerp.mapper.UserInfoMapper;
 import com.juzi.oerp.mapper.UserMapper;
 import com.juzi.oerp.model.dto.param.ApplyExamParamDTO;
 import com.juzi.oerp.model.dto.param.CreateApplyParamDTO;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.po.ExamPlacePO;
 import com.juzi.oerp.model.po.UserExamPO;
+import com.juzi.oerp.model.po.UserInfoPO;
 import com.juzi.oerp.model.po.UserPO;
 import com.juzi.oerp.model.vo.ApplyInfoVO;
 import com.juzi.oerp.service.ApplyService;
@@ -22,6 +25,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Juzi
@@ -40,12 +47,35 @@ public class ApplyServiceImpl implements ApplyService {
     private ApplyDAO applyDAO;
 
     @Autowired
+    private UserInfoMapper userInfoMapper;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Override
     public IPage<ApplyInfoVO> getApplyInfoByPage(PageParamDTO pageParamDTO) {
-        IPage<ApplyInfoVO> page = new Page<>(pageParamDTO.getPageOn(), pageParamDTO.getPageSize());
-        return applyDAO.getApplyInfoByPage(page);
+        Integer rows = pageParamDTO.getPageSize();
+        Integer offset = (pageParamDTO.getPageOn() - 1) * rows;
+        String keyword = pageParamDTO.getKeyword();
+
+        LambdaQueryWrapper<UserInfoPO> userInfoQueryWrapper = new LambdaQueryWrapper<UserInfoPO>()
+                .like(!StringUtils.isEmpty(keyword), UserInfoPO::getName, keyword);
+        List<Integer> userIdList = userInfoMapper
+                .selectList(userInfoQueryWrapper)
+                .stream().map(UserInfoPO::getUserId)
+                .collect(Collectors.toList());
+
+        LambdaQueryWrapper<UserExamPO> userExamQueryWrapper = new LambdaQueryWrapper<UserExamPO>()
+                .gt(UserExamPO::getId, 0)
+                .in(CollectionUtil.isNotEmpty(userIdList) && !StringUtils.isEmpty(keyword), UserExamPO::getUserId, userIdList);
+        Integer total = userExamMapper.selectCount(userExamQueryWrapper);
+
+        List<ApplyInfoVO> records = applyDAO.getApplyInfoByPage(offset, rows, keyword);
+        IPage<ApplyInfoVO> pageResult = new Page<>();
+        pageResult
+                .setRecords(records)
+                .setTotal(total);
+        return pageResult;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.juzi.oerp.dao;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.juzi.oerp.model.vo.ApplyInfoVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author Juzi
@@ -10,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ApplyDAO {
 
-    IPage<ApplyInfoVO> getApplyInfoByPage(@Param("page") IPage<ApplyInfoVO> page);
+    List<ApplyInfoVO> getApplyInfoByPage(@Param("offset") Integer offset, @Param("rows") Integer rows, @Param("keyword") String keyword);
 
     ApplyInfoVO getApplyInfoById(@Param("applyId") Integer applyId);
 

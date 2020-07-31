@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 public class ApplyInfoVO {
 
     /**
+     * 报名id
+     */
+    private Integer applyId;
+
+    /**
      * 考试名称
      */
     private String title;
@@ -25,6 +30,11 @@ public class ApplyInfoVO {
      * 用户名称
      */
     private String name;
+
+    /**
+     * 性别
+     */
+    private Integer gender;
 
     /**
      * 身份证号码
@@ -45,5 +55,10 @@ public class ApplyInfoVO {
      * 报名时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 报名状态
+     */
+    private Integer status;
 
 }
