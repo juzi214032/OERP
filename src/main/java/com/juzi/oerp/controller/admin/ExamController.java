@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.juzi.oerp.model.dto.param.PageParamDTO;
 import com.juzi.oerp.model.dto.param.UpdateExamParamDTO;
 import com.juzi.oerp.model.po.ExamPO;
-import com.juzi.oerp.model.vo.response.DeleteResponseVO;
 import com.juzi.oerp.model.vo.response.MessageResponseVO;
 import com.juzi.oerp.model.vo.response.ResponseVO;
 import com.juzi.oerp.service.ExamService;
@@ -110,11 +109,12 @@ public class ExamController {
      */
     @DeleteMapping("/{examId}")
     @ApiOperation("删除考试")
-    public ResponseVO<Object> deleteExamById(
+    public MessageResponseVO deleteExamById(
             @ApiParam("考试id")
             @Validated
             @Positive(message = "考试id不能为空")
             @PathVariable Integer examId) {
-        return new DeleteResponseVO();
+        examService.removeById(examId);
+        return new MessageResponseVO(20012);
     }
 }
