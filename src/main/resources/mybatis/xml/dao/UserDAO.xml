@@ -58,10 +58,10 @@
     <select id="getUserApplyExam" resultType="com.juzi.oerp.model.vo.UserApplyExamVO">
         SELECT
             exam.title,
+            exam_time.exam_time,
             exam_place.exam_place AS examPlace,
-            exam.begin_time AS beginTime,
-            exam.end_time AS endTime,
-            user_exam.status
+            user_exam.status,
+            user_exam.create_time
         FROM
             `user`
                 LEFT JOIN

@@ -18,14 +18,14 @@ public class UserApplyExamVO {
     private String examPlace;
 
     /**
-     * 开始时间
+     * 考试时间
      */
-    private LocalDateTime beginTime;
+    private LocalDateTime examTime;
 
     /**
      * 结束时间
      */
-    private LocalDateTime endTime;
+    private LocalDateTime createTime;
 
     /**
      * 状态
